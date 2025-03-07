@@ -13,6 +13,12 @@
         android:theme="@style/Theme.TeamUp"
         tools:targetApi="31">
         <activity
+            android:name=".LocationCityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterProfileActivity"
             android:exported="false" />
         <activity
