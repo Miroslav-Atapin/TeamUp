@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    Text    -->
+
+    <style name="Title1">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TitleHeader">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="TextNormal">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--    Button  -->
+
+    <style name="Btn">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="BtnLight">
+        <item name="backgroundTint">@color/white</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/accent</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <!--    EditText  -->
+
+    <style name="EditText">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColorHint">@color/secondary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_maps_sport"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Добро пожаловать!"
+        style="@style/Title1"
+        android:textAlignment="center"
+        android:layout_marginTop="60dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Найдите интересные события, заведите новых друзей и участвуйте в увлекательных соревнованиях — всё это доступно в нашем приложении TeamUp!"
+        android:textAlignment="center"
+        style="@style/TextNormal"
+        android:textColor="@color/secondary"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnGoToLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        style="@style/Btn"
+        android:text="Войти в аккаунт"/>
+
+    <Button
+        android:id="@+id/btnGoToRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        style="@style/BtnLight"
+        android:text="Создать аккаунт"
+        android:layout_marginBottom="15dp"/>
+
+</LinearLayout>
