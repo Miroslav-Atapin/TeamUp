@@ -34,5 +34,12 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        btnGoToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(StartActivity.this, RegisterActivity.class));
+            }
+        });
+
     }
 }

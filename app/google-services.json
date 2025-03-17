@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586145419551",
+    "project_id": "teamup-1aa7f",
+    "storage_bucket": "teamup-1aa7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586145419551:android:a6c324592e76b2d7ea202a",
+        "android_client_info": {
+          "package_name": "com.example.teamup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk8DhEXzeI3ZEjPbeznC1cMeWm_rWuhNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

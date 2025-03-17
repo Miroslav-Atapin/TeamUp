@@ -19,29 +19,32 @@
         android:orientation="vertical"
         android:layout_marginTop="30dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        style="@style/TextNormal"
-        android:textColor="@color/black"/>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Email"
+            style="@style/TextNormal"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/shape_edittext"
             android:hint="email@gmail.com"
-            app:hintAnimationEnabled="false"
             style="@style/EditText"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/shape_edittext"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tvErrorEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="14sp"
+            android:textColor="#ff3333"
+            android:text=""
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
 
@@ -59,25 +62,28 @@
             style="@style/TextNormal"
             android:textColor="@color/black"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/edPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:background="@drawable/shape_edittext"
             android:hint="Введите пароль"
-            app:hintAnimationEnabled="false"
             style="@style/EditText"
-            app:endIconMode="password_toggle"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edPassword"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPassword"
-                android:background="@drawable/shape_edittext"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tvErrorPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="14sp"
+            android:textColor="#ff3333"
+            android:text=""
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
+
 
     <Button
         android:id="@+id/btnLoginAccount"
