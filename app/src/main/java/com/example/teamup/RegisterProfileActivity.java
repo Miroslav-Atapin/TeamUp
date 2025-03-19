@@ -67,7 +67,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
                 if (!hasErrors) {
                     HashMap<String, Object> userInfo = new HashMap<>();
                     userInfo.put("FirstName", firstName);
-                    userInfo.put("Lastname", lastName);
+                    userInfo.put("LastName", lastName);
 
                     FirebaseDatabase.getInstance().getReference()
                             .child("Users")
@@ -77,6 +77,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(getApplicationContext(), "Профиль успешно создан!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(RegisterProfileActivity.this, HomeActivity.class));
                                     finish();
                                 }
                             });

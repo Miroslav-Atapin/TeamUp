@@ -5,4 +5,7 @@
     <color name="accent">#0078FF</color>
     <color name="secondary">#72777A</color>
     <color name="border">#E3E5E5</color>
+    <color name="light_accent">#61ABFF</color>
+    <color name="gray">#F1F1F1</color>
+    <color name="event">#E9F8FD</color>
 </resources>
