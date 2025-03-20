@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TeamUp"
         tools:targetApi="31">
         <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -30,8 +33,9 @@
             android:name=".StartActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
-            android:exported="true">
+            android:name=".CreateEventActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
