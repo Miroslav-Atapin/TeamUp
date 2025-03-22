@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"> <!-- Это гарантирует, что контент займет всю доступную высоту -->
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/main"
@@ -17,6 +18,15 @@
 
         <include
             layout="@layout/toolbar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы пользователям было легче ориентироваться."
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            style="@style/TextNormal"
+            android:textColor="@color/secondary"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -75,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -137,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -163,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:id="@+id/linearLayoutlevel"
@@ -184,7 +194,8 @@
                     android:id="@+id/spinnerCategory"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_edittext" />
 
             </LinearLayout>
 
@@ -206,7 +217,8 @@
                     android:id="@+id/spinnerLevel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_edittext"/>
 
             </LinearLayout>
 
@@ -217,7 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -248,7 +260,7 @@
             android:textSize="14sp"
             android:textColor="#ff3333"
             android:text=""
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="20dp"/>
 
         <Button
@@ -259,7 +271,7 @@
             style="@style/Btn"
             android:text="Создать событие"
             android:layout_marginBottom="30dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="50dp"/>
 
     </LinearLayout>
 

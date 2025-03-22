@@ -76,10 +76,6 @@
 
     <!--    EditText  -->
 
-    <style name="CardViewCategory">
-        <item name="cardBackgroundColor">@color/event</item>
-        <item name="cardCornerRadius">10dp</item>
-        <item name="cardElevation">0dp</item>
-    </style>
+
 
 </resources>

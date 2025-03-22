@@ -4,23 +4,26 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -29,7 +32,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private static final String TAG = "CreateEventActivity";
     private Calendar calendar;
 
-    // Переменные объявлены как поля класса
     private EditText edEventName;
     private EditText edEventDate;
     private EditText edEventTimeStart;
@@ -41,7 +43,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private TextView tvEventError;
     private Button btnCreateEvent;
 
-    // Переменные для хранения выбранного времени
     private int hourStart, minuteStart;
     private int hourEnd, minuteEnd;
 
@@ -50,16 +51,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
-        TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
-
-        // Инициализация полей
         edEventName = findViewById(R.id.edEventName);
         edEventDate = findViewById(R.id.edEventDate);
         edEventTimeStart = findViewById(R.id.edEventTimeStart);
@@ -71,140 +63,102 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         tvEventError = findViewById(R.id.tvEventError);
         btnCreateEvent = findViewById(R.id.btnCreateEvent);
 
-        // Обработчик кликов на кнопку назад
-        imgbtnArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CreateEventActivity.this, HomeActivity.class));
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.WHITE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
-        // Устанавливаем заголовок
+        ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
+        imgbtnArrow.setOnClickListener(view -> startActivity(new Intent(CreateEventActivity.this, HomeActivity.class)));
+
+        TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvTitleHeader.setText("Создать событие");
 
-        // Открытие календаря при клике на поле даты
-        edEventDate.setInputType(InputType.TYPE_NULL); // Отключаем клавиатуру
-        edEventDate.setFocusable(false); // Поле становится нефокусируемым
-        edEventDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(v.getContext()); // Показываем календарь
-            }
-        });
+        String[] categories = {"Футбол", "Баскетбол", "Волейбол", "Другое"};
+        String[] levels = {"Легкий", "Средний", "Сложный"};
 
-        // Настройка полей времени
-        edEventTimeStart.setInputType(InputType.TYPE_NULL); // Отключаем клавиатуру
-        edEventTimeStart.setFocusable(false); // Поле становится нефокусируемым
-        edEventTimeStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(v.getContext(), true); // true означает начало времени
-            }
-        });
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(categoryAdapter);
 
-        edEventTimeEnd.setInputType(InputType.TYPE_NULL); // Отключаем клавиатуру
-        edEventTimeEnd.setFocusable(false); // Поле становится нефокусируемым
-        edEventTimeEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(v.getContext(), false); // false означает конец времени
-            }
-        });
+        ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, levels);
+        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLevel.setAdapter(levelAdapter);
 
-        // Обработчик кнопки Создать событие
-        btnCreateEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateAndSubmitForm(); // Проверяем данные и отправляем форму
-            }
-        });
+        edEventDate.setInputType(InputType.TYPE_NULL);
+        edEventDate.setFocusable(false);
+        edEventDate.setOnClickListener(view -> showDatePickerDialog(view.getContext()));
+
+        edEventTimeStart.setInputType(InputType.TYPE_NULL);
+        edEventTimeStart.setFocusable(false);
+        edEventTimeStart.setOnClickListener(view -> showTimePickerDialog(view.getContext(), true));
+
+        edEventTimeEnd.setInputType(InputType.TYPE_NULL);
+        edEventTimeEnd.setFocusable(false);
+        edEventTimeEnd.setOnClickListener(view -> showTimePickerDialog(view.getContext(), false));
+
+        btnCreateEvent.setOnClickListener(view -> validateAndSubmitForm());
     }
 
-    /**
-     * Метод для отображения диалога выбора даты
-     */
     private void showDatePickerDialog(Context context) {
         calendar = Calendar.getInstance();
 
-        // Ограничиваем диапазон дат
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Устанавливаем минимальный день на сегодня
         DatePickerDialog dialog = new DatePickerDialog(
                 context,
-                this, // OnDateSetListener
-                year, month, day);
+                this,
+                year, month, day
+        );
 
-        // Максимум - через 7 дней
         calendar.add(Calendar.DATE, 7);
         dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
 
-        // Минимум - сегодня
         calendar = Calendar.getInstance();
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         dialog.show();
     }
 
-    /**
-     * Обрабатываем результат выбора даты
-     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Log.d(TAG, "Selected date: " + dayOfMonth + "/" + (month + 1) + "/" + year);
-        // Форматируем дату в нужный формат
         String selectedDate = String.format("%02d.%02d.%04d", dayOfMonth, (month + 1), year);
-        edEventDate.setText(selectedDate); // Заполняем EditText выбранной датой
+        edEventDate.setText(selectedDate);
     }
 
-    /**
-     * Метод для отображения диалога выбора времени
-     */
     private void showTimePickerDialog(Context context, boolean isStartTime) {
-        TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if (isStartTime) {
-                    hourStart = hourOfDay;
-                    minuteStart = minute;
-                    updateTimeField(edEventTimeStart, hourStart, minuteStart);
-                } else {
-                    // Если выбрано время конца
-                    if (hourOfDay < hourStart || (hourOfDay == hourStart && minute < minuteStart)) {
-                        tvEventError.setText("Время окончания должно быть позже времени начала.");
-                        return; // Не обновляем значение времени конца
-                    }
-                    hourEnd = hourOfDay;
-                    minuteEnd = minute;
-                    updateTimeField(edEventTimeEnd, hourEnd, minuteEnd);
+        TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minute) -> {
+            if (isStartTime) {
+                hourStart = hourOfDay;
+                minuteStart = minute;
+                updateTimeField(edEventTimeStart, hourStart, minuteStart);
+            } else {
+                if (hourOfDay < hourStart || (hourOfDay == hourStart && minute < minuteStart)) {
+                    tvEventError.setText("Время окончания должно быть позже времени начала.");
+                    return;
                 }
+                hourEnd = hourOfDay;
+                minuteEnd = minute;
+                updateTimeField(edEventTimeEnd, hourEnd, minuteEnd);
             }
         };
 
-        // Получаем текущее время
         Calendar cal = Calendar.getInstance();
         int currentHour = cal.get(Calendar.HOUR_OF_DAY);
         int currentMinute = cal.get(Calendar.MINUTE);
 
-        // Создаем диалог
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, listener, currentHour, currentMinute, true);
         timePickerDialog.show();
     }
 
-    /**
-     * Метод обновления полей времени
-     */
     private void updateTimeField(EditText textView, int hour, int minute) {
         String formattedHour = String.format("%02d", hour);
         String formattedMinute = String.format("%02d", minute);
         textView.setText(formattedHour + ":" + formattedMinute);
     }
 
-    /**
-     * Метод для валидации формы и отправки данных
-     */
     private void validateAndSubmitForm() {
         String eventName = edEventName.getText().toString().trim();
         String eventDate = edEventDate.getText().toString().trim();
@@ -213,24 +167,44 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         String eventLocation = edEventLocation.getText().toString().trim();
         String eventInfo = edEventInfo.getText().toString().trim();
 
+        String category = spinnerCategory.getSelectedItem().toString();
+        String level = spinnerLevel.getSelectedItem().toString();
+
         boolean hasErrors = false;
 
-        if (eventName.isEmpty() || eventDate.isEmpty() || eventTimeStart.isEmpty() || eventTimeEnd.isEmpty()
-                || eventLocation.isEmpty() || eventInfo.isEmpty()) {
+        if (eventName.isEmpty() || eventDate.isEmpty() || eventTimeStart.isEmpty() ||
+                eventTimeEnd.isEmpty() || eventLocation.isEmpty() || eventInfo.isEmpty()) {
             hasErrors = true;
         }
 
-        // Проверка, что время начала меньше времени окончания
         if (hourStart > hourEnd || (hourStart == hourEnd && minuteStart >= minuteEnd)) {
             tvEventError.setText("Время начала должно быть раньше времени окончания.");
             hasErrors = true;
         }
 
         if (hasErrors) {
-            tvEventError.setText("Заполните пожалуйста все поля");
+            tvEventError.setText("Заполните, пожалуйста, все поля.");
         } else {
             tvEventError.setText("");
-            // Здесь можно отправить данные куда-то дальше...
+
+            FirebaseApp.initializeApp(this);
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+
+            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd, eventLocation, eventInfo, category, level);
+
+            DatabaseReference eventsRef = databaseRef.child("events");
+
+            String key = eventsRef.push().getKey();
+
+            eventsRef.child(key).setValue(event)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(CreateEventActivity.this, HomeActivity.class));
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        tvEventError.setText("Ошибка при создании события: " + e.getMessage());
+                    });
         }
     }
 }
