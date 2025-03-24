@@ -234,6 +234,32 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Количество участников"
+                style="@style/TextNormal"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edEventNumberPlayers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:background="@drawable/shape_edittext"
+                android:hint="Введите количество участниклв"
+                style="@style/EditText"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Дополнительная информация"
                 style="@style/TextNormal"
                 android:textColor="@color/black"/>

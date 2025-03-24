@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_adapter_event_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvEventName"
+        style="@style/TitleNameEvent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Название" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvEventRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Роль"
+            style="@style/TextSmall"
+            android:textColor="@color/accent"/>
+
+        <TextView
+            android:id="@+id/tvEventCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Категория"
+            style="@style/TextSmall"
+            android:textColor="@color/secondary"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvEventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата"
+            style="@style/TextSmall"
+            android:textColor="@color/secondary"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tvEventLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Местоположение"
+            style="@style/TextSmall"
+            android:textColor="@color/secondary" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

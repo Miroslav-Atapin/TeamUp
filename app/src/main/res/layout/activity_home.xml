@@ -15,35 +15,24 @@
         android:orientation="horizontal"
         android:layout_marginTop="15dp"
         android:layout_marginHorizontal="20dp">
-        
-        <ImageView
-            android:id="@+id/imgAvatarHome"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:src="@drawable/ic_avatar"/>
 
         <TextView
             android:id="@+id/tvProfileName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Имя \nФамилия"
-            style="@style/TextNormal"
-            android:layout_marginLeft="15dp"/>
+            style="@style/TextNormal" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/ic_navigationarrow"
-            android:text="Балашов"
-            android:gravity="center"
-            style="@style/TextNormal"
-            android:textColor="@color/accent"
-            android:drawablePadding="5dp"/>
+        <ImageView
+            android:id="@+id/imgAvatarHome"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_avatar"/>
+
         
     </LinearLayout>
 
@@ -59,6 +48,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView"
                 style="@style/TitleNameGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +58,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvShowAll"
                 style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,22 +68,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Категории"
-            style="@style/TitleNameGroup"/>
         
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"/>
+
 
 
     </LinearLayout>

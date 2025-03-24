@@ -38,6 +38,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="TextEventSmall">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!--    Button  -->
 
     <style name="Btn">
