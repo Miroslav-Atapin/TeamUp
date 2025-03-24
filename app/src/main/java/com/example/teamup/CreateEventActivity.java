@@ -21,8 +21,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,7 +39,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private EditText edEventLocation;
     private Spinner spinnerCategory;
     private Spinner spinnerLevel;
-    private EditText edEventNumberPlayers;
     private EditText edEventInfo;
     private TextView tvEventError;
     private Button btnCreateEvent;
@@ -61,7 +59,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         edEventLocation = findViewById(R.id.edEventLocation);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerLevel = findViewById(R.id.spinnerLevel);
-        edEventNumberPlayers = findViewById(R.id.edEventNumberPlayers);
         edEventInfo = findViewById(R.id.edEventInfo);
         tvEventError = findViewById(R.id.tvEventError);
         btnCreateEvent = findViewById(R.id.btnCreateEvent);
@@ -168,7 +165,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         String eventTimeStart = edEventTimeStart.getText().toString().trim();
         String eventTimeEnd = edEventTimeEnd.getText().toString().trim();
         String eventLocation = edEventLocation.getText().toString().trim();
-        String eventNumberPlayers = edEventNumberPlayers.getText().toString().trim();
         String eventInfo = edEventInfo.getText().toString().trim();
 
         String category = spinnerCategory.getSelectedItem().toString();
@@ -191,31 +187,24 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         } else {
             tvEventError.setText("");
 
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (currentUser != null) {
-                String uid = currentUser.getUid(); // Получаем UID текущего пользователя
+            FirebaseApp.initializeApp(this);
+            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
-                Event event = new Event(uid, eventName, eventDate, eventTimeStart, eventTimeEnd,
-                        eventLocation, category, level, eventNumberPlayers, eventInfo);
+            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd, eventLocation, eventInfo, category, level);
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference eventsRef = database.getReference("events");
+            DatabaseReference eventsRef = databaseRef.child("events");
 
-                String key = eventsRef.push().getKey();
+            String key = eventsRef.push().getKey();
 
-                eventsRef.child(key).setValue(event)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(CreateEventActivity.this, HomeActivity.class));
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            tvEventError.setText("Ошибка при создании события: " + e.getMessage());
-                        });
-            } else {
-                // Обработка случая, если пользователь не авторизован
-                tvEventError.setText("Пожалуйста, войдите в систему, чтобы создать событие.");
-            }
+            eventsRef.child(key).setValue(event)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(CreateEventActivity.this, HomeActivity.class));
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        tvEventError.setText("Ошибка при создании события: " + e.getMessage());
+                    });
         }
     }
 }
