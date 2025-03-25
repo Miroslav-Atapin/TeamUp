@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы пользователям было легче ориентироваться."
+            android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы создать событие."
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             style="@style/TextNormal"
@@ -46,7 +46,7 @@
                 android:id="@+id/edEventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"
+                android:inputType="textCapSentences"
                 android:background="@drawable/shape_edittext"
                 android:hint="Название события"
                 style="@style/EditText"
@@ -223,6 +223,32 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Количество участников"
+                style="@style/TextNormal"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edEventParticipants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:background="@drawable/shape_edittext"
+                android:hint="Количество участников"
+                style="@style/EditText"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

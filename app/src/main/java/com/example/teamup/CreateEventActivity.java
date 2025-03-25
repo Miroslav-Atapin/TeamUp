@@ -21,9 +21,12 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -40,17 +43,26 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private Spinner spinnerCategory;
     private Spinner spinnerLevel;
     private EditText edEventInfo;
+    private EditText edEventParticipants; // Ссылка на EditText для участников
     private TextView tvEventError;
     private Button btnCreateEvent;
 
     private int hourStart, minuteStart;
     private int hourEnd, minuteEnd;
 
+    // Переменные для Firebase
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
+
+        // Инициализируем Firebase Auth и Database Reference
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         edEventName = findViewById(R.id.edEventName);
         edEventDate = findViewById(R.id.edEventDate);
@@ -60,6 +72,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerLevel = findViewById(R.id.spinnerLevel);
         edEventInfo = findViewById(R.id.edEventInfo);
+        edEventParticipants = findViewById(R.id.edEventParticipants); // Инициализация ссылки на поле участников
         tvEventError = findViewById(R.id.tvEventError);
         btnCreateEvent = findViewById(R.id.btnCreateEvent);
 
@@ -166,6 +179,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         String eventTimeEnd = edEventTimeEnd.getText().toString().trim();
         String eventLocation = edEventLocation.getText().toString().trim();
         String eventInfo = edEventInfo.getText().toString().trim();
+        String eventParticipants = edEventParticipants.getText().toString().trim(); // Получаем значение поля участников
 
         String category = spinnerCategory.getSelectedItem().toString();
         String level = spinnerLevel.getSelectedItem().toString();
@@ -173,7 +187,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         boolean hasErrors = false;
 
         if (eventName.isEmpty() || eventDate.isEmpty() || eventTimeStart.isEmpty() ||
-                eventTimeEnd.isEmpty() || eventLocation.isEmpty() || eventInfo.isEmpty()) {
+                eventTimeEnd.isEmpty() || eventLocation.isEmpty() || eventInfo.isEmpty() || eventParticipants.isEmpty()) {
             hasErrors = true;
         }
 
@@ -187,15 +201,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         } else {
             tvEventError.setText("");
 
-            FirebaseApp.initializeApp(this);
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+            // Получаем UID текущего пользователя
+            String creatorId = mAuth.getCurrentUser().getUid();
 
-            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd, eventLocation, eventInfo, category, level);
+            // Создаем объект Event с учетом новых полей
+            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd, eventLocation, eventInfo, category, level, creatorId, eventParticipants);
 
-            DatabaseReference eventsRef = databaseRef.child("events");
-
+            // Сохраняем событие в базу данных
+            DatabaseReference eventsRef = mDatabase.child("events");
             String key = eventsRef.push().getKey();
-
             eventsRef.child(key).setValue(event)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();

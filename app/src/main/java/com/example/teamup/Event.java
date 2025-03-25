@@ -9,11 +9,13 @@ public class Event {
     public String info;
     public String category;
     public String level;
+    public String creatorId;
+    public String participants;
 
-    public Event() {} // Необходимый конструктор для Firebase
+    public Event() {}
 
     public Event(String name, String date, String timeStart, String timeEnd,
-                 String location, String info, String category, String level) {
+                 String location, String info, String category, String level, String creatorId, String participants) {
         this.name = name;
         this.date = date;
         this.timeStart = timeStart;
@@ -22,5 +24,7 @@ public class Event {
         this.info = info;
         this.category = category;
         this.level = level;
+        this.creatorId = creatorId;
+        this.participants = participants;
     }
 }
