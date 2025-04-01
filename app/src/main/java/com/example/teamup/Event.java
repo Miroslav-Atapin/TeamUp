@@ -33,13 +33,6 @@ public class Event implements Serializable {
         this.level = level;
         this.creatorId = creatorId;
         this.participantsCount = participantsCount;
-        participantsList = new ArrayList<>();
-    }
-
-    public void addParticipant(String participant) {
-        if (!participantsList.contains(participant)) {
-            participantsList.add(participant);
-        }
     }
 
 }

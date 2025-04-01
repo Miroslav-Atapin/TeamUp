@@ -81,5 +81,15 @@ public class EventInfoActivity extends AppCompatActivity {
         tvEventLevel.setText(event.level);
         tvEventLocation.setText(event.location);
         tvEventInfo.setText(event.info);
+
+        int totalParticipants = Integer.parseInt(event.participantsCount);
+        int currentParticipants = event.participantsList.size();
+        int remainingSlots = totalParticipants - currentParticipants;
+        String participantsText = String.format(Locale.getDefault(), "%d/%d", currentParticipants, totalParticipants);
+        tvEventParticipants.setText(participantsText);
+
+
+
+
     }
 }

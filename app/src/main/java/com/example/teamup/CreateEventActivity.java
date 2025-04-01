@@ -227,9 +227,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd,
                     eventLocation, eventInfo, category, level, creatorId, eventParticipants);
 
-            // Добавляем создателя события в список участников
-            event.addParticipant(creatorId);
-
             DatabaseReference eventsRef = mDatabase.child("events");
             String key = eventsRef.push().getKey();
             eventsRef.child(key).setValue(event)
