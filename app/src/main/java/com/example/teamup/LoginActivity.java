@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                         finish();
                                     } else {
                                         Toast.makeText(getApplicationContext(), "Неправильный пароль. Попробуйте снова.", Toast.LENGTH_SHORT).show();

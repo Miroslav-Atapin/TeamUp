@@ -77,7 +77,7 @@ public class RegisterProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(getApplicationContext(), "Профиль успешно создан!", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(RegisterProfileActivity.this, HomeActivity.class));
+                                    startActivity(new Intent(RegisterProfileActivity.this, MainActivity.class));
                                     finish();
                                 }
                             });

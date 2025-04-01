@@ -1,7 +1,6 @@
 package com.example.teamup;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,19 +20,20 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "CreateEventActivity";
-    private Calendar calendar;
 
     private EditText edEventName;
     private EditText edEventDate;
@@ -43,7 +43,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private Spinner spinnerCategory;
     private Spinner spinnerLevel;
     private EditText edEventInfo;
-    private EditText edEventParticipants; // Ссылка на EditText для участников
+    private EditText edEventParticipants;
     private TextView tvEventError;
     private Button btnCreateEvent;
 
@@ -82,7 +82,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
 
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
-        imgbtnArrow.setOnClickListener(view -> startActivity(new Intent(CreateEventActivity.this, HomeActivity.class)));
+        imgbtnArrow.setOnClickListener(view -> startActivity(new Intent(CreateEventActivity.this, MainActivity.class)));
 
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvTitleHeader.setText("Создать событие");
@@ -114,25 +114,37 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     private void showDatePickerDialog(Context context) {
-        calendar = Calendar.getInstance();
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        Calendar calendar = Calendar.getInstance();
 
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        long today = MaterialDatePicker.todayInUtcMilliseconds();
 
-        DatePickerDialog dialog = new DatePickerDialog(
-                context,
-                this,
-                year, month, day
-        );
+        Calendar maxCalendar = Calendar.getInstance();
+        maxCalendar.add(Calendar.DATE, 7);
 
-        calendar.add(Calendar.DATE, 7);
-        dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        long maxDate = maxCalendar.getTimeInMillis();
 
-        calendar = Calendar.getInstance();
-        dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        builder.setSelection(today);
+        builder.setCalendarConstraints(new CalendarConstraints.Builder()
+                .setOpenAt(today)
+                .setValidator(DateValidatorPointForward.from(today))
+                .setEnd(maxDate)
+                .build());
 
-        dialog.show();
+        MaterialDatePicker<Long> picker = builder.build();
+        picker.addOnPositiveButtonClickListener(selection -> {
+            Calendar selectedCalendar = Calendar.getInstance();
+            selectedCalendar.setTimeInMillis(selection);
+
+            int year = selectedCalendar.get(Calendar.YEAR);
+            int month = selectedCalendar.get(Calendar.MONTH) + 1;  // Месяц начинается с 0
+            int day = selectedCalendar.get(Calendar.DAY_OF_MONTH);
+
+            String selectedDate = String.format("%02d.%02d.%04d", day, month, year);
+            edEventDate.setText(selectedDate);
+        });
+
+        picker.show(getSupportFragmentManager(), picker.toString());
     }
 
     @Override
@@ -142,28 +154,37 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     private void showTimePickerDialog(Context context, boolean isStartTime) {
-        TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minute) -> {
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+
+        MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(currentHour)
+                .setMinute(currentMinute)
+                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)  // Здесь включаем циферблат
+                .build();
+
+        timePicker.addOnPositiveButtonClickListener(v -> {
+            int selectedHour = timePicker.getHour();
+            int selectedMinute = timePicker.getMinute();
+
             if (isStartTime) {
-                hourStart = hourOfDay;
-                minuteStart = minute;
+                hourStart = selectedHour;
+                minuteStart = selectedMinute;
                 updateTimeField(edEventTimeStart, hourStart, minuteStart);
             } else {
-                if (hourOfDay < hourStart || (hourOfDay == hourStart && minute < minuteStart)) {
+                if (selectedHour < hourStart || (selectedHour == hourStart && selectedMinute < minuteStart)) {
                     tvEventError.setText("Время окончания должно быть позже времени начала.");
                     return;
                 }
-                hourEnd = hourOfDay;
-                minuteEnd = minute;
+                hourEnd = selectedHour;
+                minuteEnd = selectedMinute;
                 updateTimeField(edEventTimeEnd, hourEnd, minuteEnd);
             }
-        };
+        });
 
-        Calendar cal = Calendar.getInstance();
-        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = cal.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, listener, currentHour, currentMinute, true);
-        timePickerDialog.show();
+        timePicker.show(getSupportFragmentManager(), timePicker.toString());
     }
 
     private void updateTimeField(EditText textView, int hour, int minute) {
@@ -179,7 +200,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         String eventTimeEnd = edEventTimeEnd.getText().toString().trim();
         String eventLocation = edEventLocation.getText().toString().trim();
         String eventInfo = edEventInfo.getText().toString().trim();
-        String eventParticipants = edEventParticipants.getText().toString().trim(); // Получаем значение поля участников
+        String eventParticipants = edEventParticipants.getText().toString().trim();
 
         String category = spinnerCategory.getSelectedItem().toString();
         String level = spinnerLevel.getSelectedItem().toString();
@@ -201,19 +222,20 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         } else {
             tvEventError.setText("");
 
-            // Получаем UID текущего пользователя
             String creatorId = mAuth.getCurrentUser().getUid();
 
-            // Создаем объект Event с учетом новых полей
-            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd, eventLocation, eventInfo, category, level, creatorId, eventParticipants);
+            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd,
+                    eventLocation, eventInfo, category, level, creatorId, eventParticipants);
 
-            // Сохраняем событие в базу данных
+            // Добавляем создателя события в список участников
+            event.addParticipant(creatorId);
+
             DatabaseReference eventsRef = mDatabase.child("events");
             String key = eventsRef.push().getKey();
             eventsRef.child(key).setValue(event)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CreateEventActivity.this, HomeActivity.class));
+                        startActivity(new Intent(CreateEventActivity.this, MainActivity.class));
                         finish();
                     })
                     .addOnFailureListener(e -> {

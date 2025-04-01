@@ -15,11 +15,18 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
 
     private Context context;
     private List<Event> eventList;
+    private OnItemClickListener listener;
 
-    // Конструктор адаптера
-    public AdapterEventOption1(Context context, List<Event> eventList) {
+    // Интерфейс для обработки кликов на элементы
+    public interface OnItemClickListener {
+        void onItemClick(Event event, int position);
+    }
+
+    // Конструктор адаптера с новым интерфейсом
+    public AdapterEventOption1(Context context, List<Event> eventList, OnItemClickListener listener) {
         this.context = context;
         this.eventList = eventList;
+        this.listener = listener;
     }
 
     public void updateEventList(List<Event> eventList) {
@@ -46,6 +53,13 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
         holder.tvEventCategory.setText(currentEvent.category);
         holder.tvEventLevel.setText(currentEvent.level);
         holder.tvEventLocation.setText(currentEvent.location);
+
+        // Добавление слушателя кликов на весь элемент списка
+        holder.itemView.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onItemClick(currentEvent, position); // Передача Event и позиции
+            }
+        });
     }
 
     @Override

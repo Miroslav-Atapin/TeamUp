@@ -1,6 +1,10 @@
 package com.example.teamup;
 
-public class Event {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Event implements Serializable {
     public String name;
     public String date;
     public String timeStart;
@@ -10,12 +14,15 @@ public class Event {
     public String category;
     public String level;
     public String creatorId;
-    public String participants;
+    public String participantsCount;
+    public List<String> participantsList;
 
-    public Event() {}
+    public Event() {
+        participantsList = new ArrayList<>();
+    }
 
     public Event(String name, String date, String timeStart, String timeEnd,
-                 String location, String info, String category, String level, String creatorId, String participants) {
+                 String location, String info, String category, String level, String creatorId, String participantsCount) {
         this.name = name;
         this.date = date;
         this.timeStart = timeStart;
@@ -25,6 +32,14 @@ public class Event {
         this.category = category;
         this.level = level;
         this.creatorId = creatorId;
-        this.participants = participants;
+        this.participantsCount = participantsCount;
+        participantsList = new ArrayList<>();
     }
+
+    public void addParticipant(String participant) {
+        if (!participantsList.contains(participant)) {
+            participantsList.add(participant);
+        }
+    }
+
 }

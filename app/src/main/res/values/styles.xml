@@ -48,8 +48,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
     </style>
 
     <style name="BtnLight">
@@ -62,8 +62,19 @@
         <item name="android:textColor">@color/accent</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="BtnAction">
+        <item name="backgroundTint">#F6F8FA</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
     </style>
 
     <!--    EditText  -->
