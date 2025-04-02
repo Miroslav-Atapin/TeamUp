@@ -1,7 +1,10 @@
 package com.example.teamup;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +79,8 @@ public class YouEventsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event event = snapshot.getValue(Event.class);
 
-                    if (event.participantsList.contains(userId)) {
+                    // Проверяем, является ли пользователь участником или организатором события
+                    if (event.participants.containsKey(userId) || event.creatorId.equals(userId)) {
                         eventList.add(event);
                     }
                 }
@@ -89,7 +93,7 @@ public class YouEventsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("Failed to read value." + error.toException());
+                Log.e(TAG, "Failed to read value.", error.toException());
             }
         };
 

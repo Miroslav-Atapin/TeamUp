@@ -1,6 +1,7 @@
 package com.example.teamup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,12 @@ public class AdapterEventOption2 extends RecyclerView.Adapter<AdapterEventOption
         }
 
         holder.tvEventLocation.setText(currentEvent.location);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EventInfoActivity.class);
+            intent.putExtra("EVENT_DATA", currentEvent); // Передаём объект Event через Intent
+            context.startActivity(intent);
+        });
     }
 
     @Override

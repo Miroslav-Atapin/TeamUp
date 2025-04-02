@@ -79,10 +79,14 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Event> eventList = new ArrayList<>();
+                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Event event = child.getValue(Event.class);
 
-                    if (!event.creatorId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    // Проверка, что пользователь не является создателем и не зарегистрирован как участник
+                    if (!event.creatorId.equals(currentUserId)
+                            && !event.isParticipant(currentUserId)) { // isParticipant — метод из класса Event
                         eventList.add(event);
                     }
                 }
@@ -100,7 +104,7 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
     public void onItemClick(Event event, int position) {
         // Обрабатываем выбор события
         Intent intent = new Intent(getContext(), EventInfoActivity.class);
-        intent.putExtra("EVENT_DATA", event);
+        intent.putExtra("EVENT_DATA", event); // Передаем объект Event
         startActivity(intent);
     }
 

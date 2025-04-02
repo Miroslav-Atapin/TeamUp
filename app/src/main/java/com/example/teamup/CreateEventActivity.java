@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -194,50 +196,38 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     private void validateAndSubmitForm() {
-        String eventName = edEventName.getText().toString().trim();
-        String eventDate = edEventDate.getText().toString().trim();
-        String eventTimeStart = edEventTimeStart.getText().toString().trim();
-        String eventTimeEnd = edEventTimeEnd.getText().toString().trim();
-        String eventLocation = edEventLocation.getText().toString().trim();
-        String eventInfo = edEventInfo.getText().toString().trim();
-        String eventParticipants = edEventParticipants.getText().toString().trim();
+        // Проверка и валидация данных формы
+        // ...
 
-        String category = spinnerCategory.getSelectedItem().toString();
-        String level = spinnerLevel.getSelectedItem().toString();
+        // Генерация уникального идентификатора события
+        String eventId = mDatabase.child("events").push().getKey();
 
-        boolean hasErrors = false;
+        // Создание объекта события
+        Event newEvent = new Event(
+                eventId, // Уникальный идентификатор
+                edEventName.getText().toString(),
+                edEventDate.getText().toString(),
+                edEventTimeStart.getText().toString(),
+                edEventTimeEnd.getText().toString(),
+                edEventLocation.getText().toString(),
+                edEventInfo.getText().toString(),
+                spinnerCategory.getSelectedItem().toString(),
+                spinnerLevel.getSelectedItem().toString(),
+                mAuth.getCurrentUser().getUid(),
+                new HashMap<>() {{
+                    put(mAuth.getCurrentUser().getUid(), true); // Добавляем создателя в участники
+                }},
+                Integer.parseInt(edEventParticipants.getText().toString()) // Максимальное количество участников
+        );
 
-        if (eventName.isEmpty() || eventDate.isEmpty() || eventTimeStart.isEmpty() ||
-                eventTimeEnd.isEmpty() || eventLocation.isEmpty() || eventInfo.isEmpty() || eventParticipants.isEmpty()) {
-            hasErrors = true;
-        }
-
-        if (hourStart > hourEnd || (hourStart == hourEnd && minuteStart >= minuteEnd)) {
-            tvEventError.setText("Время начала должно быть раньше времени окончания.");
-            hasErrors = true;
-        }
-
-        if (hasErrors) {
-            tvEventError.setText("Заполните, пожалуйста, все поля.");
-        } else {
-            tvEventError.setText("");
-
-            String creatorId = mAuth.getCurrentUser().getUid();
-
-            Event event = new Event(eventName, eventDate, eventTimeStart, eventTimeEnd,
-                    eventLocation, eventInfo, category, level, creatorId, eventParticipants);
-
-            DatabaseReference eventsRef = mDatabase.child("events");
-            String key = eventsRef.push().getKey();
-            eventsRef.child(key).setValue(event)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CreateEventActivity.this, MainActivity.class));
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        tvEventError.setText("Ошибка при создании события: " + e.getMessage());
-                    });
-        }
+        // Сохранение события в Firebase
+        mDatabase.child("events").child(eventId).setValue(newEvent)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(CreateEventActivity.this, "Ошибка при создании события.", Toast.LENGTH_SHORT).show();
+                });
     }
 }

@@ -1,10 +1,11 @@
 package com.example.teamup;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Event implements Serializable {
+    public String id; // Уникальный идентификатор события
     public String name;
     public String date;
     public String timeStart;
@@ -14,15 +15,16 @@ public class Event implements Serializable {
     public String category;
     public String level;
     public String creatorId;
-    public String participantsCount;
-    public List<String> participantsList;
+    public Map<String, Boolean> participants; // Используем Map для участников
+    public int maxParticipants; // Максимальное количество участников
 
     public Event() {
-        participantsList = new ArrayList<>();
+        participants = new HashMap<>(); // Инициализируем пустой Map
     }
 
-    public Event(String name, String date, String timeStart, String timeEnd,
-                 String location, String info, String category, String level, String creatorId, String participantsCount) {
+    public Event(String id, String name, String date, String timeStart, String timeEnd,
+                 String location, String info, String category, String level, String creatorId, Map<String, Boolean> participants, int maxParticipants) {
+        this.id = id;
         this.name = name;
         this.date = date;
         this.timeStart = timeStart;
@@ -32,7 +34,34 @@ public class Event implements Serializable {
         this.category = category;
         this.level = level;
         this.creatorId = creatorId;
-        this.participantsCount = participantsCount;
+        this.participants = participants != null ? participants : new HashMap<>();
+        this.maxParticipants = maxParticipants;
     }
 
+    // Добавим методы для управления участниками
+    public void addParticipant(String participantId) {
+        participants.put(participantId, true);
+    }
+
+    public void removeParticipant(String participantId) {
+        participants.remove(participantId);
+    }
+
+    public boolean isParticipant(String participantId) {
+        return participants.containsKey(participantId);
+    }
+
+    public int getNumberOfParticipants() {
+        return participants.size();
+    }
+
+    // Метод для проверки доступности мест
+    public boolean hasAvailableSlots() {
+        return getNumberOfParticipants() < maxParticipants;
+    }
+
+    // Метод для получения количества свободных мест
+    public int getAvailableSlots() {
+        return maxParticipants - getNumberOfParticipants();
+    }
 }

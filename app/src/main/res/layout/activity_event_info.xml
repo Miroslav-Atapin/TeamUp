@@ -185,17 +185,11 @@
                 style="@style/TextNormal"
                 android:textColor="@color/accent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextNormal"
-                android:textColor="@color/black"
-                android:text="Мест"/>
 
         </LinearLayout>
         
         <Button
-            android:id="@+id/btnSignUpEvent"
+            android:id="@+id/btnJoinEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Btn"
