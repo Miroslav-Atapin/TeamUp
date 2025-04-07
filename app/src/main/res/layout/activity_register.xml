@@ -36,15 +36,57 @@
             style="@style/EditText"
             android:layout_marginTop="10dp"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+
         <TextView
-            android:id="@+id/tvErrorEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="14sp"
-            android:textColor="#ff3333"
-            android:text=""
-            android:layout_marginTop="5dp"/>
+            android:text="Фамилия"
+            style="@style/TextNormal"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_edittext"
+            android:inputType="textCapWords"
+            android:hint="Ваша фамилия"
+            style="@style/EditText"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имя"
+            style="@style/TextNormal"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/edFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_edittext"
+            android:inputType="textCapWords"
+            android:hint="Ваше имя"
+            style="@style/EditText"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
@@ -72,25 +114,24 @@
             style="@style/EditText"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/tvErrorPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="14sp"
-            android:textColor="#ff3333"
-            android:text=""
-            android:layout_marginTop="5dp"/>
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRegisterError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextSmall"
+        android:textColor="#ff3333"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"/>
 
 
     <Button
-        android:id="@+id/btnGoToRegisterProfile"
+        android:id="@+id/btnCreateProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Btn"
-        android:text="Продолжить"
+        android:text="Создать аккаунт"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="50dp"/>
 
@@ -99,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="Войти в аккаунт"
         android:textAlignment="center"
         style="@style/TextNormal"

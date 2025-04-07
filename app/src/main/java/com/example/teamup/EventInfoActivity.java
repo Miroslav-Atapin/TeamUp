@@ -1,5 +1,6 @@
 package com.example.teamup;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,8 +9,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +37,11 @@ public class EventInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_info);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Инициализация элементов UI
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
@@ -100,8 +111,13 @@ public class EventInfoActivity extends AppCompatActivity {
 
         // Проверяем, записан ли пользователь на событие
         if (event.isParticipant(currentUserId)) {
-            btnJoinEvent.setText("Вы участвуете");
-            btnJoinEvent.setEnabled(false);
+            btnJoinEvent.setText("Отписаться");
+            btnJoinEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showUnsubscribeDialog(event);
+                }
+            });
         } else if (!event.hasAvailableSlots()) {
             btnJoinEvent.setText("Нет свободных мест");
             btnJoinEvent.setEnabled(false);
@@ -116,8 +132,47 @@ public class EventInfoActivity extends AppCompatActivity {
         }
 
         // Вывод количества свободных мест
-        tvEventParticipants.setText("Свободных мест: " + event.getAvailableSlots());
+        tvEventParticipants.setText("Мест: " + event.getAvailableSlots());
     }
+
+    private void showUnsubscribeDialog(Event event) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setMessage("Вы уверены, что хотите отписаться от события?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        unsubscribeEvent(event);
+                    }
+                })
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
+
+
+    private void unsubscribeEvent(Event event) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Удаляем текущего пользователя из списка участников
+        dbRef.child("events").child(event.id).child("participants").child(currentUserId).removeValue();
+
+        // Уведомление об успешном отписании
+        Toast.makeText(this, "Вы успешно отписались от события!", Toast.LENGTH_SHORT).show();
+
+        // Обновляем интерфейс после отписания
+        btnJoinEvent.setText("Записаться на событие");
+        btnJoinEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                joinEvent(event);
+            }
+        });
+    }
+
+
 
     private void joinEvent(Event event) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

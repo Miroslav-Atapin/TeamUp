@@ -45,8 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLoginAccount = findViewById(R.id.btnLoginAccount);
         EditText edEmail = findViewById(R.id.edEmail);
         EditText edPassword = findViewById(R.id.edPassword);
-        TextView tvErrorEmail = findViewById(R.id.tvErrorEmail);
-        TextView tvErrorPassword = findViewById(R.id.tvErrorPassword);
+        TextView tvLoginError = findViewById(R.id.tvLoginError);
 
         imgbtnArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,21 +70,16 @@ public class LoginActivity extends AppCompatActivity {
                 String password = edPassword.getText().toString();
                 boolean hasErrors = false;
 
-                tvErrorEmail.setText("");
-                tvErrorPassword.setText("");
 
                 if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Заполните, пожалуйста, все поля.", Toast.LENGTH_LONG).show();
                     hasErrors = true;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    tvErrorEmail.setText("Проверьте правильность email.");
                     hasErrors = true;
                 }
 
                 if (password.length() < 8) {
-                    tvErrorPassword.setText("Пароль должен содержать минимум 8 символов.");
                     hasErrors = true;
                 }
 
@@ -102,6 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                }
+                else {
+                    tvLoginError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
                 }
             }
         });

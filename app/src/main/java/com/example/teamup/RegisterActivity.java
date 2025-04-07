@@ -42,12 +42,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
-        TextView tvGoToLogin= findViewById(R.id.tvGoToLogin);
-        Button btnGoToRegisterProfile = findViewById(R.id.btnGoToRegisterProfile);
+        TextView tvGoToLogin = findViewById(R.id.tvGoToLogin);
+        Button btnCreateProfile = findViewById(R.id.btnCreateProfile);
         EditText edEmail = findViewById(R.id.edEmail);
         EditText edPassword = findViewById(R.id.edPassword);
-        TextView tvErrorEmail = findViewById(R.id.tvErrorEmail);
-        TextView tvErrorPassword = findViewById(R.id.tvErrorPassword);
+        TextView tvRegisterError = findViewById(R.id.tvRegisterError);
+        EditText edFirstName = findViewById(R.id.edFirstName);
+        EditText edLastName = findViewById(R.id.edLastName);
 
         imgbtnArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,29 +66,25 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        btnGoToRegisterProfile.setOnClickListener(new View.OnClickListener() {
+        btnCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = edEmail.getText().toString();
                 String password = edPassword.getText().toString();
-
-                tvErrorEmail.setText("");
-                tvErrorPassword.setText("");
+                String firstName = edFirstName.getText().toString();
+                String lastName = edLastName.getText().toString();
 
                 boolean hasErrors = false;
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Заполните, пожалуйста, все поля.", Toast.LENGTH_LONG).show();
+                if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
                     hasErrors = true;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    tvErrorEmail.setText("Проверьте правильность email.");
                     hasErrors = true;
                 }
 
                 if (password.length() < 8) {
-                    tvErrorPassword.setText("Пароль должен содержать минимум 8 символов.");
                     hasErrors = true;
                 }
 
@@ -99,16 +96,23 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         HashMap<String, String> userInfo = new HashMap<>();
                                         userInfo.put("email", email);
+                                        userInfo.put("FirstName", firstName);
+                                        userInfo.put("LastName", lastName);
+
                                         FirebaseDatabase.getInstance().getReference().child("Users")
                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .setValue(userInfo);
-                                        startActivity(new Intent(RegisterActivity.this, RegisterProfileActivity.class));
+
+                                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                    } else {
+                                        tvRegisterError.setText("Ошибка регистрации. Попробуйте снова.");
                                     }
                                 }
                             });
+                } else {
+                    tvRegisterError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
                 }
             }
         });
-
     }
 }

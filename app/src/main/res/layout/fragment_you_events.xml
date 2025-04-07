@@ -52,13 +52,11 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnGoToCreateEvent"
-        style="@style/ShapeAppearance.Material3.Tooltip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Создать событие"
         android:textColor="@color/black"
         app:icon="@drawable/ic_plus"
-        android:backgroundTint="#E5F1FF"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="20dp"/>

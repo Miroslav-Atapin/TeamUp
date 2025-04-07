@@ -1,5 +1,6 @@
 package com.example.teamup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +49,6 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        // Проверяем наличие FirstName и LastName
                         String firstName = dataSnapshot.child("FirstName").getValue(String.class);
                         String lastName = dataSnapshot.child("LastName").getValue(String.class);
 
@@ -72,9 +73,19 @@ public class ProfileFragment extends Fragment {
         btnLogOutAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth.signOut();
-                startActivity(new Intent(getContext(), StartActivity.class));
-                getActivity().finish();
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("Выход из аккаунта")
+                        .setMessage("Вы уверены, что хотите выйти из аккаунта?")
+                        .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAuth.signOut();
+                                startActivity(new Intent(getContext(), StartActivity.class));
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton("Нет", null)
+                        .show();
             }
         });
 

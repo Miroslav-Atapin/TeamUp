@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,32 +35,28 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, StartActivity.class));
         }
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
+        ChipNavigationBar chipNavigationBar = findViewById(R.id.chipNavigationBar);
+        chipNavigationBar.setItemSelected(R.id.navHome, true);
         loadFragment(new HomeFragment());
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if (item.getItemId() == R.id.navHome){
+            public void onItemSelected(int i) {
+                if (i == R.id.navHome) {
                     loadFragment(new HomeFragment());
-                    return true;
-                } else if (item.getItemId() == R.id.navTicket) {
+                } else if (i == R.id.navTicket) {
                     loadFragment(new YouEventsFragment());
-                } else if (item.getItemId() == R.id.navProfile) {
+                } else if (i == R.id.navProfile) {
                     loadFragment(new ProfileFragment());
                 }
-
-                return true;
-
             }
         });
+
+
+
 
     }
 
     private void loadFragment(Fragment fragment){
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);

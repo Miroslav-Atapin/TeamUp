@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".HomeFragment">
 
@@ -26,17 +27,6 @@
                 android:text=""
                 style="@style/TitleHeader" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:id="@+id/imgAvatarHome"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:src="@drawable/ic_avatar"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -47,8 +37,27 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Все события"
+                style="@style/TextNormal"
+                android:textColor="@color/black"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/imgbtnFilter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_filter"
+                    android:background="@drawable/shape_filter_background"/>
 
             </LinearLayout>
 
@@ -57,6 +66,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tvNoEventsMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                style="@style/TextNormal"
+                android:textColor="@color/black"
+                android:text="На эту дату нет событий."/>
 
         </LinearLayout>
 

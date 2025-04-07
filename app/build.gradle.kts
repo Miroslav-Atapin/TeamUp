@@ -49,4 +49,6 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    implementation ("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
 }

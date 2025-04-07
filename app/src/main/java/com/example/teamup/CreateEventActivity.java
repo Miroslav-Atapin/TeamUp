@@ -122,7 +122,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         long today = MaterialDatePicker.todayInUtcMilliseconds();
 
         Calendar maxCalendar = Calendar.getInstance();
-        maxCalendar.add(Calendar.DATE, 7);
+        maxCalendar.add(Calendar.DATE, 5);  // Изменено с 7 на 5
 
         long maxDate = maxCalendar.getTimeInMillis();
 
@@ -148,6 +148,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         picker.show(getSupportFragmentManager(), picker.toString());
     }
+
+
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

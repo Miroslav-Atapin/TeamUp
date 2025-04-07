@@ -36,16 +36,6 @@
             style="@style/EditText"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/tvErrorEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="14sp"
-            android:textColor="#ff3333"
-            android:text=""
-            android:layout_marginTop="5dp"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -72,18 +62,16 @@
             style="@style/EditText"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/tvErrorPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="14sp"
-            android:textColor="#ff3333"
-            android:text=""
-            android:layout_marginTop="5dp"/>
-
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvLoginError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextSmall"
+        android:textColor="#ff3333"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"/>
 
     <Button
         android:id="@+id/btnLoginAccount"
@@ -99,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="Создать аккаунт"
         android:textAlignment="center"
         style="@style/TextNormal"
