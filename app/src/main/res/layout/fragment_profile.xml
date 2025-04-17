@@ -19,8 +19,7 @@
             android:text="Ваш профиль"
             style="@style/TitleHeader"
             android:textAlignment="center"/>
-        
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

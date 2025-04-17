@@ -30,9 +30,9 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     }
 
     public void updateEventList(List<Event> eventList) {
-        this.eventList.clear();
-        this.eventList.addAll(eventList);
-        notifyDataSetChanged();
+        this.eventList.clear(); // Очищаем предыдущий список
+        this.eventList.addAll(eventList); // Заполняем новым списком
+        notifyDataSetChanged(); // Оповещаем адаптер о изменении данных
     }
 
     @NonNull
@@ -65,6 +65,10 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     @Override
     public int getItemCount() {
         return eventList.size();
+    }
+
+    public List<Event> getEventList() {
+        return eventList;
     }
 
     // Внутренний класс для хранения элементов представления

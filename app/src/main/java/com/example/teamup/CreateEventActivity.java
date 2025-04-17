@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -31,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -52,7 +52,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private int hourStart, minuteStart;
     private int hourEnd, minuteEnd;
 
-    // Переменные для Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -62,7 +61,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
 
-        // Инициализируем Firebase Auth и Database Reference
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -74,7 +72,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerLevel = findViewById(R.id.spinnerLevel);
         edEventInfo = findViewById(R.id.edEventInfo);
-        edEventParticipants = findViewById(R.id.edEventParticipants); // Инициализация ссылки на поле участников
+        edEventParticipants = findViewById(R.id.edEventParticipants);
         tvEventError = findViewById(R.id.tvEventError);
         btnCreateEvent = findViewById(R.id.btnCreateEvent);
 
@@ -84,7 +82,13 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
 
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
-        imgbtnArrow.setOnClickListener(view -> startActivity(new Intent(CreateEventActivity.this, MainActivity.class)));
+        imgbtnArrow.setOnClickListener(view -> {
+            if (!areFieldsEmpty()) {
+                showExitConfirmationDialog();
+            } else {
+                startActivity(new Intent(CreateEventActivity.this, MainActivity.class));
+            }
+        });
 
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvTitleHeader.setText("Создать событие");
@@ -122,7 +126,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         long today = MaterialDatePicker.todayInUtcMilliseconds();
 
         Calendar maxCalendar = Calendar.getInstance();
-        maxCalendar.add(Calendar.DATE, 5);  // Изменено с 7 на 5
+        maxCalendar.add(Calendar.DATE, 7); // Ограничиваем на следующие 7 дней
 
         long maxDate = maxCalendar.getTimeInMillis();
 
@@ -139,7 +143,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             selectedCalendar.setTimeInMillis(selection);
 
             int year = selectedCalendar.get(Calendar.YEAR);
-            int month = selectedCalendar.get(Calendar.MONTH) + 1;  // Месяц начинается с 0
+            int month = selectedCalendar.get(Calendar.MONTH) + 1;
             int day = selectedCalendar.get(Calendar.DAY_OF_MONTH);
 
             String selectedDate = String.format("%02d.%02d.%04d", day, month, year);
@@ -148,8 +152,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         picker.show(getSupportFragmentManager(), picker.toString());
     }
-
-
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -166,7 +168,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setHour(currentHour)
                 .setMinute(currentMinute)
-                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)  // Здесь включаем циферблат
+                .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                 .build();
 
         timePicker.addOnPositiveButtonClickListener(v -> {
@@ -198,31 +200,63 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     private void validateAndSubmitForm() {
-        // Проверка и валидация данных формы
-        // ...
+        // Получение значений полей
+        String eventName = edEventName.getText().toString().trim();
+        String eventDate = edEventDate.getText().toString().trim();
+        String eventTimeStart = edEventTimeStart.getText().toString().trim();
+        String eventTimeEnd = edEventTimeEnd.getText().toString().trim();
+        String eventLocation = edEventLocation.getText().toString().trim();
+        String eventInfo = edEventInfo.getText().toString().trim();
+        String eventParticipantsStr = edEventParticipants.getText().toString().trim();
 
-        // Генерация уникального идентификатора события
+        // Переменная для хранения количества участников должна быть доступна за пределами try/catch
+        int participantsCount = 0;
+
+        // Проверка обязательных полей (одна общая проверка)
+        if (eventName.isEmpty() ||
+                eventDate.isEmpty() ||
+                eventTimeStart.isEmpty() ||
+                eventTimeEnd.isEmpty() ||
+                eventLocation.isEmpty() ||
+                eventParticipantsStr.isEmpty()) {
+            tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+            return;
+        }
+
+        // Проверка числа участников отдельно
+        try {
+            participantsCount = Integer.parseInt(eventParticipantsStr);
+
+            if (participantsCount <= 0) {
+                tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+            return;
+        }
+
+        // Все проверки пройдены, создаём объект Event
         String eventId = mDatabase.child("events").push().getKey();
 
-        // Создание объекта события
         Event newEvent = new Event(
-                eventId, // Уникальный идентификатор
-                edEventName.getText().toString(),
-                edEventDate.getText().toString(),
-                edEventTimeStart.getText().toString(),
-                edEventTimeEnd.getText().toString(),
-                edEventLocation.getText().toString(),
-                edEventInfo.getText().toString(),
+                eventId,
+                eventName,
+                eventDate,
+                eventTimeStart,
+                eventTimeEnd,
+                eventLocation,
+                eventInfo,
                 spinnerCategory.getSelectedItem().toString(),
                 spinnerLevel.getSelectedItem().toString(),
                 mAuth.getCurrentUser().getUid(),
                 new HashMap<>() {{
-                    put(mAuth.getCurrentUser().getUid(), true); // Добавляем создателя в участники
+                    put(mAuth.getCurrentUser().getUid(), true); // Автор события является участником
                 }},
-                Integer.parseInt(edEventParticipants.getText().toString()) // Максимальное количество участников
+                participantsCount
         );
 
-        // Сохранение события в Firebase
+        // Сохраняем событие в Firebase
         mDatabase.child("events").child(eventId).setValue(newEvent)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(CreateEventActivity.this, "Событие успешно создано!", Toast.LENGTH_SHORT).show();
@@ -231,5 +265,38 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 .addOnFailureListener(e -> {
                     Toast.makeText(CreateEventActivity.this, "Ошибка при создании события.", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    // Переопределён метод back press, чтобы предупредить пользователя о потере данных
+    @Override
+    public void onBackPressed() {
+        if (!areFieldsEmpty()) {
+            showExitConfirmationDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    // Метод показывает диалог подтверждения выхода
+    private void showExitConfirmationDialog() {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Подтверждение")
+                .setMessage("Вы действительно хотите выйти?\nВаши данные не будут сохранены.")
+                .setNegativeButton("Отмена", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Выход", (dialogInterface, i) -> {
+                    finish(); // Закрываем активность
+                }).create().show();
+    }
+
+    // Вспомогательный метод, проверяющий наличие заполненных полей
+    private boolean areFieldsEmpty() {
+        return (
+                edEventName.getText().toString().trim().isEmpty() &&
+                        edEventDate.getText().toString().trim().isEmpty() &&
+                        edEventTimeStart.getText().toString().trim().isEmpty() &&
+                        edEventTimeEnd.getText().toString().trim().isEmpty() &&
+                        edEventLocation.getText().toString().trim().isEmpty() &&
+                        edEventParticipants.getText().toString().trim().isEmpty()
+        );
     }
 }

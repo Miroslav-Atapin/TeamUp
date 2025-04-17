@@ -38,7 +38,6 @@ public class Event implements Serializable {
         this.maxParticipants = maxParticipants;
     }
 
-    // Добавим методы для управления участниками
     public void addParticipant(String participantId) {
         participants.put(participantId, true);
     }
@@ -55,13 +54,20 @@ public class Event implements Serializable {
         return participants.size();
     }
 
-    // Метод для проверки доступности мест
     public boolean hasAvailableSlots() {
         return getNumberOfParticipants() < maxParticipants;
     }
 
-    // Метод для получения количества свободных мест
     public int getAvailableSlots() {
         return maxParticipants - getNumberOfParticipants();
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 }
