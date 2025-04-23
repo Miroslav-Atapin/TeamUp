@@ -1,15 +1,16 @@
 package com.example.teamup;
 
-import android.content.DialogInterface;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,7 +29,7 @@ import java.util.Locale;
 public class EventInfoActivity extends AppCompatActivity {
 
     private Event event;
-    private TextView tvEventTitle, tvEventDate, tvEventTime, tvEventLevel, tvEventLocation, tvEventInfo, tvEventParticipants;
+    private TextView tvEventTitle, tvEventCategory, tvEventLevel, tvEventDate, tvEventLocation, tvEventInfo, tvEventParticipants;
     private Button btnJoinEvent;
     private DatabaseReference dbRef;
 
@@ -37,31 +38,43 @@ public class EventInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_info);
+        getWindow().setStatusBarColor(getResources().getColor(android.R.color.white));
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Инициализация элементов UI
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
+        ImageButton imgbtnShareHeader = findViewById(R.id.imgbtnShareHeader);
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvEventTitle = findViewById(R.id.tvEventTitle);
-        tvEventDate = findViewById(R.id.tvEventDate);
-        tvEventTime = findViewById(R.id.tvEventTime);
+        tvEventCategory = findViewById(R.id.tvEventCategory);
         tvEventLevel = findViewById(R.id.tvEventLevel);
+        tvEventDate = findViewById(R.id.tvEventDate);
         tvEventLocation = findViewById(R.id.tvEventLocation);
         tvEventInfo = findViewById(R.id.tvEventInfo);
         tvEventParticipants = findViewById(R.id.tvEventParticipants);
         btnJoinEvent = findViewById(R.id.btnJoinEvent);
 
-        // Настройка стрелки назад
         imgbtnArrow.setOnClickListener(view -> finish());
-
-        // Заголовок активности
         tvTitleHeader.setText("О событии");
 
-        // Получение данных о событии из интента
+        imgbtnShareHeader.setOnClickListener(view -> {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setTitle("Поделиться событием")
+                    .setMessage("Если вы хотите поделиться событием, скопируйте ID события " + event.id + " и отправьте друзьям.")
+                    .setPositiveButton("Скопировать код", (dialog, id) -> {
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("event_id", event.id);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(this, "ID события скопировано в буфер обмена", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Отмена", (dialog, id) -> dialog.dismiss())
+                    .create()
+                    .show();
+        });
+
         event = (Event) getIntent().getSerializableExtra("EVENT_DATA");
         if (event == null) {
             Toast.makeText(this, "Ошибка: событие не найдено.", Toast.LENGTH_SHORT).show();
@@ -69,122 +82,98 @@ public class EventInfoActivity extends AppCompatActivity {
             return;
         }
 
-        // Отображаем информацию о событии
         displayEventDetails(event);
 
-        // Кнопка для участия в событии
         setupJoinButton(event);
     }
 
     private void displayEventDetails(Event event) {
-        // Форматирование даты
-        SimpleDateFormat inputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        Date date = null;
         try {
-            date = inputFormat.parse(event.date);
+            Date dateObj = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(event.date);
+            String formattedDate = new SimpleDateFormat("d MMMM", Locale.forLanguageTag("ru")).format(dateObj);
+
+            String fullDateTime = formattedDate + ", " + event.timeStart + " — " + event.timeEnd;
+            tvEventDate.setText(fullDateTime);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("DateError", "Ошибка преобразования даты", e);
+            tvEventDate.setText(event.date);
         }
 
-        if (date != null) {
-            SimpleDateFormat outputFormat = new SimpleDateFormat("d MMMM", Locale.getDefault());
-            String formattedDate = outputFormat.format(date);
-            tvEventDate.setText(formattedDate);
-        }
-
-        // Заполнение остальных полей
         tvEventTitle.setText(event.name);
-        tvEventTime.setText(event.timeStart + " - " + event.timeEnd);
+        tvEventCategory.setText(event.category);
         tvEventLevel.setText(event.level);
-        tvEventLocation.setText(event.location);
+        String fullLocation = event.location + ", " + event.city;
+        tvEventLocation.setText(fullLocation);
         tvEventInfo.setText(event.info);
-
-        // Количество участников
         tvEventParticipants.setText(String.valueOf(event.getNumberOfParticipants()));
     }
 
     private void setupJoinButton(Event event) {
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        // Текущий пользователь
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Проверяем, записан ли пользователь на событие
-        if (event.isParticipant(currentUserId)) {
+        if (currentUserId.equals(event.creatorId)) {
+            btnJoinEvent.setText("Удалить событие");
+            btnJoinEvent.setOnClickListener(v -> showDeleteConfirmationDialog(event));
+        } else if (event.isParticipant(currentUserId)) {
             btnJoinEvent.setText("Отписаться");
-            btnJoinEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showUnsubscribeDialog(event);
-                }
-            });
+            btnJoinEvent.setOnClickListener(v -> showUnsubscribeDialog(event));
         } else if (!event.hasAvailableSlots()) {
             btnJoinEvent.setText("Нет свободных мест");
             btnJoinEvent.setEnabled(false);
         } else {
             btnJoinEvent.setText("Записаться на событие");
-            btnJoinEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    joinEvent(event);
-                }
-            });
+            btnJoinEvent.setOnClickListener(v -> joinEvent(event));
         }
 
-        // Вывод количества свободных мест
-        tvEventParticipants.setText("Мест: " + event.getAvailableSlots());
+        tvEventParticipants.setText(String.valueOf(event.getAvailableSlots()));
     }
 
     private void showUnsubscribeDialog(Event event) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setMessage("Вы уверены, что хотите отписаться от события?")
-                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        unsubscribeEvent(event);
-                    }
-                })
-                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.create().show();
+                .setPositiveButton("Да", (dialog, id) -> unsubscribeEvent(event))
+                .setNegativeButton("Нет", (dialog, id) -> dialog.dismiss())
+                .create()
+                .show();
     }
-
-
 
     private void unsubscribeEvent(Event event) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Удаляем текущего пользователя из списка участников
         dbRef.child("events").child(event.id).child("participants").child(currentUserId).removeValue();
 
-        // Уведомление об успешном отписании
         Toast.makeText(this, "Вы успешно отписались от события!", Toast.LENGTH_SHORT).show();
 
-        // Обновляем интерфейс после отписания
         btnJoinEvent.setText("Записаться на событие");
-        btnJoinEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                joinEvent(event);
-            }
-        });
+        btnJoinEvent.setOnClickListener(v -> joinEvent(event));
     }
-
-
 
     private void joinEvent(Event event) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Добавляем текущего пользователя в список участников
         dbRef.child("events").child(event.id).child("participants").child(currentUserId).setValue(true);
 
-        // Уведомление о успешной регистрации
         Toast.makeText(this, "Вы успешно зарегистрировались на событие!", Toast.LENGTH_SHORT).show();
 
-        // Обновляем интерфейс после регистрации
         btnJoinEvent.setText("Вы участвуете");
         btnJoinEvent.setEnabled(false);
+    }
+
+    private void showDeleteConfirmationDialog(Event event) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Удалить событие?")
+                .setMessage("Вы действительно хотите удалить данное событие?\n\nЭто действие нельзя отменить!")
+                .setPositiveButton("Удалить", (dialog, which) -> deleteEvent(event))
+                .setNegativeButton("Отменить", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
+    private void deleteEvent(Event event) {
+        dbRef.child("events").child(event.id).removeValue();
+        Toast.makeText(this, "Событие успешно удалено!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

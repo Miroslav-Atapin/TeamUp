@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +31,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
     private Button btnApplyFilter, btnClearFilter;
     private Set<String> selectedCategories = new HashSet<>();
     private Set<String> selectedLevels = new HashSet<>();
-    private ToggleButton toggleBtnFootball, toggleBtnBasketball, toggleBtnVolleyball, toggleBtnOther;
+
+    // Список всех ToggleButton
+    private ToggleButton toggleBtnFootball, toggleBtnBasketball, toggleBtnVolleyball, toggleBtnFitness,
+            toggleBtnAthletics, toggleBtnBox, toggleBtnHockey, toggleBtnBicycling,
+            toggleBtnWater, toggleBtnWinter;
+
+    // Уровни сложности
     private ToggleButton toggleBtnEasy, toggleBtnMedium, toggleBtnHard;
 
     @Nullable
@@ -53,19 +60,31 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         btnClearFilter = view.findViewById(R.id.btnClearFilter);
         btnClearFilter.setOnClickListener(v -> clearFilters());
 
-        // Переключатели категорий
+        // Инициализируем все наши кнопки категорий
         toggleBtnFootball = view.findViewById(R.id.toggleBtnFootball);
         toggleBtnBasketball = view.findViewById(R.id.toggleBtnBasketball);
         toggleBtnVolleyball = view.findViewById(R.id.toggleBtnVolleyball);
-        toggleBtnOther = view.findViewById(R.id.toggleBtnOther);
+        toggleBtnFitness = view.findViewById(R.id.toggleBtnFitness);
+        toggleBtnAthletics = view.findViewById(R.id.toggleBtnAthletics);
+        toggleBtnBox = view.findViewById(R.id.toggleBtnBox);
+        toggleBtnHockey = view.findViewById(R.id.toggleBtnHockey);
+        toggleBtnBicycling = view.findViewById(R.id.toggleBtnBicycling);
+        toggleBtnWater = view.findViewById(R.id.toggleBtnWater);
+        toggleBtnWinter = view.findViewById(R.id.toggleBtnWinter);
 
         // Регистрация слушателей для каждой кнопки категории
         setupCategoryListeners(toggleBtnFootball, "Футбол");
         setupCategoryListeners(toggleBtnBasketball, "Баскетбол");
         setupCategoryListeners(toggleBtnVolleyball, "Волейбол");
-        setupCategoryListeners(toggleBtnOther, "Другое");
+        setupCategoryListeners(toggleBtnFitness, "Фитнес");
+        setupCategoryListeners(toggleBtnAthletics, "Лёгкая атлетика");
+        setupCategoryListeners(toggleBtnBox, "Боевые искусства");
+        setupCategoryListeners(toggleBtnHockey, "Хоккей");
+        setupCategoryListeners(toggleBtnBicycling, "Велоспорт");
+        setupCategoryListeners(toggleBtnWater, "Водные виды");
+        setupCategoryListeners(toggleBtnWinter, "Зимние виды");
 
-        // Переключатели уровней сложности
+        // Уровни сложности
         toggleBtnEasy = view.findViewById(R.id.toggleBtnEasy);
         toggleBtnMedium = view.findViewById(R.id.toggleBtnMedium);
         toggleBtnHard = view.findViewById(R.id.toggleBtnHard);
@@ -75,35 +94,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         setupLevelListeners(toggleBtnMedium, "Средний");
         setupLevelListeners(toggleBtnHard, "Сложный");
 
-        // Загружаем ранее установленные фильтры
+        // Загрузка ранее установленных фильтров
         restoreSavedFilters();
 
         return view;
     }
 
-    // Установка слушателя для переключателей категорий
-    private void setupCategoryListeners(ToggleButton button, final String categoryName) {
-        button.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                selectedCategories.add(categoryName);
-            } else {
-                selectedCategories.remove(categoryName);
-            }
-        });
-    }
-
-    // Установка слушателя для переключателей уровней сложности
-    private void setupLevelListeners(ToggleButton button, final String levelName) {
-        button.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                selectedLevels.add(levelName);
-            } else {
-                selectedLevels.remove(levelName);
-            }
-        });
-    }
-
-    // Применить фильтры
+    // Применение фильтрации
     private void applyFilter() {
         DateItem selectedDateItem = adapter.getSelectedDateItem();
         String selectedDate = "";
@@ -117,17 +114,26 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         String[] categoriesArray = selectedCategories.toArray(new String[0]);
         String[] levelsArray = selectedLevels.toArray(new String[0]);
 
-        ((HomeFragment) getParentFragment()).applyFilters(selectedDate, categoriesArray, levelsArray);
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment instanceof HomeFragment) {
+            ((HomeFragment) parentFragment).applyFilters(selectedDate, categoriesArray, levelsArray);
+        }
         dismiss();
     }
 
-    // Очистить фильтры
+    // Очистка фильтров
     private void clearFilters() {
         adapter.resetSelection();
         toggleBtnFootball.setChecked(false);
         toggleBtnBasketball.setChecked(false);
         toggleBtnVolleyball.setChecked(false);
-        toggleBtnOther.setChecked(false);
+        toggleBtnFitness.setChecked(false);
+        toggleBtnAthletics.setChecked(false);
+        toggleBtnBox.setChecked(false);
+        toggleBtnHockey.setChecked(false);
+        toggleBtnBicycling.setChecked(false);
+        toggleBtnWater.setChecked(false);
+        toggleBtnWinter.setChecked(false);
         selectedCategories.clear();
 
         toggleBtnEasy.setChecked(false);
@@ -135,11 +141,36 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         toggleBtnHard.setChecked(false);
         selectedLevels.clear();
 
-        ((HomeFragment) getParentFragment()).clearFilters();
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment instanceof HomeFragment) {
+            ((HomeFragment) parentFragment).clearFilters();
+        }
         dismiss();
     }
 
-    // Записываем выбранные фильтры в SharedPreferences
+    // Установщик слушателей для ToggleButton категорий
+    private void setupCategoryListeners(ToggleButton button, final String categoryName) {
+        button.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedCategories.add(categoryName);
+            } else {
+                selectedCategories.remove(categoryName);
+            }
+        });
+    }
+
+    // Установщик слушателей для уровней сложности
+    private void setupLevelListeners(ToggleButton button, final String levelName) {
+        button.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedLevels.add(levelName);
+            } else {
+                selectedLevels.remove(levelName);
+            }
+        });
+    }
+
+    // Сохранение выбранных фильтров в SharedPreferences
     private void saveFiltersToPrefs() {
         SharedPreferences prefs = requireActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -147,7 +178,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         // Дата
         DateItem selectedDateItem = adapter.getSelectedDateItem();
         if (selectedDateItem != null) {
-            // Сохраняем полное представление даты
             editor.putString("FILTER_DATE",
                     selectedDateItem.getDateNumber() + "." +
                             (new SimpleDateFormat("MM").format(Calendar.getInstance().getTime())) + "." +
@@ -160,45 +190,58 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements Date
         editor.putBoolean("TOGGLE_FOOTBALL", toggleBtnFootball.isChecked());
         editor.putBoolean("TOGGLE_BASKETBALL", toggleBtnBasketball.isChecked());
         editor.putBoolean("TOGGLE_VOLLEYBALL", toggleBtnVolleyball.isChecked());
-        editor.putBoolean("TOGGLE_OTHER", toggleBtnOther.isChecked());
+        editor.putBoolean("TOGGLE_FITNESS", toggleBtnFitness.isChecked());
+        editor.putBoolean("TOGGLE_ATHLETICS", toggleBtnAthletics.isChecked());
+        editor.putBoolean("TOGGLE_BOX", toggleBtnBox.isChecked());
+        editor.putBoolean("TOGGLE_HOCKEY", toggleBtnHockey.isChecked());
+        editor.putBoolean("TOGGLE_BICYCLING", toggleBtnBicycling.isChecked());
+        editor.putBoolean("TOGGLE_WATER", toggleBtnWater.isChecked());
+        editor.putBoolean("TOGGLE_WINTER", toggleBtnWinter.isChecked());
 
-        // Уровень сложности
+        // Сложность
         editor.putBoolean("LEVEL_EASY", toggleBtnEasy.isChecked());
         editor.putBoolean("LEVEL_MEDIUM", toggleBtnMedium.isChecked());
         editor.putBoolean("LEVEL_HARD", toggleBtnHard.isChecked());
 
-        editor.apply(); // Применяет изменения
+        editor.apply(); // Применяем изменения
     }
 
-    // Читаем сохраненную дату и применяем её к адаптеру
+    // Восстанавливаем предыдущие настройки фильтров
     private void restoreSavedFilters() {
         SharedPreferences prefs = requireActivity().getPreferences(Context.MODE_PRIVATE);
 
-        // Прочитаем строку даты
+        // Дата
         String filterDate = prefs.getString("FILTER_DATE", "");
         if (!filterDate.isEmpty()) {
-            adapter.selectDate(filterDate); // Передаем полное представление даты
+            adapter.selectDate(filterDate); // Устанавливаем предыдущую дату
         }
 
-        // Чтение остальных настроек
+        // Категории
         toggleBtnFootball.setChecked(prefs.getBoolean("TOGGLE_FOOTBALL", false));
         toggleBtnBasketball.setChecked(prefs.getBoolean("TOGGLE_BASKETBALL", false));
         toggleBtnVolleyball.setChecked(prefs.getBoolean("TOGGLE_VOLLEYBALL", false));
-        toggleBtnOther.setChecked(prefs.getBoolean("TOGGLE_OTHER", false));
+        toggleBtnFitness.setChecked(prefs.getBoolean("TOGGLE_FITNESS", false));
+        toggleBtnAthletics.setChecked(prefs.getBoolean("TOGGLE_ATHLETICS", false));
+        toggleBtnBox.setChecked(prefs.getBoolean("TOGGLE_BOX", false));
+        toggleBtnHockey.setChecked(prefs.getBoolean("TOGGLE_HOCKEY", false));
+        toggleBtnBicycling.setChecked(prefs.getBoolean("TOGGLE_BICYCLING", false));
+        toggleBtnWater.setChecked(prefs.getBoolean("TOGGLE_WATER", false));
+        toggleBtnWinter.setChecked(prefs.getBoolean("TOGGLE_WINTER", false));
 
+        // Сложности
         toggleBtnEasy.setChecked(prefs.getBoolean("LEVEL_EASY", false));
         toggleBtnMedium.setChecked(prefs.getBoolean("LEVEL_MEDIUM", false));
         toggleBtnHard.setChecked(prefs.getBoolean("LEVEL_HARD", false));
     }
 
-    // Переопределяем метод onPause, чтобы сохранять состояние фильтра при выходе
+    // Сохраняем фильтр при паузе активности
     @Override
     public void onPause() {
         super.onPause();
-        saveFiltersToPrefs(); // Сохраняем выбранные фильтры
+//        saveFiltersToPrefs(); // Сохраняем фильтры перед выходом
     }
 
-    // Реализация интерфейса OnDateClickListener (метод пуст)
+    // Пустая реализация метода интерфейса OnDateClickListener
     @Override
     public void onDateClicked(DateItem item) {}
 

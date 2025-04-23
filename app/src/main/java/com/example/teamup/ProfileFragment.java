@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mAuth.signOut();
-                                startActivity(new Intent(getContext(), StartActivity.class));
+                                startActivity(new Intent(getContext(), LoginActivity.class));
                                 getActivity().finish();
                             }
                         })

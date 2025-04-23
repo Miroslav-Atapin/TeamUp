@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Дата"
-            style="@style/TextNormal"
+            style="@style/TextMedium"
             android:textColor="@color/black"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Категории"
-            style="@style/TextNormal"
+            style="@style/TextMedium"
             android:textColor="@color/black"/>
 
          <HorizontalScrollView
@@ -61,55 +61,140 @@
              <LinearLayout
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:layout_marginTop="10dp">
+                 android:orientation="vertical">
 
-                 <ToggleButton
-                     android:id="@+id/toggleBtnFootball"
-                     android:layout_width="wrap_content"
+                 <LinearLayout
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:background="@drawable/custom_toggle_button"
-                     android:textColor="@drawable/color_toggle_button"
-                     android:textOn="Футбол"
-                     android:textOff="Футбол"
-                     android:textAllCaps="false"
-                     style="@style/ToggleBtn" />
+                     android:layout_marginTop="10dp">
 
-                 <ToggleButton
-                     android:id="@+id/toggleBtnBasketball"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/custom_toggle_button"
-                     android:textColor="@drawable/color_toggle_button"
-                     android:textOn="Баскетбол"
-                     android:textOff="Баскетбол"
-                     android:textAllCaps="false"
-                     style="@style/ToggleBtn"
-                     android:layout_marginHorizontal="10dp"/>
+                     <ToggleButton
+                         android:id="@+id/toggleBtnFootball"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Футбол"
+                         android:textOff="Футбол"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn" />
 
-                 <ToggleButton
-                     android:id="@+id/toggleBtnVolleyball"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:background="@drawable/custom_toggle_button"
-                     android:textColor="@drawable/color_toggle_button"
-                     android:textOn="Волейбол"
-                     android:textOff="Волейбол"
-                     android:textAllCaps="false"
-                     style="@style/ToggleBtn"
-                     android:layout_marginRight="10dp"/>
+                     <ToggleButton
+                         android:id="@+id/toggleBtnBasketball"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Баскетбол"
+                         android:textOff="Баскетбол"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginHorizontal="10dp"/>
 
-                 <ToggleButton
-                     android:id="@+id/toggleBtnOther"
-                     android:layout_width="wrap_content"
+                     <ToggleButton
+                         android:id="@+id/toggleBtnVolleyball"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Волейбол"
+                         android:textOff="Волейбол"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginRight="10dp"/>
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnFitness"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Фитнес"
+                         android:textOff="Фитнес"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginRight="10dp"/>
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnAthletics"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Лёгкая атлетика"
+                         android:textOff="Лёгкая атлетика"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"/>
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:background="@drawable/custom_toggle_button"
-                     android:textColor="@drawable/color_toggle_button"
-                     android:textOn="Другое"
-                     android:textOff="Другое"
-                     android:textAllCaps="false"
-                     style="@style/ToggleBtn"/>
+                     android:layout_marginTop="10dp">
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnBox"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Боевые искусства"
+                         android:textOff="Боевые искусства"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn" />
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnHockey"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Хоккей"
+                         android:textOff="Хоккей"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginHorizontal="10dp"/>
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnBicycling"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Велоспорт"
+                         android:textOff="Велоспорт"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginRight="10dp"/>
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnWater"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Водные виды"
+                         android:textOff="Водные виды"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"
+                         android:layout_marginRight="10dp"/>
+
+                     <ToggleButton
+                         android:id="@+id/toggleBtnWinter"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/toggle_button_background"
+                         android:textColor="@drawable/toggle_button_color"
+                         android:textOn="Зимние виды"
+                         android:textOff="Зимние виды"
+                         android:textAllCaps="false"
+                         style="@style/ToggleBtn"/>
+
+                 </LinearLayout>
 
              </LinearLayout>
+
 
          </HorizontalScrollView>
 
@@ -126,7 +211,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Уровень"
-            style="@style/TextNormal"
+            style="@style/TextMedium"
             android:textColor="@color/black"/>
 
             <LinearLayout
@@ -138,8 +223,8 @@
                     android:id="@+id/toggleBtnEasy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_toggle_button"
-                    android:textColor="@drawable/color_toggle_button"
+                    android:background="@drawable/toggle_button_background"
+                    android:textColor="@drawable/toggle_button_color"
                     android:textOn="Лёгкий"
                     android:textOff="Лёгкий"
                     android:textAllCaps="false"
@@ -149,8 +234,8 @@
                     android:id="@+id/toggleBtnMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_toggle_button"
-                    android:textColor="@drawable/color_toggle_button"
+                    android:background="@drawable/toggle_button_background"
+                    android:textColor="@drawable/toggle_button_color"
                     android:textOn="Средний"
                     android:textOff="Средний"
                     android:textAllCaps="false"
@@ -161,8 +246,8 @@
                     android:id="@+id/toggleBtnHard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_toggle_button"
-                    android:textColor="@drawable/color_toggle_button"
+                    android:background="@drawable/toggle_button_background"
+                    android:textColor="@drawable/toggle_button_color"
                     android:textOn="Сложный"
                     android:textOff="Сложный"
                     android:textAllCaps="false"
@@ -185,7 +270,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/BtnLight"
+            style="@style/BtnLightSmall"
             android:text="Сбросить"
             android:layout_marginRight="10dp"/>
 
@@ -194,7 +279,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/Btn"
+            style="@style/BtnSmall"
             android:layout_marginLeft="10dp"
             android:text="Применить"/>
 

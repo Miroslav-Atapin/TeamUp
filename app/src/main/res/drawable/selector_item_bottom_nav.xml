@@ -3,9 +3,9 @@
 
     <item
         android:state_selected="true"
-        android:color="@color/accent"/>
+        android:color="@color/accent" />
 
     <item android:state_selected="false"
-        android:color = "@color/black"/>
+        android:color = "@color/secondary"/>
 
 </selector>

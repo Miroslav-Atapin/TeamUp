@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_maps_sport"
+        android:src="@drawable/img_sport_people"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"/>
 
@@ -20,8 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Добро пожаловать!"
-        style="@style/Title1"
         android:textAlignment="center"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="24sp"
+        android:textColor="@color/black"
         android:layout_marginTop="60dp"/>
 
     <TextView
@@ -29,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="Найдите интересные события, заведите новых друзей и участвуйте в увлекательных соревнованиях — всё это доступно в нашем приложении TeamUp!"
         android:textAlignment="center"
-        style="@style/TextNormal"
+        style="@style/TextMedium"
         android:textColor="@color/secondary"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"/>
@@ -45,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        style="@style/Btn"
+        style="@style/BtnDefault"
         android:text="Войти в аккаунт"/>
 
     <Button
@@ -53,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        style="@style/BtnLight"
+        style="@style/BtnLightDefault"
         android:text="Создать аккаунт"
         android:layout_marginBottom="15dp"/>
 

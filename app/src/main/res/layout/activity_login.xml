@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email"
-            style="@style/TextNormal"
+            style="@style/TextMedium"
             android:textColor="@color/black"/>
 
         <EditText
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Пароль"
-            style="@style/TextNormal"
+            style="@style/TextMedium"
             android:textColor="@color/black"/>
 
         <EditText
@@ -77,20 +77,20 @@
         android:id="@+id/btnLoginAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Btn"
+        style="@style/BtnDefault"
         android:text="Войти в аккаунт"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:id="@+id/tvGoToRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Создать аккаунт"
         android:textAlignment="center"
-        style="@style/TextNormal"
+        style="@style/TextMedium"
         android:textColor="@color/accent"/>
 
 </LinearLayout>

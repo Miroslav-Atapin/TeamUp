@@ -11,270 +11,358 @@
     <LinearLayout
         android:id="@+id/main"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@color/gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".CreateEventActivity">
 
-        <include
-            layout="@layout/toolbar"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы создать событие."
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            style="@style/TextNormal"
-            android:textColor="@color/secondary"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:background="@drawable/shape_block_info_background_2"
+            android:paddingTop="0dp">
+
+            <include
+                layout="@layout/toolbar" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Название"
-                style="@style/TextNormal"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/edEventName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:background="@drawable/shape_edittext"
-                android:hint="Название события"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
+                android:layout_height="match_parent"
+                android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы создать событие."
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                style="@style/TextMedium"
+                android:textColor="@color/secondary"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Дата"
-                style="@style/TextNormal"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/edEventDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:background="@drawable/shape_edittext"
-                android:hint="ДД:ММ:ГГ"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:background="@drawable/shape_block_info_background"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Начало"
-                    android:textColor="@color/black" />
+                    android:text="Название"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"/>
 
                 <EditText
-                    android:id="@+id/edEventTimeStart"
-                    style="@style/EditText"
+                    android:id="@+id/edEventName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:inputType="textCapSentences"
                     android:background="@drawable/shape_edittext"
-                    android:hint="13:00"
-                    android:inputType="time" />
+                    android:hint="Название события"
+                    style="@style/EditText"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
 
-                <TextView
-                    style="@style/TextNormal"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Конец"
-                    android:textColor="@color/black" />
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Категория"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerEventCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_edittext"
+                        android:layout_marginTop="10dp"
+                        style="@style/EditText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Уровень"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerEventLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_edittext"
+                        android:layout_marginTop="10dp"
+                        style="@style/EditText"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Количество участников"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <ImageButton
+                        android:id="@+id/imgBtnMinusCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_fab_btn_bacgkround"
+                        android:src="@drawable/ic_minus"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/edEventParticipants"
+                        style="@style/EditText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_edittext"
+                        android:hint="1"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imgbtnPlusCount"
+                        app:layout_constraintStart_toEndOf="@+id/imgBtnMinusCount"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/imgbtnPlusCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_fab_btn_bacgkround"
+                        android:src="@drawable/ic_plus"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/shape_block_info_background"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Дата"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"/>
 
                 <EditText
-                    android:id="@+id/edEventTimeEnd"
-                    style="@style/EditText"
+                    android:id="@+id/edEventDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:inputType="date"
                     android:background="@drawable/shape_edittext"
-                    android:hint="13:00"
-                    android:inputType="time" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Местоположение"
-                style="@style/TextNormal"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/edEventLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:background="@drawable/shape_edittext"
-                android:hint="Введите адрес"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout
-                android:id="@+id/linearLayoutlevel"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    style="@style/TextNormal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Категория"
-                    android:textColor="@color/black" />
-
-                <Spinner
-                    android:id="@+id/spinnerCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_edittext" />
+                    android:hint="Выберите дату"
+                    style="@style/EditText"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
 
-                <TextView
-                    style="@style/TextNormal"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Уровень"
-                    android:textColor="@color/black" />
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp">
 
-                <Spinner
-                    android:id="@+id/spinnerLevel"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Начало"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/edEventTimeStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:background="@drawable/shape_edittext"
+                        android:hint="17:00"
+                        style="@style/EditText"
+                        android:layout_marginTop="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_edittext"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Конец"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/edEventTimeEnd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:background="@drawable/shape_edittext"
+                        android:hint="19:00"
+                        style="@style/EditText"
+                        android:layout_marginTop="10dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            android:layout_marginTop="30dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Количество участников"
-                style="@style/TextNormal"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
 
-            <EditText
-                android:id="@+id/edEventParticipants"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/shape_edittext"
-                android:hint="Количество участников"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Местоположение"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/edEventLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:background="@drawable/shape_edittext"
+                        android:hint="Улица, дом"
+                        style="@style/EditText"
+                        android:layout_marginTop="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Город"
+                        style="@style/TextMedium"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/edEventCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"
+                        android:background="@drawable/shape_edittext"
+                        android:hint="Москва"
+                        style="@style/EditText"
+                        android:layout_marginTop="10dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:background="@drawable/shape_block_info_background"
+            android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Дополнительная информация"
-                style="@style/TextNormal"
-                android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Дополнительная информация"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"/>
 
-            <EditText
-                android:id="@+id/edEventInfo"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:inputType="textMultiLine"
-                android:scrollbars="vertical"
-                android:gravity="top"
-                android:background="@drawable/shape_edittext"
-                android:hint="Дополнительная информация"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
+                <EditText
+                    android:id="@+id/edEventInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@drawable/shape_edittext"
+                    android:hint="Опишите цели вашего спортивного мероприятия, требования к участникам, программу соревнований и призы. "
+                    style="@style/EditText"
+                    android:maxLines="5"
+                    android:layout_marginTop="10dp"/>
 
         </LinearLayout>
 
@@ -294,7 +382,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            style="@style/Btn"
+            style="@style/BtnDefault"
             android:text="Создать событие"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="50dp"/>

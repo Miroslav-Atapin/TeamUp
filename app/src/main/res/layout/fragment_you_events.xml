@@ -37,7 +37,7 @@
                 android:id="@+id/tvCountEvents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextNormal"
+                style="@style/TextMedium"
                 android:textColor="@color/black"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -50,14 +50,14 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/btnGoToCreateEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Создать событие"
-        android:textColor="@color/black"
-        app:icon="@drawable/ic_plus"
         android:layout_gravity="bottom|right"
+        style="@style/BtnLightSmall"
+        android:text="Создать событие"
+        android:drawableLeft="@drawable/ic_plus"
         android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="20dp"/>
 

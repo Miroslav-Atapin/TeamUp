@@ -1,6 +1,7 @@
 package com.example.teamup;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption1.EventViewHolder> {
 
@@ -17,12 +22,10 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     private List<Event> eventList;
     private OnItemClickListener listener;
 
-    // Интерфейс для обработки кликов на элементы
     public interface OnItemClickListener {
         void onItemClick(Event event, int position);
     }
 
-    // Конструктор адаптера с новым интерфейсом
     public AdapterEventOption1(Context context, List<Event> eventList, OnItemClickListener listener) {
         this.context = context;
         this.eventList = eventList;
@@ -30,9 +33,9 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     }
 
     public void updateEventList(List<Event> eventList) {
-        this.eventList.clear(); // Очищаем предыдущий список
-        this.eventList.addAll(eventList); // Заполняем новым списком
-        notifyDataSetChanged(); // Оповещаем адаптер о изменении данных
+        this.eventList.clear();
+        this.eventList.addAll(eventList);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -40,7 +43,6 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_event_option1, parent, false);
-
         return new EventViewHolder(itemView);
     }
 
@@ -48,16 +50,24 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event currentEvent = eventList.get(position);
 
-        holder.tvEventTitle.setText(currentEvent.name);
-        holder.tvEventTime.setText(currentEvent.timeStart + " - " + currentEvent.timeEnd);
-        holder.tvEventCategory.setText(currentEvent.category);
-        holder.tvEventLevel.setText(currentEvent.level);
-        holder.tvEventLocation.setText(currentEvent.location);
+        try {
+            SimpleDateFormat inputFormatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+            Date eventDate = inputFormatter.parse(currentEvent.date);
+            SimpleDateFormat outputFormatter = new SimpleDateFormat("d MMMM", new Locale("ru"));
+            String readableDate = outputFormatter.format(eventDate);
+            String fullDateString = readableDate + ", " + currentEvent.timeStart + " - " + currentEvent.timeEnd;
+            holder.tvEventTitle.setText(currentEvent.name);
+            holder.tvEventDate.setText(fullDateString);
+            holder.tvEventCategory.setText(currentEvent.category);
+            holder.tvEventLevel.setText(currentEvent.level);
+            holder.tvEventLocation.setText(currentEvent.location);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        // Добавление слушателя кликов на весь элемент списка
-        holder.itemView.setOnClickListener(view -> {
+        holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(currentEvent, position); // Передача Event и позиции
+                listener.onItemClick(currentEvent, position);
             }
         });
     }
@@ -71,10 +81,9 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
         return eventList;
     }
 
-    // Внутренний класс для хранения элементов представления
     static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView tvEventTitle;
-        TextView tvEventTime;
+        TextView tvEventDate;
         TextView tvEventCategory;
         TextView tvEventLevel;
         TextView tvEventLocation;
@@ -82,7 +91,7 @@ public class AdapterEventOption1 extends RecyclerView.Adapter<AdapterEventOption
         public EventViewHolder(View itemView) {
             super(itemView);
             tvEventTitle = itemView.findViewById(R.id.tvEventTitle);
-            tvEventTime = itemView.findViewById(R.id.tvEventTime);
+            tvEventDate = itemView.findViewById(R.id.tvEventDate);
             tvEventCategory = itemView.findViewById(R.id.tvEventCategory);
             tvEventLevel = itemView.findViewById(R.id.tvEventLevel);
             tvEventLocation = itemView.findViewById(R.id.tvEventLocation);

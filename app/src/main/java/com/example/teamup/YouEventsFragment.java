@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +40,7 @@ public class YouEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_you_events, container, false);
 
-        ExtendedFloatingActionButton btnGoToCreateEvent = rootView.findViewById(R.id.btnGoToCreateEvent);
+        Button btnGoToCreateEvent = rootView.findViewById(R.id.btnGoToCreateEvent);
 
         btnGoToCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,6 @@ public class YouEventsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event event = snapshot.getValue(Event.class);
 
-                    // Проверяем, является ли пользователь участником или организатором события
                     if (event.participants.containsKey(userId) || event.creatorId.equals(userId)) {
                         eventList.add(event);
                     }

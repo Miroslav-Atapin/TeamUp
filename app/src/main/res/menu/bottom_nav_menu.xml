@@ -5,22 +5,16 @@
     <item
         android:id="@+id/navHome"
         android:title="Главная"
-        android:icon="@drawable/ic_home"
-        app:cnb_backgroundColor="@color/accent"
-        app:cnb_iconColor="@color/white" />
+        android:icon="@drawable/ic_home" />
 
     <item
         android:id="@+id/navTicket"
-        android:title="Cобытия"
-        android:icon="@drawable/ic_ticket"
-        app:cnb_backgroundColor="@color/accent"
-        app:cnb_iconColor="@color/white"/>
+        android:title="Ваши cобытия"
+        android:icon="@drawable/ic_ticket" />
 
     <item
         android:id="@+id/navProfile"
         android:title="Профиль"
-        android:icon="@drawable/ic_profile"
-        app:cnb_backgroundColor="@color/accent"
-        app:cnb_iconColor="@color/white"/>
+        android:icon="@drawable/ic_profile" />
 
 </menu>

@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Event implements Serializable {
-    public String id; // Уникальный идентификатор события
+    public String id;
     public String name;
+    public String city;
     public String date;
     public String timeStart;
     public String timeEnd;
@@ -15,17 +16,18 @@ public class Event implements Serializable {
     public String category;
     public String level;
     public String creatorId;
-    public Map<String, Boolean> participants; // Используем Map для участников
-    public int maxParticipants; // Максимальное количество участников
+    public Map<String, Boolean> participants;
+    public int maxParticipants;
 
     public Event() {
-        participants = new HashMap<>(); // Инициализируем пустой Map
+        participants = new HashMap<>();
     }
 
-    public Event(String id, String name, String date, String timeStart, String timeEnd,
+    public Event(String id, String name, String city, String date, String timeStart, String timeEnd,
                  String location, String info, String category, String level, String creatorId, Map<String, Boolean> participants, int maxParticipants) {
         this.id = id;
         this.name = name;
+        this.city = city; // Инициализация нового поля
         this.date = date;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
