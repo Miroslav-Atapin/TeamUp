@@ -102,36 +102,28 @@
         <item name="android:paddingBottom">12dp</item>
     </style>
 
-    <style name="Chip">
-<!--        <item name="chipBackgroundColor">@color/gray</item>-->
-        <item name="chipMinHeight">38dp</item>
-        <item name="chipCornerRadius">12dp</item>
+    <style name="ChipFilter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/selector_chip_background</item>
+        <item name="android:textColor">@color/selector_chip_text</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+        <item name="chipIconSize">18sp</item>
         <item name="chipStrokeWidth">0dp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
-        <item name="chipIconSize">18dp</item>
-        <item name="chipIconTint">@color/black</item>
-        <item name="chipEndPadding">15dp</item>
-        <item name="chipStartPadding">15dp</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
-
-    <style name="SelectedChipStyle">
-        <item name="chipBackgroundColor">#CCE4FF</item>
-        <item name="chipMinHeight">38dp</item>
-        <item name="chipCornerRadius">12dp</item>
+    <style name="ChipAssist" parent="Widget.Material3.Chip.Assist">
+        <item name="chipBackgroundColor">@color/selector_chip_background</item>
+        <item name="android:textColor">@color/selector_chip_text</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+        <item name="chipIconSize">18sp</item>
         <item name="chipStrokeWidth">0dp</item>
-        <item name="android:textColor">@color/accent</item>
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
-        <item name="chipIconSize">18dp</item>
-        <item name="closeIconVisible">true</item>
-        <item name="chipIconTint">@color/accent</item>
-        <item name="chipEndPadding">15dp</item>
+        <item name="chipMinHeight">40dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="chipCornerRadius">12dp</item>
         <item name="chipStartPadding">15dp</item>
+        <item name="chipEndPadding">15dp</item>
     </style>
-
 
     <!--    EditText  -->
 

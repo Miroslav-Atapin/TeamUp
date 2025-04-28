@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".HomeFragment">
 
@@ -27,29 +28,44 @@
 
         </LinearLayout>
         
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-            
-            <Button
-                android:id="@+id/btnFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/BtnFilter"
-                android:text="Фильтры"
-                android:drawableLeft="@drawable/ic_filter"
-                android:layout_marginRight="10dp"/>
+            android:layout_marginTop="30dp"
+            android:scrollbars="none">
 
-            <Button
-                android:id="@+id/btnSearchEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/BtnFilter"
-                android:text="Найти событие"
-                android:drawableLeft="@drawable/ic_search"/>
-            
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Выбрать дату"
+                    app:chipIcon="@drawable/ic_calendar"
+                    style="@style/ChipAssist"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterBottomSheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Фильтры"
+                    style="@style/ChipAssist"
+                    app:chipIcon="@drawable/ic_filter"
+                    android:layout_marginHorizontal="10dp"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSearchEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Поиск"
+                    app:chipIcon="@drawable/ic_search"
+                    style="@style/ChipAssist"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayoutSearchEvent"

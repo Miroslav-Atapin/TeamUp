@@ -1,5 +1,6 @@
 package com.example.teamup;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment implements AdapterEventOption1.OnItemClickListener, BottomSheetFilter.FilterResultListener {
 
@@ -35,10 +42,12 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
     private TextView tvNoEventsMessage;
     private EditText edIdEvent;
     private Button btnIdEvent;
-    private Button btnSearchEvent;
     private LinearLayout linearLayoutSearchEvent;
     private List<String> selectedCategories = new ArrayList<>();
     private List<String> selectedLevels = new ArrayList<>();
+    private Calendar selectedCalendar = Calendar.getInstance(); // Хранит выбранную дату
+    private String selectedDateFormatted = ""; // Форматированная дата
+    private boolean isSearchFieldVisible = false; // Статус видимости поля поиска
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +55,7 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(requireContext(), LoginActivity.class));
+            startActivity(new Intent(requireContext(), StartActivity.class));
             return view;
         }
 
@@ -61,17 +70,21 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
 
         tvNoEventsMessage = view.findViewById(R.id.tvNoEventsMessage);
 
-        // Кнопка фильтра остается такой же
-        Button btnFilter = view.findViewById(R.id.btnFilter);
-        btnFilter.setOnClickListener(v -> {
+        // Настройка обработки нажатий на чипы
+        Chip chipFilterDate = view.findViewById(R.id.chipFilterDate);
+        chipFilterDate.setOnCloseIconClickListener(v -> clearSelectedDate()); // Крестик для очистки даты
+        chipFilterDate.setOnClickListener(v -> showDatePickerDialog());
+
+        Chip chipFilterBottomSheet = view.findViewById(R.id.chipFilterBottomSheet);
+        chipFilterBottomSheet.setOnClickListener(v -> {
             BottomSheetFilter bottomSheetFilter = BottomSheetFilter.newInstance(selectedCategories, selectedLevels);
             bottomSheetFilter.setFilterResultListener(this); // Устанавливаем слушателя
             bottomSheetFilter.show(getActivity().getSupportFragmentManager(), "BottomSheetFilter");
         });
 
-        // Добавляем обработку новой кнопки поиска события
-        btnSearchEvent = view.findViewById(R.id.btnSearchEvent);
-        btnSearchEvent.setOnClickListener(v -> showSearchField());
+        // Обработка нажатия на чип поиска события
+        Chip chipSearchEvent = view.findViewById(R.id.chipSearchEvent);
+        chipSearchEvent.setOnClickListener(v -> toggleSearchField());
 
         // Получение ссылок на скрытые компоненты поиска
         linearLayoutSearchEvent = view.findViewById(R.id.linearLayoutSearchEvent);
@@ -81,7 +94,26 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
         // Обработка клика по поиску конкретного события по ID
         btnIdEvent.setOnClickListener(v -> searchEventById(edIdEvent.getText().toString()));
 
+        // Добавляем обработку иконки крестика для сброса фильтров
+        chipFilterBottomSheet.setOnCloseIconClickListener(v -> {
+            selectedCategories.clear();
+            selectedLevels.clear();
+            loadEventsFromFirebase(); // Обновляем список событий без фильтров
+            updateChipWithFilterStatus(0); // Обновляем текст и иконку
+        });
+
         return view;
+    }
+
+    /**
+     * Переключает состояние поля поиска
+     */
+    private void toggleSearchField() {
+        if (isSearchFieldVisible) {
+            hideSearchField();
+        } else {
+            showSearchField();
+        }
     }
 
     /**
@@ -89,14 +121,28 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
      */
     private void showSearchField() {
         linearLayoutSearchEvent.setVisibility(View.VISIBLE);
+        isSearchFieldVisible = true;
     }
 
     /**
-     * Поиск события по введенному идентификатору
+     * Прячет поле для ввода идентификатора события
+     */
+    private void hideSearchField() {
+        linearLayoutSearchEvent.setVisibility(View.GONE);
+        isSearchFieldVisible = false;
+    }
+
+    /**
+     * Поиск события по введённому идентификатору
      *
-     * @param eventId Id события, которое ищет пользователь
+     * @param eventId Идентификатор события, которое ищет пользователь
      */
     private void searchEventById(String eventId) {
+        if (eventId.isEmpty()) {
+            Toast.makeText(getContext(), "Укажите идентификатор события.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         final DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId);
         eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,12 +150,12 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
                 if (snapshot.exists()) { // Найдено событие с указанным ID
                     Event foundEvent = snapshot.getValue(Event.class);
 
-                    // Перенаправление на экран информации о событии
+                    // Переход на экран информации о событии
                     Intent intent = new Intent(getContext(), EventInfoActivity.class);
                     intent.putExtra("EVENT_DATA", foundEvent);
                     startActivity(intent);
-                } else { // Не найдено такое событие
-                    Toast.makeText(getContext(), "События с данным ID не существует.", Toast.LENGTH_SHORT).show();
+                } else { // Нет такого события
+                    Toast.makeText(getContext(), "События с таким ID не существует.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -121,7 +167,7 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
     }
 
     /**
-     * Загрузка всех публичных событий из базы данных FireBase
+     * Загружает публичные события из базы данных Firebase
      */
     private void loadEventsFromFirebase() {
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
@@ -142,21 +188,30 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
 
                     boolean matchCategories = true;
                     if (!selectedCategories.isEmpty()) {
-                        matchCategories = selectedCategories.contains(event.category); // Проверка соответствия категории
+                        matchCategories = selectedCategories.contains(event.category); // Соответствие категориям
                     }
 
                     boolean matchLevels = true;
                     if (!selectedLevels.isEmpty()) {
-                        matchLevels = selectedLevels.contains(event.level); // Проверка соответствия уровня
+                        matchLevels = selectedLevels.contains(event.level); // Соответствие уровню
+                    }
+
+                    boolean matchDates = true;
+                    if (!selectedDateFormatted.isEmpty()) {
+                        matchDates = event.date.equals(selectedDateFormatted); // Проверка соответствия даты
                     }
 
                     if (!event.creatorId.equals(currentUserId)
                             && !event.isParticipant(currentUserId)
                             && matchCategories
-                            && matchLevels) {
+                            && matchLevels
+                            && matchDates) {
                         eventList.add(event);
                     }
                 }
+
+                // Сортируем события по дате и времени начала
+                Collections.sort(eventList, Comparator.comparing(Event::getDateAndTime));
 
                 adapter.updateEventList(eventList);
 
@@ -172,6 +227,88 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
         });
     }
 
+    /**
+     * Открывает диалоговое окно выбора даты.
+     */
+    private void showDatePickerDialog() {
+        // Получить текущую дату
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        // Определение максимального числа дней вперед (6 дней после текущей даты)
+        Calendar maxCal = Calendar.getInstance();
+        maxCal.add(Calendar.DAY_OF_YEAR, 6); // Плюс 6 дней от текущей даты
+
+        // Создание DatePickerDialog с настройкой границ дат
+        DatePickerDialog dialog = new DatePickerDialog(requireContext(), (view, y, m, d) -> {
+            // Обрабатываем выбранную дату
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.set(y, m, d);
+
+            // Форматируем дату в строку типа dd.MM.yyyy
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+            selectedDateFormatted = sdf.format(selectedDate.getTime());
+
+            // Обновляем текст на чипе
+            updateChipWithSelectedDate(selectedDateFormatted);
+
+            // Применяем фильтрацию по дате
+            loadEventsFromFirebase();
+        }, year, month, dayOfMonth);
+
+        // Установка ограничений на выбор дат
+        dialog.getDatePicker().setMinDate(cal.getTimeInMillis());      // Минимальное - текущая дата
+        dialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());   // Максимальное - спустя 6 дней
+
+        // Показываем диалог
+        dialog.show();
+    }
+
+    /**
+     * Обновляет текст на чипе с датой и показывает иконку крестика для сброса даты
+     *
+     * @param dateStr Отформатированная строка даты
+     */
+    private void updateChipWithSelectedDate(String dateStr) {
+        Chip chipFilterDate = requireView().findViewById(R.id.chipFilterDate);
+        chipFilterDate.setText(dateStr);
+        chipFilterDate.setCloseIconVisible(true); // Включаем иконку крестика
+    }
+
+    /**
+     * Очистка выбранного значения даты
+     */
+    private void clearSelectedDate() {
+        selectedDateFormatted = "";
+        updateChipWithDefaultText(); // Возвращаем начальную надпись на чипе
+        loadEventsFromFirebase(); // Перезагрузка списка без учета даты
+    }
+
+    /**
+     * Восстанавливает текст на чипе по умолчанию и скрывает иконку крестика
+     */
+    private void updateChipWithDefaultText() {
+        Chip chipFilterDate = requireView().findViewById(R.id.chipFilterDate);
+        chipFilterDate.setText("Выбрать дату");
+        chipFilterDate.setCloseIconVisible(false); // Убираем иконку крестика
+    }
+
+    /**
+     * Обновляет текст на чипе и состояние иконки закрытия в зависимости от количества выбранных фильтров
+     */
+    private void updateChipWithFilterStatus(int filterCount) {
+        Chip chipFilterBottomSheet = requireView().findViewById(R.id.chipFilterBottomSheet);
+        if (filterCount > 0) {
+            chipFilterBottomSheet.setText("Фильтры (" + filterCount + ")");
+            chipFilterBottomSheet.setCloseIconVisible(true); // Включаем иконку крестика
+        } else {
+            chipFilterBottomSheet.setText("Фильтр");
+            chipFilterBottomSheet.setCloseIconVisible(false); // Скрываем иконку крестика
+        }
+    }
+
     @Override
     public void onItemClick(Event event, int position) {
         Intent intent = new Intent(getContext(), EventInfoActivity.class);
@@ -183,6 +320,10 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
     public void onFiltersApplied(List<String> categories, List<String> levels) {
         selectedCategories = categories;
         selectedLevels = levels;
-        loadEventsFromFirebase(); // Обновляем список событий с новыми условиями фильтрации
+        loadEventsFromFirebase(); // Обновляем список событий с учётом новых условий фильтрации
+
+        // Определяем общее количество выбранных фильтров
+        int totalFilters = categories.size() + levels.size();
+        updateChipWithFilterStatus(totalFilters); // Обновляем статус фильтра
     }
 }

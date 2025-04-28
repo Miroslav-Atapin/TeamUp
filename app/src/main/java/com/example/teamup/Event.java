@@ -56,4 +56,8 @@ public class Event implements Serializable {
         return maxParticipants - getNumberOfParticipants();
     }
 
+    public String getDateAndTime() {
+        return date + " " + timeStart;
+    }
+
 }
