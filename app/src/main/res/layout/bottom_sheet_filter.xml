@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_bottom_sheet_background">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Фильтры"
+        style="@style/TitleHeader"
+        android:textAlignment="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Категории"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterFootbal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Футбол"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterBasketball"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Баскетбол"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterVolleyball"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Волейбол"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterFitness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Фитнес"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterAthletics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Лёгкая атлетика"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterMartialArts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Боевые искусства"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterHockey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Хоккей"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterCycling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Велоспорт"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterWaterSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Водные виды"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterWinterSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Зимние виды"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Уровень"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterEasy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Лёгкий"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Средний"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterHard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:text="Сложный"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnClearFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/BtnLightSmall"
+            android:text="Сбросить"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/btnApplyFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/BtnSmall"
+            android:text="Применить"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

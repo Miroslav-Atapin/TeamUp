@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,13 +28,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements AdapterEventOption1.OnItemClickListener {
+public class HomeFragment extends Fragment implements AdapterEventOption1.OnItemClickListener, BottomSheetFilter.FilterResultListener {
 
     private RecyclerView rvAllEvents;
     private AdapterEventOption1 adapter;
     private TextView tvNoEventsMessage;
     private EditText edIdEvent;
     private Button btnIdEvent;
+    private Button btnSearchEvent;
+    private LinearLayout linearLayoutSearchEvent;
+    private List<String> selectedCategories = new ArrayList<>();
+    private List<String> selectedLevels = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +50,7 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
             return view;
         }
 
+        // Инициализация компонентов UI
         rvAllEvents = view.findViewById(R.id.rvAllEvents);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvAllEvents.setLayoutManager(layoutManager);
@@ -55,33 +61,68 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
 
         tvNoEventsMessage = view.findViewById(R.id.tvNoEventsMessage);
 
+        // Кнопка фильтра остается такой же
         Button btnFilter = view.findViewById(R.id.btnFilter);
         btnFilter.setOnClickListener(v -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-            bottomSheetDialog.show(getChildFragmentManager(), "MyBottomSheet");
+            BottomSheetFilter bottomSheetFilter = BottomSheetFilter.newInstance(selectedCategories, selectedLevels);
+            bottomSheetFilter.setFilterResultListener(this); // Устанавливаем слушателя
+            bottomSheetFilter.show(getActivity().getSupportFragmentManager(), "BottomSheetFilter");
         });
 
+        // Добавляем обработку новой кнопки поиска события
+        btnSearchEvent = view.findViewById(R.id.btnSearchEvent);
+        btnSearchEvent.setOnClickListener(v -> showSearchField());
 
-
-        // Инициализируем элементы поиска
+        // Получение ссылок на скрытые компоненты поиска
+        linearLayoutSearchEvent = view.findViewById(R.id.linearLayoutSearchEvent);
         edIdEvent = view.findViewById(R.id.edIdEvent);
         btnIdEvent = view.findViewById(R.id.btnIdEvent);
 
-        // Кнопка поиска события по ID
+        // Обработка клика по поиску конкретного события по ID
         btnIdEvent.setOnClickListener(v -> searchEventById(edIdEvent.getText().toString()));
-
-        // Отображаем форму поиска при клике на "Найти событие"
-        Button btnSearchEvent = view.findViewById(R.id.btnSearchEvent);
-        btnSearchEvent.setOnClickListener(v -> toggleSearchForm());
 
         return view;
     }
 
-    private void toggleSearchForm() {
-        View linearLayoutSearchEvent = requireView().findViewById(R.id.linearLayoutSearchEvent);
-        linearLayoutSearchEvent.setVisibility(linearLayoutSearchEvent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    /**
+     * Показывает поле для ввода идентификатора события
+     */
+    private void showSearchField() {
+        linearLayoutSearchEvent.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Поиск события по введенному идентификатору
+     *
+     * @param eventId Id события, которое ищет пользователь
+     */
+    private void searchEventById(String eventId) {
+        final DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId);
+        eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) { // Найдено событие с указанным ID
+                    Event foundEvent = snapshot.getValue(Event.class);
+
+                    // Перенаправление на экран информации о событии
+                    Intent intent = new Intent(getContext(), EventInfoActivity.class);
+                    intent.putExtra("EVENT_DATA", foundEvent);
+                    startActivity(intent);
+                } else { // Не найдено такое событие
+                    Toast.makeText(getContext(), "События с данным ID не существует.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(getContext(), "Ошибка загрузки данных.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Загрузка всех публичных событий из базы данных FireBase
+     */
     private void loadEventsFromFirebase() {
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         eventsRef.addValueEventListener(new ValueEventListener() {
@@ -89,10 +130,9 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Event> eventList = new ArrayList<>();
 
-                // Проверяем повторно пользователя в обратных вызовах
                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (currentUser == null) {
-                    return; // Завершаем обработку, если пользователь больше не авторизован
+                if (currentUser == null || dataSnapshot == null) {
+                    return;
                 }
 
                 String currentUserId = currentUser.getUid();
@@ -100,18 +140,35 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Event event = child.getValue(Event.class);
 
-                    if (!event.creatorId.equals(currentUserId) && !event.isParticipant(currentUserId)) {
+                    boolean matchCategories = true;
+                    if (!selectedCategories.isEmpty()) {
+                        matchCategories = selectedCategories.contains(event.category); // Проверка соответствия категории
+                    }
+
+                    boolean matchLevels = true;
+                    if (!selectedLevels.isEmpty()) {
+                        matchLevels = selectedLevels.contains(event.level); // Проверка соответствия уровня
+                    }
+
+                    if (!event.creatorId.equals(currentUserId)
+                            && !event.isParticipant(currentUserId)
+                            && matchCategories
+                            && matchLevels) {
                         eventList.add(event);
                     }
                 }
 
                 adapter.updateEventList(eventList);
+
+                if (eventList.isEmpty()) {
+                    tvNoEventsMessage.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoEventsMessage.setVisibility(View.GONE);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // обработка ошибок
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
 
@@ -122,134 +179,10 @@ public class HomeFragment extends Fragment implements AdapterEventOption1.OnItem
         startActivity(intent);
     }
 
-    public void applyFilters(final String date, final String[] categories, final String[] levels) {
-        loadEventsFromFirebase(new OnEventsLoadedCallback() {
-            @Override
-            public void onEventsLoaded(List<Event> events) {
-                List<Event> filteredEvents = new ArrayList<>();
-
-                for (Event event : events) {
-                    if (!date.isEmpty() && !event.getDate().equals(date)) continue;
-
-                    if (categories.length > 0 && !containsAnyCategory(event, categories)) continue;
-
-                    if (levels.length > 0 && !containsAnyLevel(event, levels)) continue;
-
-                    filteredEvents.add(event);
-                }
-
-                adapter.updateEventList(filteredEvents);
-
-                if (filteredEvents.isEmpty()) {
-                    tvNoEventsMessage.setVisibility(View.VISIBLE);
-                } else {
-                    tvNoEventsMessage.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
-
-    private boolean containsAnyCategory(Event event, String[] categories) {
-        for (String cat : categories) {
-            if (cat.equals(event.category)) return true;
-        }
-        return false;
-    }
-
-    private boolean containsAnyLevel(Event event, String[] levels) {
-        for (String lvl : levels) {
-            if (lvl.equals(event.level)) return true;
-        }
-        return false;
-    }
-
-    public void clearFilters() {
-        loadEventsFromFirebase(new OnEventsLoadedCallback() {
-            @Override
-            public void onEventsLoaded(List<Event> events) {
-                adapter.updateEventList(events);
-                tvNoEventsMessage.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private interface OnEventsLoadedCallback {
-        void onEventsLoaded(List<Event> events);
-    }
-
-    private void loadEventsFromFirebase(OnEventsLoadedCallback callback) {
-        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        eventsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Event> eventList = new ArrayList<>();
-
-                // Повторная проверка пользователя
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (currentUser == null) {
-                    return;
-                }
-
-                String currentUserId = currentUser.getUid();
-
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Event event = child.getValue(Event.class);
-
-                    if (!event.creatorId.equals(currentUserId) && !event.isParticipant(currentUserId)) {
-                        eventList.add(event);
-                    }
-                }
-
-                callback.onEventsLoaded(eventList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // обработка ошибок
-            }
-        });
-    }
-
-    private void searchEventById(String eventId) {
-        if (eventId.trim().isEmpty()) {
-            showToast("Введите Id события!");
-            return;
-        }
-
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("events")
-                .orderByKey()
-                .equalTo(eventId);
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Event foundEvent = snapshot.child(eventId).getValue(Event.class);
-                    openEvent(foundEvent);
-                } else {
-                    showToast("Событие с таким ID не найдено.");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {}
-        });
-    }
-
-    /**
-     * Открытие найденного события
-     */
-    private void openEvent(Event event) {
-        Intent intent = new Intent(getContext(), EventInfoActivity.class);
-        intent.putExtra("EVENT_DATA", event);
-        startActivity(intent);
-    }
-
-    private void showToast(String message) {
-        if (getContext() != null) {
-            android.widget.Toast.makeText(getContext(), message, android.widget.Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onFiltersApplied(List<String> categories, List<String> levels) {
+        selectedCategories = categories;
+        selectedLevels = levels;
+        loadEventsFromFirebase(); // Обновляем список событий с новыми условиями фильтрации
     }
 }

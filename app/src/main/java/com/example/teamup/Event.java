@@ -20,14 +20,14 @@ public class Event implements Serializable {
     public int maxParticipants;
 
     public Event() {
-        participants = new HashMap<>();
+
     }
 
     public Event(String id, String name, String city, String date, String timeStart, String timeEnd,
                  String location, String info, String category, String level, String creatorId, Map<String, Boolean> participants, int maxParticipants) {
         this.id = id;
         this.name = name;
-        this.city = city; // Инициализация нового поля
+        this.city = city;
         this.date = date;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
@@ -38,14 +38,6 @@ public class Event implements Serializable {
         this.creatorId = creatorId;
         this.participants = participants != null ? participants : new HashMap<>();
         this.maxParticipants = maxParticipants;
-    }
-
-    public void addParticipant(String participantId) {
-        participants.put(participantId, true);
-    }
-
-    public void removeParticipant(String participantId) {
-        participants.remove(participantId);
     }
 
     public boolean isParticipant(String participantId) {
@@ -62,14 +54,6 @@ public class Event implements Serializable {
 
     public int getAvailableSlots() {
         return maxParticipants - getNumberOfParticipants();
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
 }

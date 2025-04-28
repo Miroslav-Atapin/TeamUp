@@ -102,10 +102,36 @@
         <item name="android:paddingBottom">12dp</item>
     </style>
 
-    <style name="FabBtn">
-        <item name="backgroundTint">@color/accent</item>
-        <item name="cornerRadius">100dp</item>
+    <style name="Chip">
+<!--        <item name="chipBackgroundColor">@color/gray</item>-->
+        <item name="chipMinHeight">38dp</item>
+        <item name="chipCornerRadius">12dp</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="chipIconSize">18dp</item>
+        <item name="chipIconTint">@color/black</item>
+        <item name="chipEndPadding">15dp</item>
+        <item name="chipStartPadding">15dp</item>
     </style>
+
+
+    <style name="SelectedChipStyle">
+        <item name="chipBackgroundColor">#CCE4FF</item>
+        <item name="chipMinHeight">38dp</item>
+        <item name="chipCornerRadius">12dp</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="chipIconSize">18dp</item>
+        <item name="closeIconVisible">true</item>
+        <item name="chipIconTint">@color/accent</item>
+        <item name="chipEndPadding">15dp</item>
+        <item name="chipStartPadding">15dp</item>
+    </style>
+
 
     <!--    EditText  -->
 

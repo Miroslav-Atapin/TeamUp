@@ -15,17 +15,14 @@
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/chipNavigationBar"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:itemTextColor="@color/accent"
-        app:itemPaddingTop="20dp"
+        android:layout_height="wrap_content"
+        app:cnb_menuResource="@menu/bottom_nav_menu"
+        app:cnb_textAppearance="@style/TextMedium"
         android:background="@drawable/shape_bottom_nav"
-        app:labelVisibilityMode="selected"
-        app:itemIconTint="@drawable/selector_item_bottom_nav"
-        app:itemActiveIndicatorStyle="@style/Widget.Design.BottomNavigationView"
-        app:menu="@menu/bottom_nav_menu"/>
+        android:elevation="20dp"/>
 
 
 </LinearLayout>
