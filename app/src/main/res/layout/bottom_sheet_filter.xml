@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_bottom_sheet_background">
+    android:background="@drawable/shape_bottom_sheet">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:layout_width="match_parent"
@@ -28,9 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Категории"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            style="@style/TitleHeader"/>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupCategory"
@@ -122,9 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Уровень"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            style="@style/TitleHeader"/>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupLevel"
@@ -168,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/BtnLightSmall"
+            style="@style/BtnLightDefault"
             android:text="Сбросить"
             android:layout_marginRight="10dp"/>
 
@@ -177,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/BtnSmall"
+            style="@style/BtnDefault"
             android:text="Применить"
             android:layout_marginLeft="10dp"/>
 

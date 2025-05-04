@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrowleft"
-            android:background="@drawable/shape_icon_background"/>
+            android:background="@drawable/shape_icon_back"/>
 
         <TextView
             android:id="@+id/tvTitleHeader"

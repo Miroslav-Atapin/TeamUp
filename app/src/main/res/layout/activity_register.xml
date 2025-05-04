@@ -17,118 +17,82 @@
         <include
             layout="@layout/toolbar"/>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            style="@style/TextInputLayout"
             android:layout_marginTop="30dp"
             android:layout_marginHorizontal="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Фамилия"
-                style="@style/TextMedium"
-                android:textColor="@color/black"/>
+                android:background="@drawable/shape_edittext"
+                style="@style/EditText"
+                android:hint="Email"
+                android:inputType="textEmailAddress"/>
 
-            <EditText
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayout"
+            app:helperText="Минимум 8 символов"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_edittext"
+                style="@style/EditText"
+                android:hint="Пароль"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayout"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edittext"
-                android:inputType="textCapWords"
-                android:hint="Ваша фамилия"
                 style="@style/EditText"
-                android:layout_marginTop="10dp" />
+                android:hint="Фамилия"
+                android:inputType="textCapWords"/>
 
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            style="@style/TextInputLayout"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Имя"
-                style="@style/TextMedium"
-                android:textColor="@color/black"/>
-
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edittext"
-                android:inputType="textCapWords"
-                android:hint="Ваше имя"
                 style="@style/EditText"
-                android:layout_marginTop="10dp"/>
+                android:hint="Имя"
+                android:inputType="textCapWords" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                style="@style/TextMedium"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/edEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/shape_edittext"
-                android:hint="email@gmail.com"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Пароль"
-                style="@style/TextMedium"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/edPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:background="@drawable/shape_edittext"
-                android:hint="Введите пароль"
-                style="@style/EditText"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvRegisterError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextSmall"
-            android:textColor="#ff3333"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
@@ -138,7 +102,7 @@
             style="@style/BtnDefault"
             android:text="Создать аккаунт"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="50dp"/>
 
         <TextView
             android:id="@+id/tvGoToLogin"
@@ -154,4 +118,3 @@
     </LinearLayout>
 
 </ScrollView>
-

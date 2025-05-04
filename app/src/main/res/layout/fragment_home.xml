@@ -12,60 +12,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvLocation"
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_caretdown"
+                android:drawablePadding="5dp"
+                android:text="Москва"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageButton
+                android:id="@+id/imgbtnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/shape_icon_back"
+                android:src="@drawable/ic_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="30dp">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Все события"
-                android:textAlignment="center"
-                style="@style/TitleHeader"/>
+                android:text="Выбрать дату"
+                style="@style/ChipAssist"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterBottomSheet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Фильтры"
+                style="@style/ChipAssist"
+                android:layout_marginHorizontal="10dp"/>
 
         </LinearLayout>
-        
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:scrollbars="none">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFilterDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Выбрать дату"
-                    app:chipIcon="@drawable/ic_calendar"
-                    style="@style/ChipAssist"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipFilterBottomSheet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Фильтры"
-                    style="@style/ChipAssist"
-                    app:chipIcon="@drawable/ic_filter"
-                    android:layout_marginHorizontal="10dp"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipSearchEvent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Поиск"
-                    app:chipIcon="@drawable/ic_search"
-                    style="@style/ChipAssist"/>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayoutSearchEvent"
@@ -116,6 +118,8 @@
                 android:text="К сожалению, события не найдены. Попробуйте изменить фильтры."/>
 
         </LinearLayout>
+
+
 
     </LinearLayout>
 

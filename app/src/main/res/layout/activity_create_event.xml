@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/shape_block_info_background_2"
+            android:background="@drawable/shape_white_block_2"
             android:paddingTop="0dp">
 
             <include
@@ -37,90 +37,90 @@
 
         </LinearLayout>
 
+        <!--    ****************  -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/shape_block_info_background"
+            android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edEventName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_edittext"
+                    style="@style/EditText"
+                    android:hint="Название события"
+                    android:inputType="textCapWords"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSpinnerEventCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextInputLayout"
+                android:layout_marginTop="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/spinnerEventCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_edittext"
+                    style="@style/EditText"
+                    android:hint="Категория" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Название"
+                    android:text="Уровень"
                     style="@style/TextMedium"
                     android:textColor="@color/black"/>
 
-                <EditText
-                    android:id="@+id/edEventName"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:background="@drawable/shape_edittext"
-                    android:hint="Название события"
-                    style="@style/EditText"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterEasy"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Категория"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
+                        style="@style/ChipFilter"
+                        android:text="Лёгкий"/>
 
-                    <Spinner
-                        android:id="@+id/spinnerEventCategory"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterMedium"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edittext"
-                        android:layout_marginTop="10dp"
-                        style="@style/EditText"/>
+                        style="@style/ChipFilter"
+                        android:text="Средний"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterHard"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Уровень"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
+                        style="@style/ChipFilter"
+                        android:text="Сложный"/>
 
-                    <Spinner
-                        android:id="@+id/spinnerEventLevel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edittext"
-                        android:layout_marginTop="10dp"
-                        style="@style/EditText"/>
-
-                </LinearLayout>
+                </com.google.android.material.chip.ChipGroup>
 
             </LinearLayout>
 
@@ -147,31 +147,39 @@
                         android:id="@+id/imgBtnMinusCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_fab_btn_bacgkround"
+                        android:background="@drawable/shape_fab_btn"
                         android:src="@drawable/ic_minus"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
-                        android:id="@+id/edEventParticipants"
-                        style="@style/EditText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEventParticipants"
+                        style="@style/TextInputLayout"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edittext"
-                        android:hint="1"
-                        android:inputType="number"
-                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/imgbtnPlusCount"
                         app:layout_constraintStart_toEndOf="@+id/imgBtnMinusCount"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edEventParticipants"
+                            style="@style/EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_edittext"
+                            android:hint="1"
+                            android:inputType="textCapWords"
+                            android:textAlignment="center" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
                         android:id="@+id/imgbtnPlusCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_fab_btn_bacgkround"
+                        android:background="@drawable/shape_fab_btn"
                         android:src="@drawable/ic_plus"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -184,36 +192,31 @@
 
         </LinearLayout>
 
+        <!--    ****************  -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/shape_block_info_background"
+            android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEventDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                style="@style/TextInputLayout">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Дата"
-                    style="@style/TextMedium"
-                    android:textColor="@color/black"/>
-
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edEventDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
                     android:background="@drawable/shape_edittext"
-                    android:hint="Выберите дату"
                     style="@style/EditText"
-                    android:layout_marginTop="10dp"/>
+                    android:hint="Выберите дату"
+                    android:inputType="date"/>
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -221,160 +224,115 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEventTimeStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/TextInputLayout"
                     android:layout_weight="1"
                     android:layout_marginRight="10dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Начало"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edEventTimeStart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="time"
                         android:background="@drawable/shape_edittext"
-                        android:hint="17:00"
                         style="@style/EditText"
-                        android:layout_marginTop="10dp"/>
+                        android:hint="Начало"
+                        android:inputType="datetime"/>
 
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEventTimeEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/TextInputLayout"
                     android:layout_weight="1"
                     android:layout_marginLeft="10dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Конец"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edEventTimeEnd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="time"
                         android:background="@drawable/shape_edittext"
-                        android:hint="19:00"
                         style="@style/EditText"
-                        android:layout_marginTop="10dp"/>
+                        android:hint="Конец"
+                        android:inputType="datetime"/>
 
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEventCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                style="@style/TextInputLayout"
                 android:layout_marginTop="20dp">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edEventCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dp">
+                    android:background="@drawable/shape_edittext"
+                    style="@style/EditText"
+                    android:hint="Город"
+                    android:inputType="textCapWords"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Местоположение"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/edEventLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:background="@drawable/shape_edittext"
-                        android:hint="Улица, дом"
-                        style="@style/EditText"
-                        android:layout_marginTop="10dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextInputLayout"
+                android:layout_marginTop="20dp">
 
-                </LinearLayout>
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edEventLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp">
+                    android:background="@drawable/shape_edittext"
+                    style="@style/EditText"
+                    android:hint="Улица, дом, квартира"
+                    android:inputType="textCapWords"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Город"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"/>
-
-                    <EditText
-                        android:id="@+id/edEventCity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textCapSentences"
-                        android:background="@drawable/shape_edittext"
-                        android:hint="Москва"
-                        style="@style/EditText"
-                        android:layout_marginTop="10dp"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
 
         </LinearLayout>
+
+        <!--    ****************  -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/shape_block_info_background"
+            android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Дополнительная информация"
-                    style="@style/TextMedium"
-                    android:textColor="@color/black"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEventInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextInputLayout">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edEventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine|textCapSentences"
                     android:background="@drawable/shape_edittext"
-                    android:hint="Опишите цели вашего спортивного мероприятия, требования к участникам, программу соревнований и призы."
                     style="@style/EditText"
-                    android:layout_marginTop="10dp"/>
+                    android:hint="Опишите цели вашего спортивного мероприятия, требования к участникам, программу соревнований и тд."
+                    android:inputType="textMultiLine|textCapSentences"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvEventError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="14sp"
-            android:textColor="#ff3333"
-            android:text=""
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp"/>
+        <!--    ****************  -->
 
         <Button
             android:id="@+id/btnCreateEvent"

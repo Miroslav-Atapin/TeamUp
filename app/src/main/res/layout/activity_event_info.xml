@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/shape_block_info_background_2"
+                android:background="@drawable/shape_white_block_2"
                 android:paddingTop="0dp">
 
                 <RelativeLayout
@@ -37,8 +38,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_arrowleft"
-                        android:background="@drawable/shape_icon_background"
-                        android:layout_alignParentStart="true"/>
+                        android:background="@drawable/shape_icon_back"
+                        android:layout_alignParentStart="true" />
 
                     <TextView
                         android:id="@+id/tvTitleHeader"
@@ -53,8 +54,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_share"
-                        android:background="@drawable/shape_icon_background"
-                        android:layout_alignParentEnd="true"/>
+                        android:background="@drawable/shape_icon_back"
+                        android:layout_alignParentEnd="true" />
 
                 </RelativeLayout>
 
@@ -63,19 +64,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="30dp"/>
+                    android:layout_marginTop="30dp" />
 
             </LinearLayout>
+
+            <!--    ****************  -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:background="@drawable/shape_block_info_background">
+                android:background="@drawable/shape_white_block">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,12 +87,13 @@
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/ic_info"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/shape_icon_info_background"
-                        android:layout_marginRight="10dp"/>
+                        android:background="@drawable/shape_icon_info"
+                        app:tint="@color/accent"
+                        android:layout_marginRight="10dp" />
 
                     <TextView
                         android:id="@+id/tvEventCategory"
@@ -103,8 +107,7 @@
                         android:layout_height="wrap_content"
                         style="@style/TextMedium"
                         android:textColor="@color/secondary"
-                        android:text="|"
-                        android:layout_marginHorizontal="5dp"/>
+                        android:text="|" />
 
                     <TextView
                         android:id="@+id/tvEventLevel"
@@ -127,7 +130,8 @@
                         android:layout_height="40dp"
                         android:src="@drawable/ic_calendar"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/shape_icon_info_background"
+                        android:background="@drawable/shape_icon_info"
+                        app:tint="@color/accent"
                         android:layout_marginRight="10dp"/>
 
                     <TextView
@@ -151,7 +155,8 @@
                         android:layout_height="40dp"
                         android:src="@drawable/ic_mappin"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/shape_icon_info_background"
+                        android:background="@drawable/shape_icon_info"
+                        app:tint="@color/accent"
                         android:layout_marginRight="10dp"/>
 
                     <TextView
@@ -165,12 +170,14 @@
 
             </LinearLayout>
 
+            <!--    ****************  -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:background="@drawable/shape_block_info_background">
+                android:background="@drawable/shape_white_block">
 
                 <TextView
                     android:id="@+id/tvEventInfo"
@@ -181,12 +188,14 @@
 
             </LinearLayout>
 
+            <!--    ****************  -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:background="@drawable/shape_block_info_background">
+                android:background="@drawable/shape_white_block">
 
                 <TextView
                     android:layout_width="wrap_content"

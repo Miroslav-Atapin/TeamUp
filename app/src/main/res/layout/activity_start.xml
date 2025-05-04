@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_sport_people"
+        android:src="@drawable/img_start"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"/>
 
@@ -22,9 +22,9 @@
         android:text="Добро пожаловать!"
         android:textAlignment="center"
         android:fontFamily="@font/roboto_medium"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:layout_width="match_parent"

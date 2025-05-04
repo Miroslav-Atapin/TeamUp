@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectLocationActivity">
+
+    <include
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        android:scrollbars="none"
+        android:layout_weight="1">
+
+        <RadioGroup
+            android:id="@+id/radioGroupCities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioBtnMoscow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Москва"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category" />
+
+            <RadioButton
+                android:id="@+id/radioBtnSaintPetersburg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Санкт-Петербург"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnNovosibirsk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Новосибирск"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnYekaterinburg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Екатеринбург"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnKazan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Казань"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnNizhnyNovgorod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Нижний Новгород"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnChelyabinsk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Челябинск"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnSaratov"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Саратов"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnVoronezh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Воронеж"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnBalashov"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Балашов"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnSamara"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Самара"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnRostovNaDonu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ростов-на-Дону"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnKrasnodar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Краснодар"
+                android:layoutDirection="rtl"
+                style="@style/TextMedium"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_city_category"
+                android:layout_marginTop="10dp"/>
+
+        </RadioGroup>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSelectLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        style="@style/BtnDefault"
+        android:text="Выбрать"/>
+
+</LinearLayout>

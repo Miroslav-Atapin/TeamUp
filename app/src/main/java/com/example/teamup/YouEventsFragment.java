@@ -28,10 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouEventsFragment extends Fragment {
+public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemClickListener {
 
     private RecyclerView rvYourEvents;
-    private AdapterEventOption2 adapter;
+    private AdapterEvents adapter;
     private List<Event> eventList;
     private TextView tvCountEvents;
 
@@ -42,15 +42,9 @@ public class YouEventsFragment extends Fragment {
 
         Button btnGoToCreateEvent = rootView.findViewById(R.id.btnGoToCreateEvent);
 
-        btnGoToCreateEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateEventActivity.class));
-            }
-        });
+        btnGoToCreateEvent.setOnClickListener(view -> startActivity(new Intent(getActivity(), CreateEventActivity.class)));
 
         rvYourEvents = rootView.findViewById(R.id.rvYouEvents);
-
         tvCountEvents = rootView.findViewById(R.id.tvCountEvents);
 
         eventList = new ArrayList<>();
@@ -63,7 +57,6 @@ public class YouEventsFragment extends Fragment {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             String userId = firebaseUser.getUid();
-
             loadEventsFromFirebase(eventsRef, userId);
         }
 
@@ -73,7 +66,7 @@ public class YouEventsFragment extends Fragment {
     private void loadEventsFromFirebase(DatabaseReference eventsRef, final String userId) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -84,7 +77,9 @@ public class YouEventsFragment extends Fragment {
                     }
                 }
 
-                adapter = new AdapterEventOption2(getActivity(), eventList, userId);
+                // Исправленно создание адаптера
+                adapter = new AdapterEvents(requireContext(), eventList, "",
+                        YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);
                 rvYourEvents.setAdapter(adapter);
 
                 setEventCountText(tvCountEvents, eventList.size());
@@ -120,5 +115,13 @@ public class YouEventsFragment extends Fragment {
         }
 
         textView.setText("Всего " + count + " " + ending);
+    }
+
+    @Override
+    public void onItemClick(Event event, int position) {
+        // Создаем интент для открытия активности с информацией о событии
+        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+        intent.putExtra("EVENT_DATA", event); // Передаем объект события
+        startActivity(intent); // Запускаем активити
     }
 }

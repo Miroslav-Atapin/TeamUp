@@ -12,15 +12,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -35,16 +41,16 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private static final String TAG = "CreateEventActivity";
 
-    private EditText edEventName;
-    private EditText edEventDate;
-    private EditText edEventTimeStart;
-    private EditText edEventTimeEnd;
-    private EditText edEventLocation;
-    private EditText edEventCity;
+    private com.google.android.material.textfield.TextInputEditText edEventName;
+    private com.google.android.material.textfield.TextInputEditText edEventDate;
+    private com.google.android.material.textfield.TextInputEditText edEventTimeStart;
+    private com.google.android.material.textfield.TextInputEditText edEventTimeEnd;
+    private com.google.android.material.textfield.TextInputEditText edEventLocation;
+    private com.google.android.material.textfield.TextInputEditText edEventCity;
     private Spinner spinnerCategory;
-    private Spinner spinnerLevel;
-    private EditText edEventInfo;
-    private EditText edEventParticipants;
+    private ChipGroup chipGroupLevel;
+    private com.google.android.material.textfield.TextInputEditText edEventInfo;
+    private com.google.android.material.textfield.TextInputEditText edEventParticipants;
     private TextView tvEventError;
     private Button btnCreateEvent;
 
@@ -54,11 +60,28 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
+    private static final int REQUEST_CODE_SELECT_LOCATION = 100;
+    private static final String KEY_EVENT_NAME = "event_name";
+    private static final String KEY_EVENT_DATE = "event_date";
+    private static final String KEY_EVENT_TIME_START = "event_time_start";
+    private static final String KEY_EVENT_TIME_END = "event_time_end";
+    private static final String KEY_EVENT_LOCATION = "event_location";
+    private static final String KEY_EVENT_CITY = "event_city";
+    private static final String KEY_EVENT_INFO = "event_info";
+    private static final String KEY_EVENT_PARTICIPANTS = "event_participants";
+    private static final String KEY_SPINNER_CATEGORY = "spinner_category";
+    private static final String KEY_CHIP_LEVEL = "chip_level"; // Новая переменная для сохранения выбранного чипа
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_event);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -70,11 +93,18 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         edEventLocation = findViewById(R.id.edEventLocation);
         edEventCity = findViewById(R.id.edEventCity);
         spinnerCategory = findViewById(R.id.spinnerEventCategory);
-        spinnerLevel = findViewById(R.id.spinnerEventLevel);
+        chipGroupLevel = findViewById(R.id.chipGroupLevel); // Новый виджет ChipGroup
         edEventInfo = findViewById(R.id.edEventInfo);
         edEventParticipants = findViewById(R.id.edEventParticipants);
-        tvEventError = findViewById(R.id.tvEventError);
         btnCreateEvent = findViewById(R.id.btnCreateEvent);
+
+        for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupLevel.getChildAt(i);
+            if ("Лёгкий".equals(chip.getText())) {
+                chip.setChecked(true); // Выбираем категорию "Лёгкий" по умолчанию
+                break;
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
@@ -95,15 +125,19 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         String[] categories = {"Футбол", "Баскетбол", "Волейбол", "Фитнес", "Лёгкая атлетика", "Боевые искусства", "Хоккей", "Велоспорт", "Водные виды", "Зимние виды"};
 
-        String[] levels = {"Лёгкий", "Средний", "Сложный"};
-
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(categoryAdapter);
 
-        ArrayAdapter<String> levelAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, levels);
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLevel.setAdapter(levelAdapter);
+        // Добавляем слушатель на выбор чипа
+        for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupLevel.getChildAt(i);
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) { // Если чекнут один чип, остальные отключаются
+                    uncheckOtherChips(chip);
+                }
+            });
+        }
 
         edEventDate.setInputType(InputType.TYPE_NULL);
         edEventDate.setFocusable(false);
@@ -117,6 +151,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         edEventTimeEnd.setFocusable(false);
         edEventTimeEnd.setOnClickListener(view -> showTimePickerDialog(view.getContext(), false));
 
+        edEventCity.setInputType(InputType.TYPE_NULL);     // Не разрешаем ручное изменение
+        edEventCity.setFocusable(false);                  // Фокус нельзя установить
+        edEventCity.setClickable(true);                   // Клик всё равно возможен
+        edEventCity.setOnClickListener(view -> openSelectLocationActivity());
+
         ImageButton imgBtnMinusCount = findViewById(R.id.imgBtnMinusCount);
         imgBtnMinusCount.setOnClickListener(view -> changeParticipantCount(-1));
 
@@ -124,6 +163,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         imgbtnPlusCount.setOnClickListener(view -> changeParticipantCount(+1));
 
         btnCreateEvent.setOnClickListener(view -> validateAndSubmitForm());
+    }
+
+    private void openSelectLocationActivity() {
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SELECT_LOCATION);
     }
 
     private void showDatePickerDialog(Context context) {
@@ -184,7 +228,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         timePicker.show(getSupportFragmentManager(), timePicker.toString());
     }
 
-    private void updateTimeField(EditText textView, int hour, int minute) {
+    private void updateTimeField(com.google.android.material.textfield.TextInputEditText textView, int hour, int minute) {
         String formattedHour = String.format("%02d", hour);
         String formattedMinute = String.format("%02d", minute);
         textView.setText(formattedHour + ":" + formattedMinute);
@@ -209,7 +253,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 eventLocation.isEmpty() ||
                 eventParticipantsStr.isEmpty() ||
                 eventCity.isEmpty()) {
-            tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+            tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введённых данных.");
             return;
         }
 
@@ -217,15 +261,32 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             participantsCount = Integer.parseInt(eventParticipantsStr);
 
             if (participantsCount <= 0) {
-                tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+                tvEventError.setText("Количество участников должно быть больше нуля.");
                 return;
             }
         } catch (NumberFormatException e) {
-            tvEventError.setText("Заполните, пожалуйста, все поля и проверьте правильность введенных данных.");
+            tvEventError.setText("Неверный формат количества участников.");
             return;
         }
 
         String eventId = mDatabase.child("events").push().getKey();
+
+        // Определяем уровень сложности из текущего активного чипа
+        String level = "";
+        boolean hasSelectedLevel = false;
+        for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupLevel.getChildAt(i);
+            if (chip.isChecked()) {
+                level = chip.getText().toString();
+                hasSelectedLevel = true;
+                break;
+            }
+        }
+
+        if (!hasSelectedLevel) {
+            tvEventError.setText("Необходимо выбрать хотя бы одну категорию!");
+            return;
+        }
 
         Event newEvent = new Event(
                 eventId,
@@ -237,7 +298,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 eventLocation,
                 eventInfo,
                 spinnerCategory.getSelectedItem().toString(),
-                spinnerLevel.getSelectedItem().toString(),
+                level, // Используем уровень из чипа
                 mAuth.getCurrentUser().getUid(),
                 new HashMap<>() {{
                     put(mAuth.getCurrentUser().getUid(), true);
@@ -290,5 +351,78 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         int currentCount = participantText.isEmpty() ? 1 : Integer.parseInt(participantText);
         int newCount = Math.max(1, currentCount + delta);
         edEventParticipants.setText(String.valueOf(newCount));
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveFormData(outState);
+    }
+
+    private void saveFormData(Bundle bundle) {
+        bundle.putString(KEY_EVENT_NAME, edEventName.getText().toString());
+        bundle.putString(KEY_EVENT_DATE, edEventDate.getText().toString());
+        bundle.putString(KEY_EVENT_TIME_START, edEventTimeStart.getText().toString());
+        bundle.putString(KEY_EVENT_TIME_END, edEventTimeEnd.getText().toString());
+        bundle.putString(KEY_EVENT_LOCATION, edEventLocation.getText().toString());
+        bundle.putString(KEY_EVENT_CITY, edEventCity.getText().toString());
+        bundle.putString(KEY_EVENT_INFO, edEventInfo.getText().toString());
+        bundle.putString(KEY_EVENT_PARTICIPANTS, edEventParticipants.getText().toString());
+        bundle.putSerializable(KEY_SPINNER_CATEGORY, spinnerCategory.getSelectedItemPosition());
+
+        // Сохраняем позицию выбранного чипа
+        for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupLevel.getChildAt(i);
+            if (chip.isChecked()) {
+                bundle.putInt(KEY_CHIP_LEVEL, i);
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restoreFormData(savedInstanceState);
+    }
+
+    private void restoreFormData(Bundle bundle) {
+        if (bundle != null) {
+            edEventName.setText(bundle.getString(KEY_EVENT_NAME));
+            edEventDate.setText(bundle.getString(KEY_EVENT_DATE));
+            edEventTimeStart.setText(bundle.getString(KEY_EVENT_TIME_START));
+            edEventTimeEnd.setText(bundle.getString(KEY_EVENT_TIME_END));
+            edEventLocation.setText(bundle.getString(KEY_EVENT_LOCATION));
+            edEventCity.setText(bundle.getString(KEY_EVENT_CITY));
+            edEventInfo.setText(bundle.getString(KEY_EVENT_INFO));
+            edEventParticipants.setText(bundle.getString(KEY_EVENT_PARTICIPANTS));
+
+            spinnerCategory.setSelection((Integer) bundle.getSerializable(KEY_SPINNER_CATEGORY));
+
+            // Восстанавливаем ранее выбранный чип
+            int checkedChipIndex = bundle.getInt(KEY_CHIP_LEVEL, -1);
+            if (checkedChipIndex != -1) {
+                ((Chip) chipGroupLevel.getChildAt(checkedChipIndex)).setChecked(true);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SELECT_LOCATION && resultCode == RESULT_OK) {
+            String selectedCity = data.getStringExtra("SELECTED_CITY_KEY"); // Переданный ключ
+            edEventCity.setText(selectedCity); // Устанавливаем выбранный город в поле
+        }
+    }
+
+    // Вспомогательная функция для отключения всех остальных чипов кроме одного
+    private void uncheckOtherChips(Chip activeChip) {
+        for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroupLevel.getChildAt(i);
+            if (chip != activeChip) {
+                chip.setChecked(false);
+            }
+        }
     }
 }
