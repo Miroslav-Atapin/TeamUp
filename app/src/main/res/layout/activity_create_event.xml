@@ -63,15 +63,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilSpinnerEventCategory"
+                android:id="@+id/tilEventCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextInputLayout"
                 android:layout_marginTop="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/spinnerEventCategory"
+                    android:id="@+id/edEventCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
@@ -333,6 +334,17 @@
         </LinearLayout>
 
         <!--    ****************  -->
+
+        <TextView
+            android:id="@+id/tvEventError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="14sp"
+            android:textColor="#ff3333"
+            android:text=""
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"/>
 
         <Button
             android:id="@+id/btnCreateEvent"

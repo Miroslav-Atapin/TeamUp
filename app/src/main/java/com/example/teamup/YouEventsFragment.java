@@ -42,7 +42,7 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
 
         Button btnGoToCreateEvent = rootView.findViewById(R.id.btnGoToCreateEvent);
 
-        btnGoToCreateEvent.setOnClickListener(view -> startActivity(new Intent(getActivity(), CreateEventActivity.class)));
+        btnGoToCreateEvent.setOnClickListener(v -> startActivity(new Intent(getActivity(), CreateEventActivity.class)));
 
         rvYourEvents = rootView.findViewById(R.id.rvYouEvents);
         tvCountEvents = rootView.findViewById(R.id.tvCountEvents);
@@ -77,12 +77,14 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
                     }
                 }
 
-                // Исправленно создание адаптера
-                adapter = new AdapterEvents(requireContext(), eventList, "",
-                        YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);
-                rvYourEvents.setAdapter(adapter);
+                // Проверяем наличие контекста
+                if (isAdded()) {
+                    adapter = new AdapterEvents(requireContext(), eventList,
+                            "", YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);
+                    rvYourEvents.setAdapter(adapter);
 
-                setEventCountText(tvCountEvents, eventList.size());
+                    setEventCountText(tvCountEvents, eventList.size());
+                }
             }
 
             @Override
@@ -91,7 +93,8 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
             }
         };
 
-        eventsRef.addValueEventListener(valueEventListener);
+        // Добавляем временный слушатель, а не постоянный, чтобы предотвратить утечку памяти
+        eventsRef.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void setEventCountText(TextView textView, int count) {

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectCategoryActivity">
+
+    <include
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/radioGroupCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/radioBtnSoccer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Футбол"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnBasketball"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Баскетбол"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnVolleyball"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Волейбол"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnFitness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Фитнес"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnAthletics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Лёгкая атлетика"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnMartialArts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Боевые искусства"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnHockey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Хоккей"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnCycling"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Велоспорт"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnWaterSports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Водные виды"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnWinterSports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Зимние виды"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"/>
+
+            </RadioGroup>
+
+        </RadioGroup>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSelectCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
+        style="@style/BtnDefault"
+        android:text="Выбрать"/>
+
+</LinearLayout>
