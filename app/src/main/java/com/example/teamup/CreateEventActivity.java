@@ -1,5 +1,7 @@
 package com.example.teamup;
 
+import static java.security.AccessController.getContext;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -26,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -37,21 +40,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = "CreateEventActivity";
-
-    private com.google.android.material.textfield.TextInputEditText edEventName;
-    private com.google.android.material.textfield.TextInputEditText edEventDate;
-    private com.google.android.material.textfield.TextInputEditText edEventTimeStart;
-    private com.google.android.material.textfield.TextInputEditText edEventTimeEnd;
-    private com.google.android.material.textfield.TextInputEditText edEventLocation;
-    private com.google.android.material.textfield.TextInputEditText edEventCity;
-    private com.google.android.material.textfield.TextInputEditText edEventCategory;
+    private TextInputEditText edEventName;
+    private TextInputEditText edEventDate;
+    private TextInputEditText edEventTimeStart;
+    private TextInputEditText edEventTimeEnd;
+    private TextInputEditText edEventLocation;
+    private TextInputEditText edEventCity;
+    private TextInputEditText edEventCategory;
     private ChipGroup chipGroupLevel;
-    private com.google.android.material.textfield.TextInputEditText edEventInfo;
-    private com.google.android.material.textfield.TextInputEditText edEventParticipants;
+    private TextInputEditText edEventInfo;
+    private TextInputEditText edEventParticipants;
     private TextView tvEventError;
+    private TextView tvLevelQuestion;
     private Button btnCreateEvent;
 
     private TextInputLayout tilEventName, tilEventCategory, tilEventParticipants, tilEventDate, tilEventTimeStart, tilEventTimeEnd, tilEventCity, tilEventLocation, tilEventInfo;
@@ -113,7 +115,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         tilEventInfo = findViewById(R.id.tilEventInfo);
 
         tvEventError = findViewById(R.id.tvEventError);
-
+        tvLevelQuestion = findViewById(R.id.tvLevelQuestion);
 
         for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
             Chip chip = (Chip) chipGroupLevel.getChildAt(i);
@@ -164,6 +166,21 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         imgbtnPlusCount.setOnClickListener(view -> changeParticipantCount(+1));
 
         btnCreateEvent.setOnClickListener(view -> validateAndSubmitForm());
+
+        tvLevelQuestion.setOnClickListener(v -> {
+            String title = "Уровни мероприятия";
+            String message = "Мы делим спортивные мероприятия на 3 уровня:\n\n" +
+                    "Легкий: Для новичков и начинающих игроков.\n\n" +
+                    "Средний: Для опытных спортсменов среднего уровня.\n\n" +
+                    "Сложный: Для профессионалов и сильных игроков.\n\n" +
+                    "Выбирай тот уровень, который соответствует твоему опыту и целям!";
+            
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        });
     }
 
     private void openSelectLocationActivity() {
@@ -183,14 +200,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, this, year, month, day);
-
         Calendar minCal = Calendar.getInstance();
         Calendar maxCal = Calendar.getInstance();
         maxCal.add(Calendar.DATE, 6);
-
         datePickerDialog.getDatePicker().setMinDate(minCal.getTimeInMillis());
         datePickerDialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());
-
         datePickerDialog.show();
     }
 
@@ -267,7 +281,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         try {
             participantsCount = Integer.parseInt(eventParticipantsStr);
-
             if (participantsCount <= 0) {
                 tilEventParticipants.setError("Количество участников должно быть больше нуля.");
                 return;
@@ -333,7 +346,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     private void showExitConfirmationDialog() {
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Подтверждение")
                 .setMessage("Вы действительно хотите выйти?\nВаши данные не будут сохранены.")
                 .setNegativeButton("Отмена", (dialogInterface, i) -> dialogInterface.dismiss())
@@ -375,7 +388,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         bundle.putString(KEY_EVENT_INFO, edEventInfo.getText().toString());
         bundle.putString(KEY_EVENT_PARTICIPANTS, edEventParticipants.getText().toString());
 
-        // Сохранение позиции выбранного чипа
         for (int i = 0; i < chipGroupLevel.getChildCount(); i++) {
             Chip chip = (Chip) chipGroupLevel.getChildAt(i);
             if (chip.isChecked()) {
@@ -403,7 +415,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             edEventInfo.setText(bundle.getString(KEY_EVENT_INFO));
             edEventParticipants.setText(bundle.getString(KEY_EVENT_PARTICIPANTS));
 
-            // Восстанавливаем ранее выбранный чип
             int checkedChipIndex = bundle.getInt(KEY_CHIP_LEVEL, -1);
             if (checkedChipIndex != -1) {
                 ((Chip) chipGroupLevel.getChildAt(checkedChipIndex)).setChecked(true);

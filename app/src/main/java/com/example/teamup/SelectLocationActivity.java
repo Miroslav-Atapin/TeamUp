@@ -34,12 +34,11 @@ public class SelectLocationActivity extends AppCompatActivity {
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         radioGroupCities = findViewById(R.id.radioGroupCities);
 
-        imgbtnArrow.setOnClickListener(view -> finish());
+        imgbtnArrow.setOnClickListener(v -> finish());
         tvTitleHeader.setText("Местоположение");
 
-        // Обрабатываем клик на кнопку подтверждения выбора города
         Button btnSelectLocation = findViewById(R.id.btnSelectLocation);
-        btnSelectLocation.setOnClickListener(view -> handleCitySelection());
+        btnSelectLocation.setOnClickListener(v -> handleCitySelection());
     }
 
     private void handleCitySelection() {
@@ -48,13 +47,11 @@ public class SelectLocationActivity extends AppCompatActivity {
             RadioButton selectedRadioButton = findViewById(checkedRadioButtonId);
             String selectedCity = selectedRadioButton.getText().toString();
 
-            // Создаем объект Intent с результатом и возвращаем выбранный город
             Intent resultIntent = new Intent();
             resultIntent.putExtra("SELECTED_CITY_KEY", selectedCity);
             setResult(RESULT_OK, resultIntent);
             finish();
         } else {
-            // Если ни один город не выбран, выводим сообщение
             Toast.makeText(this, "Выберите город", Toast.LENGTH_SHORT).show();
         }
     }

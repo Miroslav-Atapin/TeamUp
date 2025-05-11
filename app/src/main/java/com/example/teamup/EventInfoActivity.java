@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -61,18 +60,16 @@ public class EventInfoActivity extends AppCompatActivity {
         tvTitleHeader.setText("О событии");
 
         imgbtnShareHeader.setOnClickListener(view -> {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-            builder.setTitle("Поделиться событием")
-                    .setMessage("Если вы хотите поделиться событием, скопируйте ID события " + event.id + " и отправьте друзьям.")
-                    .setPositiveButton("Скопировать код", (dialog, id) -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Поделиться событием")
+                    .setMessage("Если вы хотите поделиться событием, скопируйте ID события и отправьте друзьям.")
+                    .setNegativeButton("Отмена", (dialogInterface, i) -> dialogInterface.dismiss())
+                    .setPositiveButton("Скопировать код", (dialogInterface, i) -> {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("event_id", event.id);
                         clipboard.setPrimaryClip(clip);
                         Toast.makeText(this, "ID события скопировано в буфер обмена", Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("Отмена", (dialog, id) -> dialog.dismiss())
-                    .create()
-                    .show();
+                    }).create().show();
         });
 
         event = (Event) getIntent().getSerializableExtra("EVENT_DATA");
@@ -83,7 +80,6 @@ public class EventInfoActivity extends AppCompatActivity {
         }
 
         displayEventDetails(event);
-
         setupJoinButton(event);
     }
 
@@ -94,8 +90,7 @@ public class EventInfoActivity extends AppCompatActivity {
 
             String fullDateTime = formattedDate + ", " + event.timeStart + " — " + event.timeEnd;
             tvEventDate.setText(fullDateTime);
-        } catch (ParseException e) {
-            Log.e("DateError", "Ошибка преобразования даты", e);
+        } catch (ParseException ignored) {
             tvEventDate.setText(event.date);
         }
 
@@ -131,8 +126,8 @@ public class EventInfoActivity extends AppCompatActivity {
     }
 
     private void showUnsubscribeDialog(Event event) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setMessage("Вы уверены, что хотите отписаться от события?")
+        new MaterialAlertDialogBuilder(this)
+                .setMessage("Вы уверены, что хотите отписаться от события?")
                 .setPositiveButton("Да", (dialog, id) -> unsubscribeEvent(event))
                 .setNegativeButton("Нет", (dialog, id) -> dialog.dismiss())
                 .create()
@@ -162,9 +157,9 @@ public class EventInfoActivity extends AppCompatActivity {
     }
 
     private void showDeleteConfirmationDialog(Event event) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Удалить событие?")
-                .setMessage("Вы действительно хотите удалить данное событие?\n\nЭто действие нельзя отменить!")
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Удалить событие?")
+                .setMessage("Вы действительно хотите удалить данное событие?")
                 .setPositiveButton("Удалить", (dialog, which) -> deleteEvent(event))
                 .setNegativeButton("Отменить", (dialog, which) -> dialog.dismiss())
                 .create()

@@ -75,7 +75,6 @@
     <style name="ChipAssist" parent="Widget.Material3.Chip.Assist">
         <item name="chipBackgroundColor">@color/selector_chip_background</item>
         <item name="android:textColor">@color/selector_chip_text</item>
-<!--        <item name="checkedIcon">@drawable/ic_check</item>-->
         <item name="chipIconSize">18sp</item>
         <item name="chipStrokeWidth">0dp</item>
         <item name="chipMinHeight">40dp</item>
@@ -97,6 +96,15 @@
         <item name="helperTextTextColor">@color/secondary</item>
         <item name="errorTextColor">#ff3333</item>
         <item name="hintEnabled">false</item>
+    </style>
+
+
+    <!-- Стили -->
+    <style name="FullScreenDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <!-- Установите фон белого цвета для полного экрана -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 

@@ -34,27 +34,24 @@ public class SelectCategoryActivity extends AppCompatActivity {
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         radioGroupCategory = findViewById(R.id.radioGroupCategory);
 
-        imgbtnArrow.setOnClickListener(view -> finish());
-        tvTitleHeader.setText("Местоположение");
+        imgbtnArrow.setOnClickListener(v -> finish());
+        tvTitleHeader.setText("Категория");
 
-        // Обрабатываем клик на кнопку подтверждения выбора города
         Button btnSelectCategory = findViewById(R.id.btnSelectCategory);
-        btnSelectCategory.setOnClickListener(view -> handleCategorySelection());
+        btnSelectCategory.setOnClickListener(v -> handleCategorySelection());
     }
 
     private void handleCategorySelection() {
         int checkedRadioButtonId = radioGroupCategory.getCheckedRadioButtonId();
         if (checkedRadioButtonId != -1) {
             RadioButton selectedRadioButton = findViewById(checkedRadioButtonId);
-            String selectedCity = selectedRadioButton.getText().toString();
+            String selectedCategory = selectedRadioButton.getText().toString();
 
-            // Создаем объект Intent с результатом и возвращаем выбранный город
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("SELECTED_CATEGORY_KEY", selectedCity);
+            resultIntent.putExtra("SELECTED_CATEGORY_KEY", selectedCategory);
             setResult(RESULT_OK, resultIntent);
             finish();
         } else {
-            // Если ни один город не выбран, выводим сообщение
             Toast.makeText(this, "Выберите категорию", Toast.LENGTH_SHORT).show();
         }
     }

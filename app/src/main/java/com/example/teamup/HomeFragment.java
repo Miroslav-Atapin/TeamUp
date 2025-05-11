@@ -42,7 +42,7 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickListener, BottomSheetFilter.FilterResultListener {
 
-    private static final int REQUEST_CODE_SELECT_LOCATION = 1001; // Константа для распознавания результата activity
+    private static final int REQUEST_CODE_SELECT_LOCATION = 1001;
     private static final String SHARED_PREFS_NAME = "TeamUpPrefs";
     private static final String KEY_SELECTED_CITY = "selected_city";
 
@@ -55,10 +55,10 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
     private LinearLayout linearLayoutSearchEvent;
     private List<String> selectedCategories = new ArrayList<>();
     private List<String> selectedLevels = new ArrayList<>();
-    private Calendar selectedCalendar = Calendar.getInstance(); // Хранит выбранную дату
-    private String selectedDateFormatted = ""; // Форматированная дата
-    private boolean isSearchFieldVisible = false; // Статус видимости поля поиска
-    private String selectedCity; // Переменная для хранения выбранного города
+    private Calendar selectedCalendar = Calendar.getInstance();
+    private String selectedDateFormatted = "";
+    private boolean isSearchFieldVisible = false;
+    private String selectedCity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,98 +70,82 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
             return view;
         }
 
-        // Чтение последнего выбранного города из SharedPreferences
         readSelectedCityFromPrefs();
 
-        // Инициализация компонентов UI
         rvAllEvents = view.findViewById(R.id.rvAllEvents);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvAllEvents.setLayoutManager(layoutManager);
 
-        // Создание экземпляра нового адаптера
         adapter = new AdapterEvents(
                 getContext(),
-                new ArrayList<>(), // Начинаем с пустого списка
-                FirebaseAuth.getInstance().getCurrentUser().getUid(), // Идентификатор текущего пользователя
-                this, // Наш класс реализует интерфейс OnItemClickListener
-                AdapterEvents.MODE_GENERAL_LIST // Тип отображения
+                new ArrayList<>(),
+                FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                this,
+                AdapterEvents.MODE_GENERAL_LIST
         );
         rvAllEvents.setAdapter(adapter);
 
         tvNoEventsMessage = view.findViewById(R.id.tvNoEventsMessage);
 
-        // Загружаем события из Firebase сразу после инициализации
-        loadEventsFromFirebase(selectedCity);
-
-        // Настройка обработки нажатий на чипы
         Chip chipFilterDate = view.findViewById(R.id.chipFilterDate);
-        chipFilterDate.setOnCloseIconClickListener(v -> clearSelectedDate()); // Крестик для очистки даты
+        chipFilterDate.setOnCloseIconClickListener(v -> clearSelectedDate());
         chipFilterDate.setOnClickListener(v -> showDatePickerDialog());
 
         Chip chipFilterBottomSheet = view.findViewById(R.id.chipFilterBottomSheet);
         chipFilterBottomSheet.setOnClickListener(v -> {
             BottomSheetFilter bottomSheetFilter = BottomSheetFilter.newInstance(selectedCategories, selectedLevels);
-            bottomSheetFilter.setFilterResultListener(this); // Устанавливаем слушателя
+            bottomSheetFilter.setFilterResultListener(this);
             bottomSheetFilter.show(getActivity().getSupportFragmentManager(), "BottomSheetFilter");
         });
 
-        // Обработка нажатия на чип поиска события
         ImageButton imgbtnSearch = view.findViewById(R.id.imgbtnSearch);
         imgbtnSearch.setOnClickListener(v -> toggleSearchField());
 
-        // Получение ссылок на скрытые компоненты поиска
         linearLayoutSearchEvent = view.findViewById(R.id.linearLayoutSearchEvent);
         edIdEvent = view.findViewById(R.id.edIdEvent);
         btnIdEvent = view.findViewById(R.id.btnIdEvent);
-
-        // Обработка клика по поиску конкретного события по ID
         btnIdEvent.setOnClickListener(v -> searchEventById(edIdEvent.getText().toString()));
 
-        // Получение ссылки на layout с городом и обработка клика
         tvLocation = view.findViewById(R.id.tvLocation);
-        tvLocation.setText(selectedCity); // Устанавливаем последний выбранный город
-
+        tvLocation.setText(selectedCity);
         tvLocation.setOnClickListener(v -> openSelectLocationActivity());
 
-        // Добавляем обработку иконки крестика для сброса фильтров
         chipFilterBottomSheet.setOnCloseIconClickListener(v -> {
             selectedCategories.clear();
             selectedLevels.clear();
-            loadEventsFromFirebase(selectedCity); // Обновляем список событий без фильтров
-            updateChipWithFilterStatus(0); // Обновляем текст и иконку
+            loadEventsFromFirebase(selectedCity);
+            updateChipWithFilterStatus(0);
         });
+
+        loadEventsFromFirebase(selectedCity);
 
         return view;
     }
 
-    // Открытие страницы выбора города
     private void openSelectLocationActivity() {
         Intent intent = new Intent(requireContext(), SelectLocationActivity.class);
         startActivityForResult(intent, REQUEST_CODE_SELECT_LOCATION);
     }
 
-    // Обработка результата выбора города
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SELECT_LOCATION && resultCode == RESULT_OK) {
-            String selectedCity = data.getStringExtra("SELECTED_CITY_KEY"); // Получаем выбранный город
-            saveSelectedCityToPrefs(selectedCity); // Сохраняем выбранный город в SharedPreferences
-            tvLocation.setText(selectedCity); // Обновляем отображаемый город
-            applyCityFilter(selectedCity); // Применяем новый фильтр по городу
+            String selectedCity = data.getStringExtra("SELECTED_CITY_KEY");
+            saveSelectedCityToPrefs(selectedCity);
+            tvLocation.setText(selectedCity);
+            applyCityFilter(selectedCity);
         }
     }
 
-    // Применение фильтра по городу
     private void applyCityFilter(String city) {
         selectedCity = city;
-        loadEventsFromFirebase(city); // Обновляем список событий
+        loadEventsFromFirebase(city);
     }
 
-    // Загрузка событий с фильтром по городу
     private void loadEventsFromFirebase(String city) {
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        Query filteredQuery = eventsRef.orderByChild("city").equalTo(city); // Фильтруем по городу
+        Query filteredQuery = eventsRef.orderByChild("city").equalTo(city);
 
         filteredQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -180,17 +164,17 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
 
                     boolean matchCategories = true;
                     if (!selectedCategories.isEmpty()) {
-                        matchCategories = selectedCategories.contains(event.category); // Соответствие категориям
+                        matchCategories = selectedCategories.contains(event.category);
                     }
 
                     boolean matchLevels = true;
                     if (!selectedLevels.isEmpty()) {
-                        matchLevels = selectedLevels.contains(event.level); // Соответствие уровню
+                        matchLevels = selectedLevels.contains(event.level);
                     }
 
                     boolean matchDates = true;
                     if (!selectedDateFormatted.isEmpty()) {
-                        matchDates = event.date.equals(selectedDateFormatted); // Проверка соответствия даты
+                        matchDates = event.date.equals(selectedDateFormatted);
                     }
 
                     if (!event.creatorId.equals(currentUserId)
@@ -202,10 +186,9 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
                     }
                 }
 
-                // Сортируем события по дате и времени начала
                 Collections.sort(eventList, Comparator.comparing(Event::getDateAndTime));
 
-                adapter.updateEventList(eventList); // Обновляем данные в адаптере
+                adapter.updateEventList(eventList);
 
                 if (eventList.isEmpty()) {
                     tvNoEventsMessage.setVisibility(View.VISIBLE);
@@ -219,19 +202,16 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         });
     }
 
-    // Сохранение выбранного города в SharedPreferences
     private void saveSelectedCityToPrefs(String city) {
         SharedPreferences prefs = requireContext().getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE);
         prefs.edit().putString(KEY_SELECTED_CITY, city).apply();
     }
 
-    // Чтение последнего выбранного города из SharedPreferences
     private void readSelectedCityFromPrefs() {
         SharedPreferences prefs = requireContext().getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE);
-        selectedCity = prefs.getString(KEY_SELECTED_CITY, "Москва"); // По умолчанию - Москва
+        selectedCity = prefs.getString(KEY_SELECTED_CITY, "Москва");
     }
 
-    // Методы для работы с полем поиска
     private void toggleSearchField() {
         if (isSearchFieldVisible) {
             hideSearchField();
@@ -250,25 +230,22 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         isSearchFieldVisible = false;
     }
 
-    // Поиск события по ID
     private void searchEventById(String eventId) {
         if (eventId.isEmpty()) {
             Toast.makeText(getContext(), "Укажите идентификатор события.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId);
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId);
         eventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) { // Найдено событие с указанным ID
+                if (snapshot.exists()) {
                     Event foundEvent = snapshot.getValue(Event.class);
-
-                    // Переход на экран информации о событии
                     Intent intent = new Intent(getContext(), EventInfoActivity.class);
                     intent.putExtra("EVENT_DATA", foundEvent);
                     startActivity(intent);
-                } else { // Нет такого события
+                } else {
                     Toast.makeText(getContext(), "События с таким ID не существует.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -280,7 +257,6 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         });
     }
 
-    // Диалог выбора даты
     private void showDatePickerDialog() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -288,7 +264,7 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 
         Calendar maxCal = Calendar.getInstance();
-        maxCal.add(Calendar.DAY_OF_YEAR, 6); // Максимально выбираемая дата - текущая + 6 дней
+        maxCal.add(Calendar.DAY_OF_YEAR, 6);
 
         DatePickerDialog dialog = new DatePickerDialog(requireContext(),
                 (view, y, m, d) -> {
@@ -299,49 +275,44 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
                     selectedDateFormatted = sdf.format(selectedDate.getTime());
 
                     updateChipWithSelectedDate(selectedDateFormatted);
-                    loadEventsFromFirebase(selectedCity); // Применяем фильтрацию по дате
+                    loadEventsFromFirebase(selectedCity);
                 },
                 year, month, dayOfMonth);
 
-        dialog.getDatePicker().setMinDate(cal.getTimeInMillis());      // Минимальная дата - текущая
-        dialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());   // Максимальная дата - через 6 дней
+        dialog.getDatePicker().setMinDate(cal.getTimeInMillis());
+        dialog.getDatePicker().setMaxDate(maxCal.getTimeInMillis());
         dialog.show();
     }
 
-    // Обновление текста на чипе с датой
     private void updateChipWithSelectedDate(String dateStr) {
         Chip chipFilterDate = requireView().findViewById(R.id.chipFilterDate);
         chipFilterDate.setText(dateStr);
-        chipFilterDate.setCloseIconVisible(true); // Включаем иконку крестика
+        chipFilterDate.setCloseIconVisible(true);
     }
 
-    // Очистка выбранного значения даты
     private void clearSelectedDate() {
         selectedDateFormatted = "";
-        updateChipWithDefaultText(); // Возвращаем начальную надпись на чипе
-        loadEventsFromFirebase(selectedCity); // Перезагрузка списка без учёта даты
+        updateChipWithDefaultText();
+        loadEventsFromFirebase(selectedCity);
     }
 
-    // Возвращаем текст на чипе по умолчанию
     private void updateChipWithDefaultText() {
         Chip chipFilterDate = requireView().findViewById(R.id.chipFilterDate);
         chipFilterDate.setText("Выбрать дату");
-        chipFilterDate.setCloseIconVisible(false); // Убираем иконку крестика
+        chipFilterDate.setCloseIconVisible(false);
     }
 
-    // Обновление статуса чека фильтра
     private void updateChipWithFilterStatus(int filterCount) {
         Chip chipFilterBottomSheet = requireView().findViewById(R.id.chipFilterBottomSheet);
         if (filterCount > 0) {
             chipFilterBottomSheet.setText("Фильтры (" + filterCount + ")");
-            chipFilterBottomSheet.setCloseIconVisible(true); // Включаем иконку крестика
+            chipFilterBottomSheet.setCloseIconVisible(true);
         } else {
             chipFilterBottomSheet.setText("Фильтр");
-            chipFilterBottomSheet.setCloseIconVisible(false); // Скрываем иконку крестика
+            chipFilterBottomSheet.setCloseIconVisible(false);
         }
     }
 
-    // Обработка нажатия на элемент списка
     @Override
     public void onItemClick(Event event, int position) {
         Intent intent = new Intent(getContext(), EventInfoActivity.class);
@@ -349,15 +320,13 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         startActivity(intent);
     }
 
-    // Обработка результата фильтра
     @Override
     public void onFiltersApplied(List<String> categories, List<String> levels) {
         selectedCategories = categories;
         selectedLevels = levels;
-        loadEventsFromFirebase(selectedCity); // Обновляем список событий с новыми условиями фильтрации
+        loadEventsFromFirebase(selectedCity);
 
         int totalFilters = categories.size() + levels.size();
-        updateChipWithFilterStatus(totalFilters); // Обновляем статус фильтра
+        updateChipWithFilterStatus(totalFilters);
     }
-
 }

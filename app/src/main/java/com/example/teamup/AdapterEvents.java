@@ -10,16 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-// Объединённый адаптер для всех типов отображений событий
 public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewHolder> {
 
-    // Режимы отображения
     public static final int MODE_GENERAL_LIST = 0;
     public static final int MODE_USER_ROLE = 1;
 
@@ -29,12 +30,10 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
     private OnItemClickListener listener;
     private int modeDisplay;
 
-    // Интерфейс для уведомления о выборе элемента
     public interface OnItemClickListener {
         void onItemClick(Event event, int position);
     }
 
-    // Конструктор с поддержкой режима отображения
     public AdapterEvents(Context context, List<Event> eventList, String userId,
                          OnItemClickListener listener, int modeDisplay) {
         this.context = context;
@@ -44,7 +43,6 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
         this.modeDisplay = modeDisplay;
     }
 
-    // Обновление списка событий
     public void updateEventList(List<Event> eventList) {
         this.eventList.clear();
         this.eventList.addAll(eventList);
@@ -54,22 +52,18 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_events, parent, false); // Используем общую разметку Option1
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_events, parent, false);
         return new EventViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event currentEvent = eventList.get(position);
-
-        // Установка основных полей (название, категория, уровень и местоположение)
         holder.tvEventTitle.setText(currentEvent.name);
         holder.tvEventCategory.setText(currentEvent.category);
         holder.tvEventLevel.setText(currentEvent.level);
         holder.tvEventLocation.setText(currentEvent.location + ", " + currentEvent.city);
 
-        // Преобразование даты и времени события
         try {
             SimpleDateFormat inputFormatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
             Date eventDate = inputFormatter.parse(currentEvent.date);
@@ -78,24 +72,28 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
 
             String fullDateString = readableDate + ", " + currentEvent.timeStart + " - " + currentEvent.timeEnd;
             holder.tvEventDate.setText(fullDateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (ParseException ignored) {}
 
-        // Если выбран режим отображения роли пользователя
         if (modeDisplay == MODE_USER_ROLE && userId != null) {
             boolean isOrganizer = currentEvent.creatorId.equals(userId);
+            boolean isParticipant = currentEvent.participants.containsKey(userId);
+
+            if (isOrganizer) {
+                holder.tvEventRole.setText("Организатор");
+            } else if (isParticipant) {
+                holder.tvEventRole.setText("Участник");
+            } else {
+                holder.tvEventRole.setText("Гость");
+            }
             holder.tvEventRole.setVisibility(View.VISIBLE);
-            holder.tvEventRole.setText(isOrganizer ? "Организатор" : "Участник");
         } else {
             holder.tvEventRole.setVisibility(View.GONE);
         }
 
-        // Добавляем слушатель кликов
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) { // Если используется общий обработчик
+            if (listener != null) {
                 listener.onItemClick(currentEvent, position);
-            } else { // Иначе открываем Activity с информацией о событии
+            } else {
                 Intent intent = new Intent(context, EventInfoActivity.class);
                 intent.putExtra("EVENT_DATA", currentEvent);
                 context.startActivity(intent);
@@ -108,7 +106,6 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
         return eventList.size();
     }
 
-    // Класс-холдер для представления события
     static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView tvEventTitle;
         TextView tvEventRole;
@@ -125,7 +122,6 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.EventViewH
             tvEventCategory = itemView.findViewById(R.id.tvEventCategory);
             tvEventLevel = itemView.findViewById(R.id.tvEventLevel);
             tvEventLocation = itemView.findViewById(R.id.tvEventLocation);
-            tvEventRole = itemView.findViewById(R.id.tvEventRole);
         }
     }
 }

@@ -27,19 +27,7 @@ public class StartActivity extends AppCompatActivity {
         Button btnGoToLogin = findViewById(R.id.btnGoToLogin);
         Button btnGoToRegister = findViewById(R.id.btnGoToRegister);
 
-        btnGoToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(StartActivity.this, LoginActivity.class));
-            }
-        });
-
-        btnGoToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(StartActivity.this, RegisterActivity.class));
-            }
-        });
-
+        btnGoToLogin.setOnClickListener(v -> startActivity(new Intent(StartActivity.this, LoginActivity.class)));
+        btnGoToRegister.setOnClickListener(v -> startActivity(new Intent(StartActivity.this, RegisterActivity.class)));
     }
 }

@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/BtnAction"
-            android:text="О приложении"
+            android:text="Сообщить об ошибке"
             android:drawableLeft="@drawable/ic_warningcircle"
             android:drawablePadding="10dp"
             android:gravity="start"
@@ -80,6 +80,13 @@
             android:gravity="start"
             android:layout_marginTop="10dp"/>
 
+
+
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_edit_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

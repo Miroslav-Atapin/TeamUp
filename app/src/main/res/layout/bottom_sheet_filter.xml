@@ -58,18 +58,18 @@
                 android:text="Волейбол" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterFitness"
-                style="@style/ChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Фитнес" />
-
-            <com.google.android.material.chip.Chip
                 android:id="@+id/chipFilterAthletics"
                 style="@style/ChipFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Лёгкая атлетика" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterFitness"
+                style="@style/ChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Фитнес" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFilterMartialArts"
@@ -117,39 +117,49 @@
         android:layout_marginTop="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tvLevelQuestion"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Уровень"
-            style="@style/TitleHeader"/>
+            style="@style/TitleHeader"
+            android:drawableRight="@drawable/ic_question"
+            android:drawablePadding="5dp"/>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupLevel"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:scrollbars="none">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterEasy"
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupLevel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ChipFilter"
-                android:text="Лёгкий"/>
+                android:layout_marginTop="10dp">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ChipFilter"
-                android:text="Средний"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterEasy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/ChipFilter"
+                    android:text="Лёгкий"/>
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterHard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ChipFilter"
-                android:text="Сложный"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/ChipFilter"
+                    android:text="Средний"/>
 
-        </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterHard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/ChipFilter"
+                    android:text="Сложный"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
     </LinearLayout>
 

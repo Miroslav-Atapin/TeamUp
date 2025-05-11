@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".RegisterActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".EditProfileFragment">
 
     <LinearLayout
         android:id="@+id/main"
@@ -33,27 +33,6 @@
                 style="@style/EditText"
                 android:hint="Email"
                 android:inputType="textEmailAddress"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextInputLayout"
-            app:endIconMode="password_toggle"
-            app:helperText="Минимум 8 символов"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_edittext"
-                style="@style/EditText"
-                android:hint="Пароль"
-                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,25 +76,14 @@
 
 
         <Button
-            android:id="@+id/btnCreateProfile"
+            android:id="@+id/btnSaveEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/BtnDefault"
-            android:text="Создать аккаунт"
+            android:text="Сохранить изменения"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="50dp"/>
 
-        <TextView
-            android:id="@+id/tvGoToLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Войти в аккаунт"
-            android:textAlignment="center"
-            style="@style/TextMedium"
-            android:textColor="@color/accent"/>
-
     </LinearLayout>
 
-</ScrollView>
+</FrameLayout>

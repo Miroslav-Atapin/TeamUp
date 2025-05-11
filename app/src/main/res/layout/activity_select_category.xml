@@ -37,7 +37,9 @@
                     android:layoutDirection="rtl"
                     style="@style/TextMedium"
                     android:textColor="@color/black"
-                    android:background="@drawable/shape_city_category" />
+                    android:background="@drawable/shape_city_category"
+                    android:drawableLeft="@drawable/ic_sport_soccer"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnBasketball"
@@ -48,7 +50,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_basketball"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnVolleyball"
@@ -59,18 +63,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
-
-                <RadioButton
-                    android:id="@+id/radioBtnFitness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Фитнес"
-                    android:layoutDirection="rtl"
-                    style="@style/TextMedium"
-                    android:textColor="@color/black"
-                    android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_volleyball"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnAthletics"
@@ -81,7 +76,22 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_treadmill"
+                    android:drawablePadding="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioBtnFitness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Фитнес"
+                    android:layoutDirection="rtl"
+                    style="@style/TextMedium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_city_category"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_dumbbells"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnMartialArts"
@@ -92,7 +102,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_boxing_glove"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnHockey"
@@ -103,7 +115,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_ice_hockey"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnCycling"
@@ -114,7 +128,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_bicycle"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnWaterSports"
@@ -125,7 +141,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_swimming_ring"
+                    android:drawablePadding="10dp"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnWinterSports"
@@ -136,7 +154,9 @@
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:background="@drawable/shape_city_category"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_sport_ice_skate"
+                    android:drawablePadding="10dp"/>
 
             </RadioGroup>
 
@@ -149,7 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         style="@style/BtnDefault"
         android:text="Выбрать"/>

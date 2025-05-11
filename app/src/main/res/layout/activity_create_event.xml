@@ -45,12 +45,19 @@
             android:orientation="vertical"
             android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleHeader"
+                android:text="Основная информация"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayout">
+                style="@style/TextInputLayout"
+                android:layout_marginTop="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edEventName"
@@ -59,7 +66,7 @@
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
                     android:hint="Название события"
-                    android:inputType="textCapWords"/>
+                    android:inputType="textCapSentences"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,40 +95,51 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvLevelQuestion"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Уровень"
                     style="@style/TextMedium"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:drawableRight="@drawable/ic_question"
+                    android:drawablePadding="5dp" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupLevel"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterEasy"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupLevel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/ChipFilter"
-                        android:text="Лёгкий"/>
+                        app:singleSelection="true"
+                        android:layout_marginTop="10dp">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/ChipFilter"
-                        android:text="Средний"/>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipFilterEasy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/ChipFilter"
+                            android:text="Лёгкий"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterHard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/ChipFilter"
-                        android:text="Сложный"/>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipFilterMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/ChipFilter"
+                            android:text="Средний"/>
 
-                </com.google.android.material.chip.ChipGroup>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipFilterHard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/ChipFilter"
+                            android:text="Сложный"/>
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
 
             </LinearLayout>
 
@@ -171,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/shape_edittext"
                             android:hint="1"
-                            android:inputType="textCapWords"
+                            android:inputType="number"
                             android:textAlignment="center" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -202,11 +220,18 @@
             android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleHeader"
+                android:text="Место и время"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayout">
+                style="@style/TextInputLayout"
+                android:layout_marginTop="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edEventDate"
@@ -297,7 +322,7 @@
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
                     android:hint="Улица, дом, квартира"
-                    android:inputType="textCapWords"/>
+                    android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -314,11 +339,18 @@
             android:background="@drawable/shape_white_block"
             android:layout_marginTop="10dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleHeader"
+                android:text="Дополнительная информация"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayout">
+                style="@style/TextInputLayout"
+                android:layout_marginTop="20dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edEventInfo"

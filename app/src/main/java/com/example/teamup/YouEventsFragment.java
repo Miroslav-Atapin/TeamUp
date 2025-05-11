@@ -1,10 +1,7 @@
 package com.example.teamup;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +38,6 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
         View rootView = inflater.inflate(R.layout.fragment_you_events, container, false);
 
         Button btnGoToCreateEvent = rootView.findViewById(R.id.btnGoToCreateEvent);
-
         btnGoToCreateEvent.setOnClickListener(v -> startActivity(new Intent(getActivity(), CreateEventActivity.class)));
 
         rvYourEvents = rootView.findViewById(R.id.rvYouEvents);
@@ -77,23 +73,17 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
                     }
                 }
 
-                // Проверяем наличие контекста
                 if (isAdded()) {
-                    adapter = new AdapterEvents(requireContext(), eventList,
-                            "", YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);
+                    adapter = new AdapterEvents(requireContext(), eventList, userId, YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);
                     rvYourEvents.setAdapter(adapter);
-
                     setEventCountText(tvCountEvents, eventList.size());
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         };
 
-        // Добавляем временный слушатель, а не постоянный, чтобы предотвратить утечку памяти
         eventsRef.addListenerForSingleValueEvent(valueEventListener);
     }
 
@@ -122,9 +112,8 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
 
     @Override
     public void onItemClick(Event event, int position) {
-        // Создаем интент для открытия активности с информацией о событии
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
-        intent.putExtra("EVENT_DATA", event); // Передаем объект события
-        startActivity(intent); // Запускаем активити
+        intent.putExtra("EVENT_DATA", event);
+        startActivity(intent);
     }
 }

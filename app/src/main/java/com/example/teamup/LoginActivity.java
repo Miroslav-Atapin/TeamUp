@@ -45,93 +45,68 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Инициализация элементов интерфейса
-        tilEmail = findViewById(R.id.tilEmail);       // Обертка поля Email
-        tilPassword = findViewById(R.id.tilPassword); // Обертка поля Password
-        edEmail = findViewById(R.id.edEmail);         // Поле Email
-        edPassword = findViewById(R.id.edPassword);   // Поле Password
-        btnLoginAccount = findViewById(R.id.btnLoginAccount); // Кнопка авторизации
-        tvGoToRegister = findViewById(R.id.tvGoToRegister);   // Переход к регистрации
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        edEmail = findViewById(R.id.edEmail);
+        edPassword = findViewById(R.id.edPassword);
+        btnLoginAccount = findViewById(R.id.btnLoginAccount);
+        tvGoToRegister = findViewById(R.id.tvGoToRegister);
 
-        // Перейти к стартовому экрану
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
         imgbtnArrow.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, StartActivity.class)));
 
-        // Заголовок экрана
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvTitleHeader.setText("Войти в аккаунт");
 
-        // Открыть форму регистрации
         tvGoToRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
 
-        // Авторизация
-        btnLoginAccount.setOnClickListener(view -> performLogin());
+        btnLoginAccount.setOnClickListener(v -> performLogin());
     }
 
-    /**
-     * Выполняем проверку полей формы и авторизацию пользователя
-     */
     private void performLogin() {
-        final String email = edEmail.getText().toString().trim();      // Получаем email
-        final String password = edPassword.getText().toString().trim(); // Получаем пароль
+        String email = edEmail.getText().toString().trim();
+        String password = edPassword.getText().toString().trim();
 
         boolean hasErrors = false;
 
-        // Проверяем поле email
         if (email.isEmpty()) {
-            tilEmail.setError("Это поле обязательно для заполнения"); // Ошибка пустого поля
+            tilEmail.setError("Это поле обязательно для заполнения");
             hasErrors = true;
-        } else if (!isValidEmail(email)) {                             // Неправильно указанный email
+        } else if (!isValidEmail(email)) {
             tilEmail.setError("Неверный адрес электронной почты");
             hasErrors = true;
         } else {
-            tilEmail.setError(null);                                  // Убираем ошибку, если данные верны
+            tilEmail.setError(null);
         }
 
-        // Проверяем поле пароля
         if (password.isEmpty()) {
-            tilPassword.setError("Это поле обязательно для заполнения"); // Пустое поле
+            tilPassword.setError("Это поле обязательно для заполнения");
             hasErrors = true;
-        } else if (password.length() < 8) {                           // Короткий пароль
+        } else if (password.length() < 8) {
             tilPassword.setError("Пароль должен содержать минимум 8 символов");
             hasErrors = true;
         } else {
-            tilPassword.setError(null);                               // Убираем ошибку, если данные верны
+            tilPassword.setError(null);
         }
 
-        // Если ошибок нет — отправляем запрос на сервер
         if (!hasErrors) {
             authenticateUser(email, password);
         }
     }
 
-    /**
-     * Метод проверки правильности адреса электронной почты
-     *
-     * @param email Адрес электронной почты
-     * @return true, если адрес валидный
-     */
     private boolean isValidEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
 
-    /**
-     * Запуск процесса аутентификации пользователя
-     *
-     * @param email    Электронная почта
-     * @param password Пароль
-     */
-    private void authenticateUser(final String email, final String password) {
+    private void authenticateUser(String email, String password) {
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Пользователь успешно вошел
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        // Аутентификация не удалась
                         Toast.makeText(getApplicationContext(),
                                 "Ошибка входа: неверный пароль или электронная почта",
                                 Toast.LENGTH_LONG).show();

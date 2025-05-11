@@ -47,45 +47,36 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Инициализируем элементы UI
-        tilEmail = findViewById(R.id.tilEmail);          // Обёртка поля Email
-        tilPassword = findViewById(R.id.tilPassword);    // Обёртка поля Password
-        tilFirstName = findViewById(R.id.tilFirstName);  // Обёртка поля First Name
-        tilLastName = findViewById(R.id.tilLastName);    // Обёртка поля Last Name
-        edEmail = findViewById(R.id.edEmail);            // Поле Email
-        edPassword = findViewById(R.id.edPassword);      // Поле Password
-        edFirstName = findViewById(R.id.edFirstName);    // Поле First Name
-        edLastName = findViewById(R.id.edLastName);      // Поле Last Name
-        btnCreateProfile = findViewById(R.id.btnCreateProfile); // Кнопка регистрации
-        tvGoToLogin = findViewById(R.id.tvGoToLogin);    // Переход к форме входа
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        tilFirstName = findViewById(R.id.tilFirstName);
+        tilLastName = findViewById(R.id.tilLastName);
+        edEmail = findViewById(R.id.edEmail);
+        edPassword = findViewById(R.id.edPassword);
+        edFirstName = findViewById(R.id.edFirstName);
+        edLastName = findViewById(R.id.edLastName);
+        btnCreateProfile = findViewById(R.id.btnCreateProfile);
+        tvGoToLogin = findViewById(R.id.tvGoToLogin);
 
-        // Настройка заголовка экрана
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
         tvTitleHeader.setText("Создать аккаунт");
 
-        // Переход назад к начальной странице
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
         imgbtnArrow.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, StartActivity.class)));
 
-        // Переход к форме входа
         tvGoToLogin.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
 
-        // Регистрация нового пользователя
-        btnCreateProfile.setOnClickListener(view -> registerNewUser());
+        btnCreateProfile.setOnClickListener(v -> registerNewUser());
     }
 
-    /**
-     * Выполнение регистрации пользователя
-     */
     private void registerNewUser() {
-        final String email = edEmail.getText().toString().trim();      // Получаем email
-        final String password = edPassword.getText().toString().trim(); // Получаем пароль
-        final String firstName = edFirstName.getText().toString().trim(); // Имя
-        final String lastName = edLastName.getText().toString().trim(); // Фамилия
+        String email = edEmail.getText().toString().trim();
+        String password = edPassword.getText().toString().trim();
+        String firstName = edFirstName.getText().toString().trim();
+        String lastName = edLastName.getText().toString().trim();
 
         boolean hasErrors = false;
 
-        // Проверка заполненности всех полей
         if (email.isEmpty()) {
             tilEmail.setError("Это поле обязательно для заполнения");
             hasErrors = true;
@@ -93,10 +84,9 @@ public class RegisterActivity extends AppCompatActivity {
             tilEmail.setError("Неверный адрес электронной почты");
             hasErrors = true;
         } else {
-            tilEmail.setError(null); // Скрываем ошибку, если поле верно
+            tilEmail.setError(null);
         }
 
-        // Проверка пароля
         if (password.isEmpty()) {
             tilPassword.setError("Это поле обязательно для заполнения");
             hasErrors = true;
@@ -104,58 +94,37 @@ public class RegisterActivity extends AppCompatActivity {
             tilPassword.setError("Пароль должен содержать минимум 8 символов");
             hasErrors = true;
         } else {
-            tilPassword.setError(null); // Скрываем ошибку, если поле верно
+            tilPassword.setError(null);
         }
 
-        // Проверка имени
         if (firstName.isEmpty()) {
             tilFirstName.setError("Это поле обязательно для заполнения");
             hasErrors = true;
         } else {
-            tilFirstName.setError(null); // Скрываем ошибку, если поле верно
+            tilFirstName.setError(null);
         }
 
-        // Проверка фамилии
         if (lastName.isEmpty()) {
             tilLastName.setError("Это поле обязательно для заполнения");
             hasErrors = true;
         } else {
-            tilLastName.setError(null); // Скрываем ошибку, если поле верно
+            tilLastName.setError(null);
         }
 
-        // Если ошибок нет — регистрируем пользователя
         if (!hasErrors) {
             createFirebaseUser(email, password, firstName, lastName);
         }
     }
 
-    /**
-     * Метод проверки корректности электронного адреса
-     *
-     * @param email электронный адрес
-     * @return true, если адрес правильный
-     */
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    /**
-     * Создание аккаунта пользователя в Firebase Auth и запись данных в базу данных
-     *
-     * @param email     электронный адрес
-     * @param password  пароль
-     * @param firstName имя пользователя
-     * @param lastName  фамилия пользователя
-     */
-    private void createFirebaseUser(final String email,
-                                    final String password,
-                                    final String firstName,
-                                    final String lastName) {
+    private void createFirebaseUser(String email, String password, String firstName, String lastName) {
         FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Добавление дополнительной информации пользователя в базу данных
                         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         HashMap<String, Object> userData = new HashMap<>();
@@ -165,18 +134,15 @@ public class RegisterActivity extends AppCompatActivity {
 
                         usersRef.child(uid).setValue(userData)
                                 .addOnSuccessListener(aVoid -> {
-                                    // Успех записи данных
                                     Log.d("REGISTER", "Пользователь зарегистрирован и информация сохранена");
                                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                     finish();
                                 })
                                 .addOnFailureListener(e -> {
-                                    // Неудача при сохранении данных
                                     Log.e("REGISTER", "Ошибка сохранения данных пользователя: " + e.getMessage());
                                     Toast.makeText(RegisterActivity.this, "Ошибка регистрации. Попробуйте позже.", Toast.LENGTH_SHORT).show();
                                 });
                     } else {
-                        // Ошибка регистрации
                         Log.e("REGISTER", "Ошибка регистрации: " + task.getException().getMessage());
                         Toast.makeText(RegisterActivity.this, "Ошибка регистрации. Проверьте данные и попробуйте ещё раз.", Toast.LENGTH_SHORT).show();
                     }
