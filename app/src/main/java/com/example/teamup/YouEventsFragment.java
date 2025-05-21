@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,7 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
     private AdapterEvents adapter;
     private List<Event> eventList;
     private TextView tvCountEvents;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Nullable
     @Override
@@ -42,6 +44,8 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
 
         rvYourEvents = rootView.findViewById(R.id.rvYouEvents);
         tvCountEvents = rootView.findViewById(R.id.tvCountEvents);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> reloadEvents());
 
         eventList = new ArrayList<>();
 
@@ -59,6 +63,16 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
         return rootView;
     }
 
+    private void reloadEvents() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String userId = firebaseUser.getUid();
+            DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
+            loadEventsFromFirebase(eventsRef, userId);
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     private void loadEventsFromFirebase(DatabaseReference eventsRef, final String userId) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -67,7 +81,6 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Event event = snapshot.getValue(Event.class);
-
                     if (event.participants.containsKey(userId) || event.creatorId.equals(userId)) {
                         eventList.add(event);
                     }

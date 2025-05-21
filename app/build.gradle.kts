@@ -50,7 +50,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation ("com.google.android.flexbox:flexbox:3.0.0")
-
     implementation ("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
+
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

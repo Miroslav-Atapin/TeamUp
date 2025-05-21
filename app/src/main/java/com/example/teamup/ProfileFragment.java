@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,8 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
+    private FirebaseAuth auth;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -38,54 +41,72 @@ public class ProfileFragment extends Fragment {
         Button btnReportError = view.findViewById(R.id.btnReportError);
         Button btnEditProfile = view.findViewById(R.id.btnEditProfile);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        // Получаем доступ к SwipeRefreshLayout
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> fetchUserDetails());
+
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("Users");
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-
-            usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String firstName = dataSnapshot.child("FirstName").getValue(String.class);
-                        String lastName = dataSnapshot.child("LastName").getValue(String.class);
-
-                        if (firstName != null && lastName != null) {
-                            String fullName = firstName + " " + lastName;
-                            tvProfileName.setText(fullName);
-                        }
-                        if (user.getEmail() != null) {
-                            tvProfileEmail.setText(user.getEmail());
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            });
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            fetchUserDetails(uid, tvProfileName, tvProfileEmail);
         }
 
-        btnLogOutAccount.setOnClickListener(v -> {
-            new MaterialAlertDialogBuilder(getContext())
-                    .setTitle("Выход из аккаунта")
-                    .setMessage("Вы уверены, что хотите выйти из аккаунта?")
-                    .setPositiveButton("Да", (dialog, which) -> {
-                        mAuth.signOut();
-                        startActivity(new Intent(getContext(), StartActivity.class));
-                        getActivity().finish();
-                    })
-                    .setNegativeButton("Нет", null)
-                    .show();
-        });
-
+        btnLogOutAccount.setOnClickListener(v -> showLogoutConfirmation());
         btnReportError.setOnClickListener(v -> sendEmailIntent());
-
         btnEditProfile.setOnClickListener(v -> openEditProfileFragment());
 
         return view;
+    }
+
+    private void fetchUserDetails() {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            fetchUserDetails(uid, getView().findViewById(R.id.tvProfileName), getView().findViewById(R.id.tvProfileEmail));
+        }
+        swipeRefreshLayout.setRefreshing(false); // останавливаем анимацию обновления
+    }
+
+    private void fetchUserDetails(String uid, TextView nameField, TextView emailField) {
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String firstName = dataSnapshot.child("FirstName").getValue(String.class);
+                    String lastName = dataSnapshot.child("LastName").getValue(String.class);
+
+                    if (firstName != null && lastName != null) {
+                        nameField.setText(firstName + " " + lastName);
+                    }
+
+                    if (auth.getCurrentUser() != null && auth.getCurrentUser().getEmail() != null) {
+                        emailField.setText(auth.getCurrentUser().getEmail());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void showLogoutConfirmation() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Выход из аккаунта")
+                .setMessage("Вы уверены, что хотите выйти из аккаунта?")
+                .setPositiveButton("Да", (dialog, which) -> logoutAndRedirect())
+                .setNegativeButton("Нет", null)
+                .show();
+    }
+
+    private void logoutAndRedirect() {
+        auth.signOut();
+        startActivity(new Intent(getContext(), StartActivity.class));
+        getActivity().finish();
     }
 
     private void sendEmailIntent() {
@@ -96,7 +117,7 @@ public class ProfileFragment extends Fragment {
 
         try {
             startActivity(emailIntent);
-        } catch (android.content.ActivityNotFoundException ex) {
+        } catch (android.content.ActivityNotFoundException e) {
             new MaterialAlertDialogBuilder(getContext())
                     .setTitle("Ошибка")
                     .setMessage("Приложение для отправки писем не установлено.")
@@ -107,7 +128,6 @@ public class ProfileFragment extends Fragment {
 
     private void openEditProfileFragment() {
         EditProfileFragment editProfileFragment = new EditProfileFragment();
-
         requireActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
