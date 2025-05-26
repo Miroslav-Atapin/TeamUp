@@ -23,8 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemClickListener {
 
@@ -73,6 +79,24 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    private Comparator<Event> eventComparator = new Comparator<Event>() {
+        @Override
+        public int compare(Event e1, Event e2) {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.US);
+
+                Date date1 = format.parse(e1.date + " " + e1.timeStart);
+
+                Date date2 = format.parse(e2.date + " " + e2.timeStart);
+
+                // Возвращаем результат сравнения
+                return date1.compareTo(date2);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    };
+
     private void loadEventsFromFirebase(DatabaseReference eventsRef, final String userId) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -85,6 +109,8 @@ public class YouEventsFragment extends Fragment implements AdapterEvents.OnItemC
                         eventList.add(event);
                     }
                 }
+
+                Collections.sort(eventList, eventComparator);
 
                 if (isAdded()) {
                     adapter = new AdapterEvents(requireContext(), eventList, userId, YouEventsFragment.this, AdapterEvents.MODE_USER_ROLE);

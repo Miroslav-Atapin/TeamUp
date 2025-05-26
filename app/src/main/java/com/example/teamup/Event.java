@@ -55,9 +55,4 @@ public class Event implements Serializable {
     public int getAvailableSlots() {
         return maxParticipants - getNumberOfParticipants();
     }
-
-    public String getDateAndTime() {
-        return date + " " + timeStart;
-    }
-
 }

@@ -32,11 +32,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -143,6 +145,24 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
         loadEventsFromFirebase(city);
     }
 
+    private Comparator<Event> eventComparator = new Comparator<Event>() {
+        @Override
+        public int compare(Event e1, Event e2) {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.US);
+
+                Date date1 = format.parse(e1.date + " " + e1.timeStart);
+
+                Date date2 = format.parse(e2.date + " " + e2.timeStart);
+
+                // Возвращаем результат сравнения
+                return date1.compareTo(date2);
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    };
+
     private void loadEventsFromFirebase(String city) {
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         Query filteredQuery = eventsRef.orderByChild("city").equalTo(city);
@@ -186,7 +206,7 @@ public class HomeFragment extends Fragment implements AdapterEvents.OnItemClickL
                     }
                 }
 
-                Collections.sort(eventList, Comparator.comparing(Event::getDateAndTime));
+                Collections.sort(eventList, eventComparator);
 
                 adapter.updateEventList(eventList);
 
