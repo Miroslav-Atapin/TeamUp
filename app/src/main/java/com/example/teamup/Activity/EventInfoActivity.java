@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.Activity;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.teamup.Event;
+import com.example.teamup.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

@@ -15,37 +15,37 @@
         android:theme="@style/Base.Theme.TeamUp"
         tools:targetApi="31">
         <activity
-            android:name=".SelectLocationActivity"
+            android:name=".Activity.SelectLocationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SelectCategoryActivity"
+            android:name=".Activity.SelectCategoryActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".StartActivity"
+            android:name=".Activity.StartActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EventInfoActivity"
+            android:name=".Activity.EventInfoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CreateEventActivity"
+            android:name=".Activity.CreateEventActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activity.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

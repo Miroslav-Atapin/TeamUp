@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -22,6 +22,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teamup.Activity.EventInfoActivity;
+import com.example.teamup.Activity.SelectLocationActivity;
+import com.example.teamup.Activity.StartActivity;
+import com.example.teamup.AdapterEvents;
+import com.example.teamup.BottomSheetFilter;
+import com.example.teamup.Event;
+import com.example.teamup.R;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

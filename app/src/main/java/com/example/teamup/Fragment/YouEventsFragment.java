@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.teamup.Activity.CreateEventActivity;
+import com.example.teamup.Activity.EventInfoActivity;
+import com.example.teamup.AdapterEvents;
+import com.example.teamup.Event;
+import com.example.teamup.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
