@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_caretdown"
                 android:drawablePadding="5dp"
-                android:text="Москва"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,14 +52,14 @@
                 android:id="@+id/chipFilterDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Выбрать дату"
+                android:text="@string/filter_selectDate"
                 style="@style/ChipAssist"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFilterBottomSheet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Фильтры"
+                android:text="@string/filter_selectFilter"
                 style="@style/ChipAssist"
                 android:layout_marginHorizontal="10dp"/>
 
@@ -81,7 +80,7 @@
                 android:layout_height="wrap_content"
                 style="@style/EditText"
                 android:background="@drawable/shape_edittext"
-                android:hint="Id события"
+                android:hint="@string/textInput_eventID"
                 android:layout_weight="1"
                 android:layout_marginRight="20dp"/>
 
@@ -90,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/BtnDefault"
-                android:text="Найти"/>
+                android:text="@string/btn_search"/>
 
         </LinearLayout>
 
@@ -113,7 +112,7 @@
                 android:visibility="gone"
                 style="@style/TextMedium"
                 android:textColor="@color/black"
-                android:text="К сожалению, события не найдены. Попробуйте изменить фильтры."/>
+                android:text="@string/error_eventSearch"/>
 
         </LinearLayout>
 

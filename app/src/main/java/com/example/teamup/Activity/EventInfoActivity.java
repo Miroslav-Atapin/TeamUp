@@ -59,7 +59,7 @@ public class EventInfoActivity extends AppCompatActivity {
         btnJoinEvent = findViewById(R.id.btnJoinEvent);
 
         imgbtnArrow.setOnClickListener(view -> finish());
-        tvTitleHeader.setText("О событии");
+        tvTitleHeader.setText(getResources().getString(R.string.title_infoEvent));
 
         imgbtnShareHeader.setOnClickListener(view -> {
             new MaterialAlertDialogBuilder(this)

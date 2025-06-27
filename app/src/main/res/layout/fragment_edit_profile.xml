@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edittext"
                 style="@style/EditText"
-                android:hint="Email"
+                android:hint="@string/textInput_email"
                 android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edittext"
                 style="@style/EditText"
-                android:hint="Фамилия"
+                android:hint="@string/textInput_lastName"
                 android:inputType="textCapWords"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edittext"
                 style="@style/EditText"
-                android:hint="Имя"
+                android:hint="@string/textInput_firstName"
                 android:inputType="textCapWords" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/BtnDefault"
-            android:text="Сохранить изменения"
+            android:text="@string/btn_accept"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="50dp"/>
 

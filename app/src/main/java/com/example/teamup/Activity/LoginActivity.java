@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         imgbtnArrow.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, StartActivity.class)));
 
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
-        tvTitleHeader.setText("Войти в аккаунт");
+        tvTitleHeader.setText(getResources().getString(R.string.title_loginAccount));
 
         tvGoToRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
 

@@ -2,4 +2,101 @@
     <string name="app_name">TeamUp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--*********************************   Title   *********************************-->
+    <string name="title_createEvent" translatable="true">Создать событие</string>
+    <string name="title_infoEvent" translatable="true">О событии</string>
+    <string name="title_loginAccount" translatable="true">Войти в аккаунт</string>
+    <string name="title_createAccount" translatable="true">Создать аккаунт</string>
+    <string name="title_category" translatable="true">Категория</string>
+    <string name="title_location" translatable="true">Местоположение</string>
+    <string name="title_bottomFilter" translatable="true">Фильтры</string>
+    <string name="title_editProfile" translatable="true">Изменить профиль</string>
+    <string name="title_profile" translatable="true">Ваш профиль</string>
+    <string name="title_youEvents" translatable="true">Ваши события</string>
+
+    <!--*********************************   CreateEvent   *********************************-->
+    <string name="createEvent_helpText" translatable="true">Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы создать событие.</string>
+    <string name="createEvent_mainInfo" translatable="true">Основная информация</string>
+    <string name="createEvent_DateAndPlace" translatable="true">Место и время</string>
+    <string name="createEvent_additionalInfo" translatable="true">Дополнительная информация</string>
+
+    <!--*********************************   InfoEvent   *********************************-->
+    <string name="infoEvent_freeSeats" translatable="true">Свободных мест</string>
+
+    <!--*********************************   TextInput   *********************************-->
+    <string name="textInput_titleEvent" translatable="true">Название события</string>
+    <string name="textInput_categoryEvent" translatable="true">Категория</string>
+    <string name="textInput_numberOne" translatable="true">1`</string>
+    <string name="textInput_selectDate" translatable="true">Выберите дату</string>
+    <string name="textInput_timeStart" translatable="true">Начало</string>
+    <string name="textInput_timeEnd" translatable="true">Конец</string>
+    <string name="textInput_selectCity" translatable="true">Город</string>
+    <string name="textInput_selectStreet" translatable="true">Улица, дом, квартира</string>
+    <string name="textInput_additionalInfo" translatable="true">Опишите цели вашего спортивного мероприятия, требования к участникам, программу соревнований и тд.</string>
+    <string name="textInput_email" translatable="false">Email</string>
+    <string name="textInput_password" translatable="true">Пароль</string>
+    <string name="textInput_password_helperText" translatable="true">Минимум 8 символов</string>
+    <string name="textInput_firstName" translatable="true">Имя</string>
+    <string name="textInput_lastName" translatable="true">Фамилия</string>
+    <string name="textInput_eventID" translatable="true">ID события</string>
+    
+
+    <!--*********************************   Button   *********************************-->
+    <string name="btn_createEvent" translatable="true">Создать событие</string>
+    <string name="btn_enterEvent" translatable="true">Записаться</string>
+    <string name="btn_loginAccount" translatable="true">Войти в аккаунт</string>
+    <string name="btn_createAccount" translatable="true">Создать аккаунт</string>
+    <string name="btn_select" translatable="true">Выбрать</string>
+    <string name="btn_clear" translatable="true">Сбросить</string>
+    <string name="btn_accept" translatable="true">Применить</string>
+    <string name="btn_search" translatable="true">Найти</string>
+    <string name="bnt_editPfoile" translatable="true">Редактировать профиль</string>
+    <string name="btn_reportError" translatable="true">Сообщить об ошибке"</string>
+    <string name="btn_logOutAccount" translatable="true">Выйти из аккаунта</string>
+
+    <!--*********************************   Category   *********************************-->
+    <string name="category_soccer" translatable="true">Футбол</string>
+    <string name="category_basketball" translatable="true">Баскетбол</string>
+    <string name="category_volleyball" translatable="true">Волейбол</string>
+    <string name="category_athletics" translatable="true">Лёгкая атлетика</string>
+    <string name="category_fitness" translatable="true">Фитнес</string>
+    <string name="category_martialArts" translatable="true">Боевые искусства</string>
+    <string name="category_hockey" translatable="true">Хоккей</string>
+    <string name="category_cycling" translatable="true">Велоспорт</string>
+    <string name="category_waterSports" translatable="true">Водные виды</string>
+    <string name="category_winterSports" translatable="true">Зимние виды</string>
+
+    <!--*********************************   Location   *********************************-->
+    <string name="city_moscow" translatable="true">Москва</string>
+    <string name="city_saintPetersburg" translatable="true">Санкт-Петербург</string>
+    <string name="city_novosibirsk" translatable="true">Новосибирск</string>
+    <string name="city_yekaterinburg" translatable="true">Екатеринбург</string>
+    <string name="city_kazan" translatable="true">Казань</string>
+    <string name="city_nizhnyNovgorod" translatable="true">Нижний Новгород</string>
+    <string name="city_chelyabinsk" translatable="true">Челябинск</string>
+    <string name="city_saratov" translatable="true">Саратов</string>
+    <string name="city_voronezh" translatable="true">Воронеж</string>
+    <string name="city_balashov" translatable="true">Балашов</string>
+    <string name="city_samara" translatable="true">Самара</string>
+    <string name="city_rostovOnDon" translatable="true">Ростов-на-Дону</string>
+    <string name="city_krasnodar" translatable="true">Краснодар</string>
+
+    <!--*********************************   BottomFilter   *********************************-->
+    <string name="bottomFilter_category" translatable="true">Категории</string>
+
+    <!--*********************************   Error   *********************************-->
+    <string name="error_eventSearch" translatable="true">К сожалению, события не найдены. Попробуйте изменить фильтры.</string>
+
+    <!--*********************************   Other   *********************************-->
+    <string name="level" translatable="true">Уровень</string>
+    <string name="level_easy" translatable="true">Лёгкий</string>
+    <string name="level_normal" translatable="true">Средний</string>
+    <string name="level_hard" translatable="true">Сложный</string>
+    <string name="numberOfParticipants" translatable="true">Количество участников</string>
+    <string name="welcome" translatable="true">Добро пожаловать!</string>
+    <string name="applicationDescription" translatable="true">Найдите интересные события, заведите новых друзей и участвуйте в увлекательных соревнованиях — всё это доступно в нашем приложении TeamUp!</string>
+    <string name="filter_selectDate" translatable="true">Выбрать дату</string>
+    <string name="filter_selectFilter" translatable="true">Фильтры</string>
+
 </resources>

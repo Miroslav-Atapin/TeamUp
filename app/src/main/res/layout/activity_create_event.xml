@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Пожалуйста, заполните все поля, касающиеся вашего мероприятия, чтобы создать событие."
+                android:text="@string/createEvent_helpText"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 style="@style/TextMedium"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TitleHeader"
-                android:text="Основная информация"/>
+                android:text="@string/createEvent_mainInfo"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventName"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Название события"
+                    android:hint="@string/textInput_titleEvent"
                     android:inputType="textCapSentences"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Категория" />
+                    android:hint="@string/textInput_categoryEvent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +98,7 @@
                     android:id="@+id/tvLevelQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Уровень"
+                    android:text="@string/level"
                     style="@style/TextMedium"
                     android:textColor="@color/black"
                     android:drawableRight="@drawable/ic_question"
@@ -121,21 +121,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/ChipFilter"
-                            android:text="Лёгкий"/>
+                            android:text="@string/level_easy"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chipFilterMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/ChipFilter"
-                            android:text="Средний"/>
+                            android:text="@string/level_normal"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chipFilterHard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/ChipFilter"
-                            android:text="Сложный"/>
+                            android:text="@string/level_hard"/>
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Количество участников"
+                    android:text="@string/numberOfParticipants"
                     style="@style/TextMedium"
                     android:textColor="@color/black"/>
 
@@ -188,7 +188,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/shape_edittext"
-                            android:hint="1"
+                            android:hint="@string/textInput_numberOne"
                             android:inputType="number"
                             android:textAlignment="center" />
 
@@ -224,7 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TitleHeader"
-                android:text="Место и время"/>
+                android:text="@string/createEvent_DateAndPlace"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventDate"
@@ -239,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Выберите дату"
+                    android:hint="@string/textInput_selectDate"
                     android:inputType="date"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -264,7 +264,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_edittext"
                         style="@style/EditText"
-                        android:hint="Начало"
+                        android:hint="@string/textInput_timeStart"
                         android:inputType="datetime"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -283,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_edittext"
                         style="@style/EditText"
-                        android:hint="Конец"
+                        android:hint="@string/textInput_timeEnd"
                         android:inputType="datetime"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Город"
+                    android:hint="@string/textInput_selectCity"
                     android:inputType="textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -321,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Улица, дом, квартира"
+                    android:hint="@string/textInput_selectStreet"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -343,7 +343,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TitleHeader"
-                android:text="Дополнительная информация"/>
+                android:text="@string/createEvent_additionalInfo"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEventInfo"
@@ -358,7 +358,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext"
                     style="@style/EditText"
-                    android:hint="Опишите цели вашего спортивного мероприятия, требования к участникам, программу соревнований и тд."
+                    android:hint="@string/textInput_additionalInfo"
                     android:inputType="textMultiLine|textCapSentences"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -384,7 +384,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             style="@style/BtnDefault"
-            android:text="Создать событие"
+            android:text="@string/btn_createEvent"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="50dp"/>
 

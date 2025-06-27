@@ -35,7 +35,7 @@ public class EditProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
         TextView tvTitleHeader = view.findViewById(R.id.tvTitleHeader);
-        tvTitleHeader.setText("Изменить профиль");
+        tvTitleHeader.setText(getResources().getString(R.string.title_editProfile));
 
         ImageButton imgbtnArrow = view.findViewById(R.id.imgbtnArrowHeader);
         imgbtnArrow.setOnClickListener(v -> getParentFragmentManager().popBackStack());

@@ -130,7 +130,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         });
 
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
-        tvTitleHeader.setText("Создать событие");
+        tvTitleHeader.setText(getResources().getString(R.string.title_createEvent));
 
         edEventDate.setInputType(0);
         edEventDate.setFocusable(false);

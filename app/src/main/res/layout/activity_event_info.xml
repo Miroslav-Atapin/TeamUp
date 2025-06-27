@@ -45,7 +45,6 @@
                         android:id="@+id/tvTitleHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Title"
                         android:layout_centerInParent="true"
                         style="@style/TitleHeader" />
 
@@ -101,14 +100,14 @@
                         android:layout_height="wrap_content"
                         style="@style/TextMedium"
                         android:textColor="@color/black"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/TextMedium"
-                        android:textColor="@color/black"
-                        android:text=" | " />
-
+                    
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@color/black" />
+                    
                     <TextView
                         android:id="@+id/tvEventLevel"
                         android:layout_width="wrap_content"
@@ -203,7 +202,7 @@
                     android:layout_height="wrap_content"
                     style="@style/TextMedium"
                     android:textColor="@color/black"
-                    android:text="Свободных мест"
+                    android:text="@string/infoEvent_freeSeats"
                     android:layout_weight="1"/>
 
                 <TextView
@@ -226,7 +225,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
-            android:text="Записаться"
+            android:text="@string/btn_enterEvent"
             style="@style/BtnDefault"/>
 
     </LinearLayout>

@@ -37,7 +37,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         radioGroupCities = findViewById(R.id.radioGroupCities);
 
         imgbtnArrow.setOnClickListener(v -> finish());
-        tvTitleHeader.setText("Местоположение");
+        tvTitleHeader.setText(getResources().getString(R.string.title_location));
 
         Button btnSelectLocation = findViewById(R.id.btnSelectLocation);
         btnSelectLocation.setOnClickListener(v -> handleCitySelection());

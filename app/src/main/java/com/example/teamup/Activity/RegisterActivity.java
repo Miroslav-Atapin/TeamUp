@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         tvGoToLogin = findViewById(R.id.tvGoToLogin);
 
         TextView tvTitleHeader = findViewById(R.id.tvTitleHeader);
-        tvTitleHeader.setText("Создать аккаунт");
+        tvTitleHeader.setText(getResources().getString(R.string.title_createAccount));
 
         ImageButton imgbtnArrow = findViewById(R.id.imgbtnArrowHeader);
         imgbtnArrow.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, StartActivity.class)));

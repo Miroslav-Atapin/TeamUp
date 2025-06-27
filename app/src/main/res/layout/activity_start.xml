@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Добро пожаловать!"
+        android:text="@string/welcome"
         android:textAlignment="center"
         android:fontFamily="@font/roboto_medium"
         android:textSize="20sp"
@@ -29,7 +29,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Найдите интересные события, заведите новых друзей и участвуйте в увлекательных соревнованиях — всё это доступно в нашем приложении TeamUp!"
+        android:text="@string/applicationDescription"
         android:textAlignment="center"
         style="@style/TextMedium"
         android:textColor="@color/secondary"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         style="@style/BtnDefault"
-        android:text="Войти в аккаунт"/>
+        android:text="@string/btn_loginAccount"/>
 
     <Button
         android:id="@+id/btnGoToRegister"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         style="@style/BtnLightDefault"
-        android:text="Создать аккаунт"
+        android:text="@string/btn_createAccount"
         android:layout_marginBottom="15dp"/>
 
 </LinearLayout>

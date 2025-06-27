@@ -51,7 +51,6 @@
         android:fontFamily="@font/roboto_medium"
         android:textSize="17sp"
         android:textColor="@color/black"
-        android:text="Название"
         android:layout_marginVertical="10dp"/>
 
     <LinearLayout

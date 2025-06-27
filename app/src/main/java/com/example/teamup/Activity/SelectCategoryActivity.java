@@ -37,7 +37,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
         radioGroupCategory = findViewById(R.id.radioGroupCategory);
 
         imgbtnArrow.setOnClickListener(v -> finish());
-        tvTitleHeader.setText("Категория");
+        tvTitleHeader.setText(getResources().getString(R.string.title_category));
 
         Button btnSelectCategory = findViewById(R.id.btnSelectCategory);
         btnSelectCategory.setOnClickListener(v -> handleCategorySelection());

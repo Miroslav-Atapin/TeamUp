@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TitleHeader"
-                android:text="Ваш профиль"
+                android:text="@string/title_profile"
                 android:textAlignment="center"/>
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BtnAction"
-                android:text="Редактировать профиль"
+                android:text="@string/bnt_editPfoile"
                 android:drawableLeft="@drawable/ic_pencil"
                 android:drawablePadding="10dp"
                 android:gravity="start"
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BtnAction"
-                android:text="Сообщить об ошибке"
+                android:text="@string/btn_reportError"
                 android:drawableLeft="@drawable/ic_warningcircle"
                 android:drawablePadding="10dp"
                 android:gravity="start"
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BtnAction"
-                android:text="Выйти из аккаунта"
+                android:text="@string/btn_logOutAccount"
                 android:drawableLeft="@drawable/ic_signout"
                 android:drawablePadding="10dp"
                 android:textColor="#ff3300"
