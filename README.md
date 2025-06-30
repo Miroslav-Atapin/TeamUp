@@ -15,3 +15,11 @@ Team Up — приложение для активных пользовател�
 <div align="center">
       <img src="https://i.postimg.cc/3R0rFLwm/Home.png" alt="Home">
 </div>
+
+## Promo video
+
+https://github.com/user-attachments/assets/fca85bc7-8f82-4780-a774-faa3ea8436b9
+
+
+
+
